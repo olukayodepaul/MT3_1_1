@@ -29,8 +29,6 @@ data class EmployeesApi (
     @SerializedName("spinners")
     @Expose
     var spinners: List<ProductTypeApi>
-
-
 )
 
 data class ModulesApi (
