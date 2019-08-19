@@ -21,7 +21,8 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                     Log.d(TAG, data.body().toString())
                     when (data.body()!!.status) {
                         200 -> {
-                            insertEmployee(data.body()!!.modules,
+                            insertEmployee(
+                                data.body()!!.modules,
                                 data.body()!!.customers,
                                 data.body()!!.product,
                                 data.body()!!.spinners
