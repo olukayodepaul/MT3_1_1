@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">MT3_1_1</string>
+    <string name="copywrite">Copyright © 2019 Great Brands Nig ltd.</string>
+    <string name="Themodules">Modules</string>
+    <string name="textview">TextView</string>
+    <string name="todo">TODO</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment FIRST</string>
+
+    <string name="menu_sales">Sales</string>
+    <string name="menu_history">Sales History</string>
+    <string name="ats">Attendant</string>
+    <string name="rt">Resume</string>
+    <string name="ct">Clockout</string>
+
+    <string name="tv_sku">Sku</string>
+    <string name="tv_qty">Qty</string>
+    <string name="pproceed">Procced to Sales</string>
+    <string name="pclose">Outlet Close</string>
+    <string name="cltn">Customer Location</string>
+    <string name="title_activity_maps">Map</string>
+
+</resources>

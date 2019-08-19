@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.auth.AuthActivity"
+        android:background="@color/ballReleasegb">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/iv_user"
+            android:background="@drawable/bg_apps"
+            android:orientation="vertical"/>
+
+    <EditText
+            android:id="@+id/et_email"
+            android:textColor="@color/bg_black"
+            android:background="@drawable/text_view_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_user"
+            android:inputType="text"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="50dp"
+            android:padding="10dp"
+            android:textSize="13sp"/>
+    <EditText
+            android:id="@+id/et_password"
+            android:textColor="@color/bg_black"
+            android:background="@drawable/text_view_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/et_email"
+            android:inputType="textPassword"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="13sp"
+    />
+
+    <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/design_login_btn"
+            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_below="@+id/et_password"
+            android:text="Login"
+            android:layout_marginTop="20dp"/>
+
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="30dp"
+              android:layout_marginRight="30dp"
+              android:layout_below="@+id/btn_login"
+              android:text="@string/copywrite"
+              android:textSize="11sp"
+              android:layout_marginTop="10dp"
+              android:textAlignment="center"
+              android:fontFamily="@font/roboto_italic"/>
+
+</RelativeLayout>
