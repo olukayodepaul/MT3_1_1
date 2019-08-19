@@ -21,11 +21,11 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                     Log.d(TAG, data.body().toString())
                     when (data.body()!!.status) {
                         200 -> {
-                            var mModules: List<ModulesApi> = data.body()!!.modules
-                            var mCustomers: List<Bank_n_CustomersApi> = data.body()!!.customers
-                            var mProduct: List<ProductsApi> = data.body()!!.product
-                            var mProducttype: List<ProductTypeApi> = data.body()!!.spinners
-                            insertEmployee(mModules, mCustomers, mProduct, mProducttype)
+                            insertEmployee(data.body()!!.modules,
+                                data.body()!!.customers,
+                                data.body()!!.product,
+                                data.body()!!.spinners
+                            )
                             sharedEditor.id = data.body()!!.id
                             sharedEditor.name = data.body()!!.name
                         }
