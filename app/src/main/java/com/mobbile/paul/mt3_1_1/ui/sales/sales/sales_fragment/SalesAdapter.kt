@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.Models.RoomModel.Bank_n_CustomersRoom
+import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.Sales_Attendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap

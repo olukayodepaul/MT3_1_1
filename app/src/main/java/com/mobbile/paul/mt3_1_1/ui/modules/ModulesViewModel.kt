@@ -5,9 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kotlin_project.Models.RoomModel.ModulesRoom
+import com.mobbile.paul.mt3_1_1.models.ModulesRoom
 import com.example.kotlin_project.providers.Repository
-import com.mobbile.paul.mt3_1_1.models.ApiModel.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject

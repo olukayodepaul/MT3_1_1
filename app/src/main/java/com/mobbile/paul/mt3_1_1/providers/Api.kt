@@ -1,7 +1,7 @@
 package com.example.kotlin_project.providers
 
 
-import com.mobbile.paul.mt3_1_1.models.ApiModel.EmployeesApi
+import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.Headers

@@ -1,9 +1,5 @@
-package com.mobbile.paul.mt3_1_1.models.ApiModel
+package com.mobbile.paul.mt3_1_1.models
 
-import com.example.kotlin_project.Models.RoomModel.Bank_n_CustomersRoom
-import com.example.kotlin_project.Models.RoomModel.ModulesRoom
-import com.example.kotlin_project.Models.RoomModel.ProductTypeRoom
-import com.example.kotlin_project.Models.RoomModel.ProductsRoom
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -38,7 +34,6 @@ data class EmployeesApi (
 )
 
 data class ModulesApi (
-
     @SerializedName("id")
     @Expose
     var id: Int = 0,
@@ -63,11 +58,9 @@ data class ModulesApi (
     @SerializedName("outlet_waiver")
     @Expose
     var outlet_waiver: Int = 0
-
 )
 
 data class Bank_n_CustomersApi(
-
     @SerializedName("auto")
     @Expose
     var auto: Int = 0,
@@ -98,12 +91,9 @@ data class Bank_n_CustomersApi(
     @SerializedName("outlet_waiver")
     @Expose
     var outlet_waiver: String = ""
-
-
 )
 
 data class ProductsApi(
-
     @SerializedName("auto")
     @Expose
     var auto: Int = 0,
@@ -134,12 +124,10 @@ data class ProductsApi(
     @SerializedName("packprice")
     @Expose
     var packprice: String = ""
-
 )
 
 
 data class ProductTypeApi(
-
     @SerializedName("id")
     @Expose
     var id: Int = 0,
@@ -149,7 +137,6 @@ data class ProductTypeApi(
     @SerializedName("sep")
     @Expose
     var sep: Int = 0
-
 )
 
 data class SaveEntries (
@@ -158,16 +145,29 @@ data class SaveEntries (
 )
 
 fun ModulesApi.toModulesEntity(): ModulesRoom {
-    return ModulesRoom(id,nav,name,imageurl)
+    return ModulesRoom(id, nav, name, imageurl)
 }
 
 fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
-    return Bank_n_CustomersRoom(auto, id, notice, urno, customerno, outletname,
-        token, rostertime, sort, outlet_waiver)
+    return Bank_n_CustomersRoom(
+        auto, id, notice, urno, customerno, outletname,
+        token, rostertime, sort, outlet_waiver
+    )
 }
 
 fun ProductsApi.toProductEntity(): ProductsRoom {
-    return ProductsRoom(auto, id, separator, separatorname, productcode, productname, qty, soq, rollprice, packprice)
+    return ProductsRoom(
+        auto,
+        id,
+        separator,
+        separatorname,
+        productcode,
+        productname,
+        qty,
+        soq,
+        rollprice,
+        packprice
+    )
 }
 
 fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {

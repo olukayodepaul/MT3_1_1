@@ -4,10 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.kotlin_project.Models.RoomModel.Bank_n_CustomersRoom
-import com.example.kotlin_project.Models.RoomModel.ModulesRoom
-import com.example.kotlin_project.Models.RoomModel.ProductTypeRoom
-import com.example.kotlin_project.Models.RoomModel.ProductsRoom
+import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
+import com.mobbile.paul.mt3_1_1.models.ModulesRoom
+import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
+import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 
 
 @Dao

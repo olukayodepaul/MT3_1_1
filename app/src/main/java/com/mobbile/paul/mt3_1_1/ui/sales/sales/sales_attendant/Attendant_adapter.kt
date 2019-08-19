@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.Models.RoomModel.ProductsRoom
+import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.mobbile.paul.mt3_1_1.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.attendant_adapter.view.*

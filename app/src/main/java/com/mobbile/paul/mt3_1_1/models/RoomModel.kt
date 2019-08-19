@@ -1,10 +1,8 @@
-package com.example.kotlin_project.Models.RoomModel
+package com.mobbile.paul.mt3_1_1.models
 
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 
 
 @Entity

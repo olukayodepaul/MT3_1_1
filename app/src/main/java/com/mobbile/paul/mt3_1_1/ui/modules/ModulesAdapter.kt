@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.kotlin_project.Models.RoomModel.ModulesRoom
+import com.mobbile.paul.mt3_1_1.models.ModulesRoom
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.ui.customers.CustomerPageViwer
 import com.mobbile.paul.mt3_1_1.ui.messages.MessagePageViewer

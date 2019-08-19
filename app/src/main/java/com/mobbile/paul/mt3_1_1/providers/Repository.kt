@@ -1,10 +1,10 @@
 package com.example.kotlin_project.providers
 
-import com.example.kotlin_project.Models.RoomModel.Bank_n_CustomersRoom
-import com.example.kotlin_project.Models.RoomModel.ModulesRoom
-import com.example.kotlin_project.Models.RoomModel.ProductTypeRoom
-import com.example.kotlin_project.Models.RoomModel.ProductsRoom
-import com.mobbile.paul.mt3_1_1.models.ApiModel.EmployeesApi
+import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
+import com.mobbile.paul.mt3_1_1.models.ModulesRoom
+import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
+import com.mobbile.paul.mt3_1_1.models.ProductsRoom
+import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

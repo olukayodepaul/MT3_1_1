@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.Models.RoomModel.Bank_n_CustomersRoom
+import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
 import com.mobbile.paul.mt3_1_1.R
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_for_sales.*
