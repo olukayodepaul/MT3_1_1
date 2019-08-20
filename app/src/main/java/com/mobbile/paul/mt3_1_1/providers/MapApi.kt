@@ -1,13 +1,14 @@
 package com.mobbile.paul.mt3_1_1.providers
 
 
-import com.mobbile.paul.mt3_1_1.models.GoogleApi
+
+import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-interface MAPI {
+interface MapApi {
 
     @Headers("Connection:close")
     @GET("/maps/api/directions/json?")
@@ -17,7 +18,8 @@ interface MAPI {
         @Query("sensor") sensor: String,
         @Query("mode") mode: String,
         @Query("key") key: String
-    ): Single<GoogleApi>
+    ): Single<GoogleGetApi>
+
 }
 
 

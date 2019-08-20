@@ -27,7 +27,6 @@ data class Bank_n_CustomersRoom(
     var rostertime: String = "",
     var sort: Int = 0,
     var outlet_waiver: String = ""
-    //var serialno: Int = 0
 )
 
 

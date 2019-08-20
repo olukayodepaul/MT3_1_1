@@ -150,5 +150,7 @@ dependencies {
     implementation "com.xwray:groupie:$group_recycler_version"
     implementation "com.xwray:groupie-kotlin-android-extensions:$group_recycler_version"
 
+    implementation 'com.github.salomonbrys.kotson:kotson:2.5.0'
+
 
 }

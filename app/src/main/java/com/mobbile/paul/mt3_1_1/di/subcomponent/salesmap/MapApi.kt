@@ -1,7 +1,7 @@
 package com.example.kotlin_project.di.modules
 
 
-import com.mobbile.paul.mt3_1_1.providers.MAPI
+import com.mobbile.paul.mt3_1_1.providers.MapApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -13,8 +13,8 @@ class MapApi {
 
     @Singleton
     @Provides
-    internal fun provideMapApi(@Named("map_api") retrofit: Retrofit): MAPI {
-        return retrofit.create(MAPI::class.java)
+    internal fun provideMapApi(@Named("map_api") retrofit: Retrofit): MapApi {
+        return retrofit.create(MapApi::class.java)
     }
 
 }
