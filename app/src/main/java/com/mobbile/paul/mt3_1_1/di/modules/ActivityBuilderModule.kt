@@ -52,7 +52,9 @@ abstract class ActivityBuilderModule {
 
     @SalesMapScope
     @ContributesAndroidInjector(modules = [
-        SalesMapModule::class
+        SalesMapModule::class,
+        MapApi::class,
+        MapNetworkModule::class
     ])
     abstract fun contributeSalesMapActivity(): UsersMap
 

@@ -2,6 +2,7 @@ package com.example.kotlin_project.di.modules
 
 
 import android.app.Application
+import com.example.kotlin_project.di.main.SalesMapScope
 import com.mobbile.paul.mt3_1_1.BuildConfig
 import com.mobbile.paul.mt3_1_1.util.ConnectivityInterceptorImpl
 import dagger.Module
@@ -13,16 +14,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
-import javax.inject.Singleton
+
 
 @Module
 @Suppress("unused")
-class NetworkModule {
+class MapNetworkModule {
 
     @Provides
-    @Singleton
-    @Named("application_api")
-    internal fun provideRetrofitInstance(application: Application): Retrofit {
+    @SalesMapScope
+    @Named("map_api")
+    internal fun provideNetworkInstance(application: Application): Retrofit {
 
         val okHttpClientBuilder = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -37,7 +38,7 @@ class NetworkModule {
         }
 
         return Retrofit.Builder()
-            .baseUrl("http://82.163.72.135:8092")
+            .baseUrl("https://maps.googleapis.com")
             .client(okHttpClientBuilder.build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
