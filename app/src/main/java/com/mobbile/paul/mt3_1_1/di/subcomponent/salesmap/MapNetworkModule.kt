@@ -2,7 +2,6 @@ package com.example.kotlin_project.di.modules
 
 
 import android.app.Application
-import com.example.kotlin_project.di.main.SalesMapScope
 import com.mobbile.paul.mt3_1_1.BuildConfig
 import com.mobbile.paul.mt3_1_1.util.ConnectivityInterceptorImpl
 import dagger.Module
@@ -14,6 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
+import javax.inject.Singleton
 
 
 @Module
@@ -21,7 +21,7 @@ import javax.inject.Named
 class MapNetworkModule {
 
     @Provides
-    @SalesMapScope
+    @Singleton
     @Named("map_api")
     internal fun provideNetworkInstance(application: Application): Retrofit {
 

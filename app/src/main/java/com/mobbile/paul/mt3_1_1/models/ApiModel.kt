@@ -31,6 +31,14 @@ data class EmployeesApi (
     var spinners: List<ProductTypeApi>
 )
 
+data class GoogleApi(
+
+    @SerializedName("status")
+    @Expose
+    var status: String = ""
+
+)
+
 data class ModulesApi (
     @SerializedName("id")
     @Expose
@@ -141,6 +149,10 @@ data class SaveEntries (
     var name: String = "",
     var id: Int=0
 )
+
+
+
+
 
 fun ModulesApi.toModulesEntity(): ModulesRoom {
     return ModulesRoom(id, nav, name, imageurl)

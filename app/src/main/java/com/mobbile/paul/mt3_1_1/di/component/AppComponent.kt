@@ -18,7 +18,9 @@ import javax.inject.Singleton
     ViewModelFactoryModule::class,
     NetworkModule::class,
     LocalDatabaseModule::class,
-    AppApi::class
+    AppApi::class,
+    MapApi::class,
+    MapNetworkModule::class
 ])
 interface AppComponent : AndroidInjector<BaseApplication> {
 

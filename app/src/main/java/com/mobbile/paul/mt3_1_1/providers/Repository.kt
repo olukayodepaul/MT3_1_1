@@ -1,21 +1,19 @@
 package com.example.kotlin_project.providers
 
-import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
-import com.mobbile.paul.mt3_1_1.models.ModulesRoom
-import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
-import com.mobbile.paul.mt3_1_1.models.ProductsRoom
-import com.mobbile.paul.mt3_1_1.models.EmployeesApi
+import com.mobbile.paul.mt3_1_1.models.*
+import com.mobbile.paul.mt3_1_1.providers.MAPI
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class Repository @Inject
-constructor(private val appDao: AppDao, private val api: Api) {
+constructor(private val appDao: AppDao, private val api: Api, private var mapi: MAPI) {
 
     fun getUsers(username: String, password: String, imei: String): Single<Response<EmployeesApi>> =
            api.getUser(username, password, imei)
@@ -40,9 +38,17 @@ constructor(private val appDao: AppDao, private val api: Api) {
     fun fetchBasket(sep:Int): Observable<List<ProductsRoom>> =
         Observable.fromCallable {appDao.fetchBasket(sep)}
 
+    fun fetchGoogleMap(origin: String, destination: String, sensor: String, mode: String, key: String): Single<GoogleApi> =
+        mapi.getGooleMap(origin, destination, sensor, mode, key)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
     companion object {
         private val TAG = "Repository"
     }
 
 }
+
+
 
