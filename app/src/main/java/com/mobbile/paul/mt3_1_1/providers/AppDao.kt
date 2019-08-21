@@ -4,10 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
-import com.mobbile.paul.mt3_1_1.models.ModulesRoom
-import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
-import com.mobbile.paul.mt3_1_1.models.ProductsRoom
+import com.mobbile.paul.mt3_1_1.models.*
 
 
 @Dao
@@ -27,5 +24,8 @@ interface AppDao {
 
     @Query("SELECT * FROM products where separator=:sep ")
     fun fetchBasket(sep: Int) : List<ProductsRoom>
+
+    @Query("SELECT * FROM salesentries")
+    fun fetchDailySales() : List<SalesEntriesRoom>
 
 }

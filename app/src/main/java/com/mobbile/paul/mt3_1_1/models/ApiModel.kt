@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-data class EmployeesApi (
+data class EmployeesApi(
     @SerializedName("status")
     @Expose
     var status: Int = 0,
     @SerializedName("id")
     @Expose
-    var id: Int=0,
+    var id: Int = 0,
     @SerializedName("name")
     @Expose
     var name: String = "",
@@ -31,7 +31,7 @@ data class EmployeesApi (
     var spinners: List<ProductTypeApi>
 )
 
-data class ModulesApi (
+data class ModulesApi(
     @SerializedName("id")
     @Expose
     var id: Int = 0,
@@ -137,48 +137,15 @@ data class ProductTypeApi(
     var sep: Int = 0
 )
 
-data class SaveEntries (
+data class SaveEntries(
     var name: String = "",
-    var id: Int=0
+    var id: Int = 0
 )
 
-fun ModulesApi.toModulesEntity(): ModulesRoom {
-    return ModulesRoom(id, nav, name, imageurl)
-}
-
-fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
-    return Bank_n_CustomersRoom(
-        auto, id, notice, urno, customerno, outletname,
-        token, rostertime, sort, outlet_waiver
-    )
-}
-
-fun ProductsApi.toProductEntity(): ProductsRoom {
-    return ProductsRoom(
-        auto,
-        id,
-        separator,
-        separatorname,
-        productcode,
-        productname,
-        qty,
-        soq,
-        rollprice,
-        packprice
-    )
-}
-
-fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
-    return ProductTypeRoom(id, name, sep)
-}
-
-data class SalesEntriesApi (
-    @SerializedName("status")
-    @Expose
-    var status: Int = 0,
+data class SalesEntriesApi(
     @SerializedName("id")
     @Expose
-    var id: Int=0,
+    var id: Int = 0,
     @SerializedName("product_code")
     @Expose
     var product_code: String = "",
@@ -196,13 +163,10 @@ data class SalesEntriesApi (
     var priceperpack: Double = 0.0
 )
 
-data class SalesEntrieHolderApi (
-    @SerializedName("status")
-    @Expose
-    var status: Int = 0,
+data class SalesEntrieHolderApi(
     @SerializedName("id")
     @Expose
-    var id: Int=0,
+    var id: Int = 0,
     @SerializedName("product_code")
     @Expose
     var product_code: Int = 0,
@@ -222,4 +186,75 @@ data class SalesEntrieHolderApi (
     @Expose
     var priceperpack: Double = 0.0
 )
+
+fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
+    return SalesEntriesRoom(
+        id,
+        product_code,
+        qty, soq,
+        priceperroll,
+        priceperpack
+    )
+}
+
+fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
+    return SalesEntrieHolderRoom(
+        id,
+        product_code,
+        qtyperroll,
+        qtyperpack,
+        soq,
+        priceperroll,
+        priceperpack
+    )
+}
+
+fun ModulesApi.toModulesEntity(): ModulesRoom {
+    return ModulesRoom(
+        id,
+        nav,
+        name,
+        imageurl
+    )
+}
+
+fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
+    return Bank_n_CustomersRoom(
+        auto,
+        id,
+        notice,
+        urno,
+        customerno,
+        outletname,
+        token,
+        rostertime,
+        sort,
+        outlet_waiver
+    )
+}
+
+fun ProductsApi.toProductEntity(): ProductsRoom {
+    return ProductsRoom(
+        auto,
+        id,
+        separator,
+        separatorname,
+        productcode,
+        productname,
+        qty,
+        soq,
+        rollprice,
+        packprice
+    )
+}
+
+fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
+    return ProductTypeRoom(
+        id,
+        name,
+        sep
+    )
+}
+
+
 

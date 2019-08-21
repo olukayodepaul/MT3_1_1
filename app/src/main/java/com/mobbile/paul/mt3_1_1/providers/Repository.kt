@@ -43,6 +43,9 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
+    fun fetchDailySales(): Observable<List<SalesEntriesRoom>> =
+        Observable.fromCallable{appDao.fetchDailySales()}
+
     companion object {
         private val TAG = "Repository"
     }

@@ -29,7 +29,6 @@ data class Bank_n_CustomersRoom(
     var outlet_waiver: String = ""
 )
 
-
 @Entity(tableName = "products")
 data class ProductsRoom(
     @PrimaryKey(autoGenerate = false)
@@ -56,8 +55,6 @@ data class ProductTypeRoom (
 @Entity(tableName = "salesentries")
 data class SalesEntriesRoom (
     @PrimaryKey(autoGenerate = false)
-    var auto: Int = 0,
-    var status: Int = 0,
     var id: Int=0,
     var product_code: String = "",
     var qty: String = "",
@@ -69,8 +66,6 @@ data class SalesEntriesRoom (
 @Entity(tableName = "salesentriesholders")
 data class SalesEntrieHolderRoom(
     @PrimaryKey(autoGenerate = false)
-    var auto: Int = 0,
-    var status: Int = 0,
     var id: Int=0,
     var product_code: Int = 0,
     var qtyperroll: Int = 0,
