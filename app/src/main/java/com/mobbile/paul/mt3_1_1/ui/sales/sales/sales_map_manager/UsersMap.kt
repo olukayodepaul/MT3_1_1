@@ -94,11 +94,16 @@ class UsersMap : BaseActivity() {
     private fun setMakerPosition(getStartLat : Double, getStartLng : Double,
                                            getEndLat : Double, getEndtLng : Double){
 
-        var startLatLng = LatLng(getStartLat, getStartLng)
-        var endLatLng = LatLng(getEndLat, getEndtLng)
+        val startLatLng = LatLng(getStartLat, getStartLng)
+        val endLatLng = LatLng(getEndLat, getEndtLng)
         googleMap.addMarker(MarkerOptions().position(startLatLng))
         googleMap.addMarker(MarkerOptions().position(endLatLng))
-
+        googleMap.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                startLatLng,
+                15f
+            )
+        )
     }
 
     private fun setPolygonLineOptions(result: ArrayList<LatLng>) {
@@ -106,7 +111,7 @@ class UsersMap : BaseActivity() {
             PolylineOptions()
                 .addAll(result)
                 .width(5f)
-                .color(Color.RED)
+                .color(Color.BLUE)
                 .jointType(JointType.ROUND)
                 .endCap(RoundCap())
                 .startCap(RoundCap())

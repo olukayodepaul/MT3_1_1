@@ -19,7 +19,6 @@ interface MapApi {
         @Query("mode") mode: String,
         @Query("key") key: String
     ): Single<GoogleGetApi>
-
 }
 
 
