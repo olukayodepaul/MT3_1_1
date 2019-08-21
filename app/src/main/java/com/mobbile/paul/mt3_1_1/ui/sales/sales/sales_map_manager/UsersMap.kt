@@ -37,8 +37,12 @@ class UsersMap : BaseActivity() {
         setContentView(R.layout.activity_users_map)
         vmodel = ViewModelProviders.of(this, modelFactory)[Sales_Map_Manager_ViewModel::class.java]
         showProgressBar(true)
-        var origin : String  = "13.0356745,77.5881522"
-        var destination : String  = "13.029727, 77.5933021"
+        setUpData()
+    }
+
+    private fun setUpData(){
+        var origin: String = "13.0356745,77.5881522"
+        var destination: String = "13.029727, 77.5933021"
         var sensor: String = "false"
         var mode: String = "false"
         var key: String = "AIzaSyAUoAalxX7BMwO5G6LCPAV28azXPMMms1c"
@@ -47,53 +51,70 @@ class UsersMap : BaseActivity() {
 
     private fun initMap(origin: String, destination: String, sensor: String, mode: String, key: String) {
 
-                mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-                mapFragment.getMapAsync(OnMapReadyCallback{
-                googleMap = it
-                googleMap.isBuildingsEnabled = true
-                val latlng1 = LatLng(13.0357389, 77.5881899)
-                val latlng2 = LatLng(13.0355787, 77.58870739999999)
-                val latlng3 = LatLng(13.0355787, 77.58870739999999)
-                val latlng4 = LatLng(13.0392081, 77.58936609999999)
-                googleMap.addMarker(MarkerOptions().position(latlng1).title("My Location"))
-                googleMap.addMarker(MarkerOptions().position(latlng4 ).title("My Location two"))
-                //vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
-                    googleMap.addPolyline(
-                        PolylineOptions()
-                            .add(latlng1)
-                            .add(latlng2)
-                            .add(latlng3)
-                            .add(latlng4)
-                            .width(8f)
-                            .color(Color.BLUE)
-                    )
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latlng1,10f))
-            })
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(OnMapReadyCallback {
+            googleMap = it
+            vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
+        })
     }
 
 
-    //val observeMapApiResponse = Observer<GoogleGetApi> { data ->
+    val observeMapApiResponse = Observer<GoogleGetApi> { data ->
 
-    //}
+        var result = ArrayList<LatLng>()
+        lateinit var startlatLng: LatLng
+        lateinit var endlatLng: LatLng
 
-        /*private fun setPolygonLineOptions() {
-        val polygonOptions =  PolylineOptions()
+        for (i in 0..(data!!.routes[0].legs[0].steps.size - 1)) {
+            startlatLng = LatLng(
+                data.routes[0].legs[0].steps[i].start_location.lat.toDouble(),
+                data.routes[0].legs[0].steps[i].start_location.lng.toDouble()
+            )
+            endlatLng = LatLng(
+                data.routes[0].legs[0].steps[i].end_location.lat.toDouble(),
+                data.routes[0].legs[0].steps[i].end_location.lng.toDouble()
+            )
+            result.add(startlatLng)
+            result.add(endlatLng)
+        }
 
-        for (i in result.indices) {
-            polygonOptions
-                .addAll(result[i])
-                .width(20f)
+        var getStartLat: Double = data.routes[0].legs[0].start_location.lat
+        var getStartLng: Double = data.routes[0].legs[0].start_location.lng
+        var getEndLat: Double = data.routes[0].legs[0].end_location.lat
+        var getEndtLng: Double = data.routes[0].legs[0].end_location.lng
+        var startAddress : String = data.routes[0].legs[0].start_address
+        var endAddress : String = data.routes[0].legs[0].end_address
+        var distanceCovered : String = data.routes[0].legs[0].distance.text
+        var duration : String = data.routes[0].legs[0].duration.text
+
+        setMakerPosition(getStartLat, getStartLng, getEndLat, getEndtLng)
+        setPolygonLineOptions(result)
+    }
+
+    private fun setMakerPosition(getStartLat : Double, getStartLng : Double,
+                                           getEndLat : Double, getEndtLng : Double){
+
+        var startLatLng = LatLng(getStartLat, getStartLng)
+        var endLatLng = LatLng(getEndLat, getEndtLng)
+        googleMap.addMarker(MarkerOptions().position(startLatLng))
+        googleMap.addMarker(MarkerOptions().position(endLatLng))
+
+    }
+
+    private fun setPolygonLineOptions(result: ArrayList<LatLng>) {
+        googleMap.addPolyline(
+            PolylineOptions()
+                .addAll(result)
+                .width(5f)
                 .color(Color.RED)
                 .jointType(JointType.ROUND)
                 .endCap(RoundCap())
                 .startCap(RoundCap())
-         }
-        googleMap.addPolyline(polygonOptions)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(13.03, 77.6),10f))
-    }*/
+        )
+    }
 
 
-    companion object{
+    companion object {
         var TAG = "UsersMap"
     }
 }
