@@ -1,23 +1,23 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
+import android.content.Intent
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.github.salomonbrys.kotson.fromJson
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.maps.android.PolyUtil
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobiletraderv.paul.daggertraining.BaseActivity
+import kotlinx.android.synthetic.main.activity_users_map.*
 import javax.inject.Inject
 
 class UsersMap : BaseActivity() {
@@ -41,6 +41,11 @@ class UsersMap : BaseActivity() {
     }
 
     private fun setUpData(){
+
+        textView5.setOnClickListener {
+            startActivity(Intent(this, SalesEntries::class.java))
+        }
+
         var origin: String = "13.0356745,77.5881522"
         var destination: String = "13.029727, 77.5933021"
         var sensor: String = "false"
@@ -117,7 +122,6 @@ class UsersMap : BaseActivity() {
                 .startCap(RoundCap())
         )
     }
-
 
     companion object {
         var TAG = "UsersMap"

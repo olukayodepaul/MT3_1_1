@@ -11,6 +11,7 @@ import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.Sales_Attendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -55,5 +56,12 @@ abstract class ActivityBuilderModule {
         SalesMapModule::class
     ])
     abstract fun contributeSalesMapActivity(): UsersMap
+
+
+    @SalesEntriesScope
+    @ContributesAndroidInjector(modules = [
+        SalesEntriesModule::class
+    ])
+    abstract fun contributeSalesEntriesActivity(): SalesEntries
 
 }

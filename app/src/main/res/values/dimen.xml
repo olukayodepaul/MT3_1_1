@@ -4,6 +4,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fontSize">18sp</dimen>
     <dimen name="fontSSize">12sp</dimen>
+    <dimen name="font_size">11sp</dimen>
     <dimen name="fontLSize">18sp</dimen>
     <dimen name="elevation_dimen">4dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>

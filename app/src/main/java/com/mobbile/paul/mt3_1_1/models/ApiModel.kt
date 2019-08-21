@@ -172,3 +172,54 @@ fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
     return ProductTypeRoom(id, name, sep)
 }
 
+data class SalesEntriesApi (
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("id")
+    @Expose
+    var id: Int=0,
+    @SerializedName("product_code")
+    @Expose
+    var product_code: String = "",
+    @SerializedName("qty")
+    @Expose
+    var qty: String = "",
+    @SerializedName("soq")
+    @Expose
+    var soq: String = "",
+    @SerializedName("priceperroll")
+    @Expose
+    var priceperroll: Double = 0.0,
+    @SerializedName("priceperpack")
+    @Expose
+    var priceperpack: Double = 0.0
+)
+
+data class SalesEntrieHolderApi (
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("id")
+    @Expose
+    var id: Int=0,
+    @SerializedName("product_code")
+    @Expose
+    var product_code: Int = 0,
+    @SerializedName("qtyperroll")
+    @Expose
+    var qtyperroll: Int = 0,
+    @SerializedName("qtyperpack")
+    @Expose
+    var qtyperpack: Int = 0,
+    @SerializedName("soq")
+    @Expose
+    var soq: String = "",
+    @SerializedName("priceperroll")
+    @Expose
+    var priceperroll: Double = 0.0,
+    @SerializedName("priceperpack")
+    @Expose
+    var priceperpack: Double = 0.0
+)
+

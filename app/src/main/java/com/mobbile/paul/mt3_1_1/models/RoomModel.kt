@@ -53,3 +53,30 @@ data class ProductTypeRoom (
     var sep: Int = 0
 )
 
+@Entity(tableName = "salesentries")
+data class SalesEntriesRoom (
+    @PrimaryKey(autoGenerate = false)
+    var auto: Int = 0,
+    var status: Int = 0,
+    var id: Int=0,
+    var product_code: String = "",
+    var qty: String = "",
+    var soq: String = "",
+    var priceperroll: Double = 0.0,
+    var priceperpack: Double = 0.0
+)
+
+@Entity(tableName = "salesentriesholders")
+data class SalesEntrieHolderRoom(
+    @PrimaryKey(autoGenerate = false)
+    var auto: Int = 0,
+    var status: Int = 0,
+    var id: Int=0,
+    var product_code: Int = 0,
+    var qtyperroll: Int = 0,
+    var qtyperpack: Int = 0,
+    var soq: String = "",
+    var priceperroll: Double = 0.0,
+    var priceperpack: Double = 0.0
+)
+
