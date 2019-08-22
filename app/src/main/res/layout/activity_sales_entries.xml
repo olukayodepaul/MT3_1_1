@@ -121,8 +121,7 @@ tools:context=".ui.sales.sales.salesentries.SalesEntries">
                 android:fontFamily="@font/roboto_bold"
                 android:textSize="15sp"
                 android:ellipsize="end"
-                android:singleLine="true"
-        android:background="@color/bg_black"/>
+                android:singleLine="true"/>
 
         <TextView
                 android:text="SOQ"
@@ -211,7 +210,6 @@ tools:context=".ui.sales.sales.salesentries.SalesEntries">
         android:layout_height="match_parent"
         android:layout_below="@+id/const_la"
         android:background="@color/ballReleasegb"
-        android:layout_marginTop="3dp"
 />
 
 

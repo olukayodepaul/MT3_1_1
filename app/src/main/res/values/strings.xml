@@ -17,9 +17,10 @@
 
     <string name="tv_sku">Sku</string>
     <string name="tv_qty">Qty</string>
-    <string name="pproceed">Procced to Sales</string>
+    <string name="pproceed">Proceed to Sales</string>
     <string name="pclose">Outlet Close</string>
     <string name="cltn">Customer Location</string>
     <string name="title_activity_maps">Map</string>
+    <string name="keys">"AIzaSyAUoAalxX7BMwO5G6LCPAV28azXPMMms1c"</string>
 
 </resources>

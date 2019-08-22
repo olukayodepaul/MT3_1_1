@@ -55,7 +55,7 @@ class AuthActivity : BaseActivity() {
 
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
-            vmodel.auth("xE4EqDp", "4625", "351736103857888").observe(this, LoginObservers)
+            vmodel.auth("t0kTdEw", "3613", "356973100833183").observe(this, LoginObservers)
         } else {
             makeRequest()
         }

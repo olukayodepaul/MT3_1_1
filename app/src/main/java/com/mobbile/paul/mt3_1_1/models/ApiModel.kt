@@ -142,6 +142,24 @@ data class SaveEntries(
     var id: Int = 0
 )
 
+data class GenSales(
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("msg")
+    @Expose
+    var msg: String = "",
+    @SerializedName("dates")
+    @Expose
+    var dates: String = "",
+    @SerializedName("sentry")
+    @Expose
+    var sentry: List<SalesEntriesApi>,
+    @SerializedName("sentryh")
+    @Expose
+    var sentryh: List<SalesEntrieHolderApi>
+)
+
 data class SalesEntriesApi(
     @SerializedName("id")
     @Expose
@@ -164,48 +182,54 @@ data class SalesEntriesApi(
 )
 
 data class SalesEntrieHolderApi(
+    //constant
     @SerializedName("id")
     @Expose
     var id: Int = 0,
     @SerializedName("product_code")
     @Expose
     var product_code: Int = 0,
+
+    //variable
+    @SerializedName("soq")
+    @Expose
+    var soq: String = "",
+    @SerializedName("qty")
+    @Expose
+    var qty: Double = 0.0,
     @SerializedName("qtyperroll")
     @Expose
     var qtyperroll: Int = 0,
     @SerializedName("qtyperpack")
     @Expose
     var qtyperpack: Int = 0,
-    @SerializedName("soq")
-    @Expose
-    var soq: String = "",
     @SerializedName("priceperroll")
     @Expose
     var priceperroll: Double = 0.0,
     @SerializedName("priceperpack")
     @Expose
-    var priceperpack: Double = 0.0
+    var priceperpack: Double = 0.0,
+    @SerializedName("price")
+    @Expose
+    var price: Double = 0.0,
+    @SerializedName("entrytime")
+    @Expose
+    var entrytime: String = "",
+    @SerializedName("entrydate")
+    @Expose
+    var entrydate: String = ""
 )
+
 
 fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
     return SalesEntriesRoom(
-        id,
-        product_code,
-        qty, soq,
-        priceperroll,
-        priceperpack
+       id, product_code, qty, soq, priceperroll, priceperpack
     )
 }
 
 fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
     return SalesEntrieHolderRoom(
-        id,
-        product_code,
-        qtyperroll,
-        qtyperpack,
-        soq,
-        priceperroll,
-        priceperpack
+        id, product_code,soq, qty, qtyperroll, qtyperpack, priceperroll, priceperpack, price, entrytime, entrydate
     )
 }
 

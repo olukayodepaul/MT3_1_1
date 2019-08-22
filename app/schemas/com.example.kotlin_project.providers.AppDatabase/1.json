@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "64737adf69b38b845c1a8431057b989c",
+    "identityHash": "d8ba2371a3508cd8aa4b038cb1d14195",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -221,12 +221,142 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "salesentries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_code` TEXT NOT NULL, `qty` TEXT NOT NULL, `soq` TEXT NOT NULL, `priceperroll` REAL NOT NULL, `priceperpack` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_code",
+            "columnName": "product_code",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qty",
+            "columnName": "qty",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "soq",
+            "columnName": "soq",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priceperroll",
+            "columnName": "priceperroll",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priceperpack",
+            "columnName": "priceperpack",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "salesentriesholders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_code` INTEGER NOT NULL, `soq` TEXT NOT NULL, `qty` REAL NOT NULL, `qtyperroll` INTEGER NOT NULL, `qtyperpack` INTEGER NOT NULL, `priceperroll` REAL NOT NULL, `priceperpack` REAL NOT NULL, `price` REAL NOT NULL, `entrytime` TEXT NOT NULL, `entrydate` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "product_code",
+            "columnName": "product_code",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "soq",
+            "columnName": "soq",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qty",
+            "columnName": "qty",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qtyperroll",
+            "columnName": "qtyperroll",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "qtyperpack",
+            "columnName": "qtyperpack",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priceperroll",
+            "columnName": "priceperroll",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "priceperpack",
+            "columnName": "priceperpack",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entrytime",
+            "columnName": "entrytime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entrydate",
+            "columnName": "entrydate",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"64737adf69b38b845c1a8431057b989c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d8ba2371a3508cd8aa4b038cb1d14195\")"
     ]
   }
 }

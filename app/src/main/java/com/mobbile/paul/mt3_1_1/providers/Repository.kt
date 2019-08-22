@@ -18,7 +18,13 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         api.getUser(username, password, imei)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { it }
+            .map {it}
+
+    fun getUsers(userid: String): Single<Response<GenSales>> =
+        api.fetchSales(userid)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
 
     fun createModules(
         employee: List<ModulesRoom>,
@@ -61,6 +67,19 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         Observable.fromCallable {
             appDao.fetchDailySales()
         }
+
+    fun createDailySales(
+        salesen: List<SalesEntriesRoom>,
+        salesh: List<SalesEntrieHolderRoom>
+    ) =
+        Observable.fromCallable {appDao.saveSales(salesen,salesh)}
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    /*fun updateDailySales(id:Int, product_code: String, qtyperroll: Int, qtyperpack: Int, priceperroll: Double,priceperpack: Double)  =
+        Observable.fromCallable {
+            appDao.updateDailySales(id, product_code, qtyperroll, qtyperpack, priceperroll ,priceperpack )
+    }*/
 
     companion object {
         private val TAG = "Repository"

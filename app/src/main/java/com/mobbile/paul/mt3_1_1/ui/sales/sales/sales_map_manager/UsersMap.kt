@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -30,12 +31,17 @@ class UsersMap : BaseActivity() {
     lateinit var locationManager: LocationManager
     private var hasGPS = false //get location using GPS
     private var hasNetwork = false //get location using Network
+    private lateinit var durt: TextView
+    private lateinit var dis: TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_map)
         vmodel = ViewModelProviders.of(this, modelFactory)[Sales_Map_Manager_ViewModel::class.java]
+        durt = findViewById(R.id.duration)
+        dis = findViewById(R.id.kilometer)
         showProgressBar(true)
         setUpData()
     }
@@ -50,7 +56,7 @@ class UsersMap : BaseActivity() {
         var destination: String = "13.029727, 77.5933021"
         var sensor: String = "false"
         var mode: String = "false"
-        var key: String = "AIzaSyAUoAalxX7BMwO5G6LCPAV28azXPMMms1c"
+        var key: String = getString(R.string.keys)
         initMap(origin, destination, sensor, mode, key)
     }
 
@@ -92,13 +98,15 @@ class UsersMap : BaseActivity() {
         var distanceCovered : String = data.routes[0].legs[0].distance.text
         var duration : String = data.routes[0].legs[0].duration.text
 
+        durt.text = duration
+        dis.text = distanceCovered
+
         setMakerPosition(getStartLat, getStartLng, getEndLat, getEndtLng)
         setPolygonLineOptions(result)
     }
 
     private fun setMakerPosition(getStartLat : Double, getStartLng : Double,
                                            getEndLat : Double, getEndtLng : Double){
-
         val startLatLng = LatLng(getStartLat, getStartLng)
         val endLatLng = LatLng(getEndLat, getEndtLng)
         googleMap.addMarker(MarkerOptions().position(startLatLng))

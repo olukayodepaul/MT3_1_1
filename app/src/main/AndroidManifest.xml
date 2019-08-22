@@ -32,7 +32,7 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <activity android:name=".ui.sales.sales.sales_map_manager.UsersMap">
+        <activity android:name=".ui.sales.sales.sales_map_manager.UsersMap" android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.sales.sales.sales_attendant.Sales_Attendant">
         </activity>
@@ -56,7 +56,7 @@
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyAUoAalxX7BMwO5G6LCPAV28azXPMMms1c"/>
+                android:value="@string/keys"/>
     </application>
 
 </manifest>
