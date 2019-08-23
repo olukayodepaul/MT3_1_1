@@ -56,7 +56,9 @@ data class ProductTypeRoom (
 data class SalesEntriesRoom (
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
+    var product_id: Int = 0,
     var product_code: String = "",
+    var product_name: String = "",
     var qty: String = "",
     var soq: String = "",
     var priceperroll: Double = 0.0,
@@ -67,15 +69,16 @@ data class SalesEntriesRoom (
 data class SalesEntrieHolderRoom(
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
-    var product_code: Int = 0,
+    var product_id: Int = 0,
+    var product_code: String = "",
     var soq: String = "",
+    var product_name: String = "",
     var qty: Double = 0.0,
     var qtyperroll: Int = 0,
     var qtyperpack: Int = 0,
-    var priceperroll: Double = 0.0,
-    var priceperpack: Double = 0.0,
     var price: Double = 0.0,
-    var entrytime: String = "",
+    var priceperroll: Int = 0,
+    var priceperpack: Int = 0,
     var entrydate: String = ""
 )
 

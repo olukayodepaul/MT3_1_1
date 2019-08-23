@@ -21,15 +21,29 @@ class SalesEntries : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_entries)
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesEntriesViewModel::class.java]
-        vmodel.fetchDailySales().observe(this, observers)
+        vmodel.fetchSales("215370", "SWC2780")
+        vmodel.returnStringObservable().observe(this, observerOfApi)
     }
 
-    val observers = Observer<List<SalesEntriesRoom>> { data ->
-        if (data != null) {
+    val observerOfApi = Observer<String> {
 
+        var rdata = it.split("~")
+        when (rdata[0].toInt()) {
+            200 -> {
+                vmodel.fetchDailySales().observe(this, observerOfEntries)
+            }
+            400 -> {
+                showProgressBar(false)
+            }
         }
     }
 
+    var observerOfEntries = Observer<List<SalesEntriesRoom>> {
+        showProgressBar(false)
+    }
 
-
+    companion object {
+        val TAG = "SalesEntries"
+    }
 }
+

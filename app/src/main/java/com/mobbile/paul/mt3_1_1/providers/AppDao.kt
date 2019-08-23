@@ -36,7 +36,18 @@ interface AppDao {
     @Query("SELECT * FROM salesentries")
     fun fetchDailySales(): List<SalesEntriesRoom>
 
+
+    @Query("SELECT * FROM salesentriesholders")
+    fun fetchAllEntryPerDay(): List<SalesEntrieHolderRoom>
+
     @Query("UPDATE salesentriesholders SET  qtyperroll=:qtyperroll, qtyperpack=:qtyperpack, priceperroll=:priceperroll, priceperpack=:priceperpack where id=:id and product_code=:product_code")
-    fun updateDailySales(id: Int, product_code: String, qtyperroll: Int, qtyperpack: Int, priceperroll: Double,priceperpack: Double)
+    fun updateDailySales(
+        id: Int,
+        product_code: String,
+        qtyperroll: Int,
+        qtyperpack: Int,
+        priceperroll: Double,
+        priceperpack: Double
+    )
 
 }

@@ -164,9 +164,15 @@ data class SalesEntriesApi(
     @SerializedName("id")
     @Expose
     var id: Int = 0,
+    @SerializedName("product_id")
+    @Expose
+    var product_id: Int = 0,
     @SerializedName("product_code")
     @Expose
     var product_code: String = "",
+    @SerializedName("product_name")
+    @Expose
+    var product_name: String = "",
     @SerializedName("qty")
     @Expose
     var qty: String = "",
@@ -186,14 +192,20 @@ data class SalesEntrieHolderApi(
     @SerializedName("id")
     @Expose
     var id: Int = 0,
+    @SerializedName("product_id")
+    @Expose
+    var product_id: Int = 0,
     @SerializedName("product_code")
     @Expose
-    var product_code: Int = 0,
-
-    //variable
+    var product_code: String = "",
     @SerializedName("soq")
     @Expose
     var soq: String = "",
+    @SerializedName("product_name")
+    @Expose
+    var product_name: String = "",
+    //variable
+
     @SerializedName("qty")
     @Expose
     var qty: Double = 0.0,
@@ -203,18 +215,15 @@ data class SalesEntrieHolderApi(
     @SerializedName("qtyperpack")
     @Expose
     var qtyperpack: Int = 0,
-    @SerializedName("priceperroll")
-    @Expose
-    var priceperroll: Double = 0.0,
-    @SerializedName("priceperpack")
-    @Expose
-    var priceperpack: Double = 0.0,
     @SerializedName("price")
     @Expose
     var price: Double = 0.0,
-    @SerializedName("entrytime")
+    @SerializedName("priceperroll")
     @Expose
-    var entrytime: String = "",
+    var priceperroll: Int = 0,
+    @SerializedName("priceperpack")
+    @Expose
+    var priceperpack: Int = 0,
     @SerializedName("entrydate")
     @Expose
     var entrydate: String = ""
@@ -223,13 +232,24 @@ data class SalesEntrieHolderApi(
 
 fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
     return SalesEntriesRoom(
-       id, product_code, qty, soq, priceperroll, priceperpack
+        id, product_id, product_code, product_name, qty, soq, priceperroll, priceperpack
     )
 }
 
 fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
     return SalesEntrieHolderRoom(
-        id, product_code,soq, qty, qtyperroll, qtyperpack, priceperroll, priceperpack, price, entrytime, entrydate
+        id,
+        product_id,
+        product_code,
+        soq,
+        product_name,
+        qty,
+        qtyperroll,
+        qtyperpack,
+        price,
+        priceperroll,
+        priceperpack,
+        entrydate
     )
 }
 

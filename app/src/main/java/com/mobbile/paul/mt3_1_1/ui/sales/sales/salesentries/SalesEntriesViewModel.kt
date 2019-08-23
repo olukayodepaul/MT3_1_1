@@ -10,23 +10,35 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SalesEntriesViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class SalesEntriesViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    fun fetchSales(userid: String): MutableLiveData<SalesEntriesRoom> {
-        var mResult = MutableLiveData<SalesEntriesRoom>()
-        repository.getUsers(userid)
+    var mResult = MutableLiveData<String>()
+
+    fun returnStringObservable(): MutableLiveData<String> {
+        return mResult
+    }
+
+    fun fetchSales(urno: String, customerno: String) {
+        repository.getUsers(urno, customerno)
             .subscribe(
-                { data ->
-                    when (data.body()!!.status) {
-                        200->{
-                            insertSales(data.body()!!.sentry, data.body()!!.sentryh)
+                {
+                    when (it.body()!!.status) {
+                        200 -> {
+                            if (it.body() != null) {
+                                insertSales(it.body()!!.sentry, it.body()!!.sentryh)
+                                //Log.d(TAG, it.body().toString())
+                            } else {
+                                mResult.postValue("400~api error")
+                            }
+                        }
+                        else -> {
+                            mResult.postValue("400~api error")
                         }
                     }
                 },
                 { error ->
+                    mResult.postValue("400~" + error.message)
                 }).isDisposed
-
-        return mResult
     }
 
     private fun insertSales(
@@ -34,23 +46,30 @@ class SalesEntriesViewModel @Inject constructor(val repository: Repository) : Vi
         salesh: List<SalesEntrieHolderApi>
     ) {
         repository.createDailySales(
-            salesen.map{it.toSalesEntriesEntity()},
-            salesh.map{it.toSalesEntrieHolderEntity()}
-        ).subscribe(
+            salesen.map { it.toSalesEntriesEntity() },
+            salesh.map { it.toSalesEntrieHolderEntity() }
+        ).subscribe({
+            mResult.postValue("200~")
+        }, { error ->
+            mResult.postValue("400~" + error.message)
+        }
         ).isDisposed
     }
 
     fun fetchDailySales(): LiveData<List<SalesEntriesRoom>> {
-        var mResult = MutableLiveData<List<SalesEntriesRoom>>()
+
+        var nResult = MutableLiveData<List<SalesEntriesRoom>>()
+
         repository.fetchDailySales()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                mResult.postValue(it)
-            },{
-                mResult.postValue(null)
+                nResult.postValue(it)
+            }, {
+                nResult.postValue(null)
             }).isDisposed
-        return mResult
+
+        return nResult
     }
 
     companion object {

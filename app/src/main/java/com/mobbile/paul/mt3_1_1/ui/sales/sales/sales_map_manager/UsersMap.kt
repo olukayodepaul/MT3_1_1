@@ -31,8 +31,8 @@ class UsersMap : BaseActivity() {
     lateinit var locationManager: LocationManager
     private var hasGPS = false //get location using GPS
     private var hasNetwork = false //get location using Network
-    private lateinit var durt: TextView
-    private lateinit var dis: TextView
+    lateinit var durt: TextView
+    lateinit var dis: TextView
 
 
 
@@ -52,6 +52,9 @@ class UsersMap : BaseActivity() {
             startActivity(Intent(this, SalesEntries::class.java))
         }
 
+        imageView8.setOnClickListener {
+        }
+
         var origin: String = "13.0356745,77.5881522"
         var destination: String = "13.029727, 77.5933021"
         var sensor: String = "false"
@@ -68,6 +71,7 @@ class UsersMap : BaseActivity() {
             vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
         })
     }
+
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> { data ->

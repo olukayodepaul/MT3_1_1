@@ -2,6 +2,7 @@ package com.example.kotlin_project.providers
 
 import com.mobbile.paul.mt3_1_1.models.*
 import com.mobbile.paul.mt3_1_1.providers.MapApi
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,8 +21,8 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
-    fun getUsers(userid: String): Single<Response<GenSales>> =
-        api.fetchSales(userid)
+    fun getUsers(urno: String ,customer: String): Single<Response<GenSales>> =
+        api.fetchSales(urno, customer)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
@@ -75,6 +76,11 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         Observable.fromCallable {appDao.saveSales(salesen,salesh)}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun fetchAllEntryPerDay(): Observable<List<SalesEntrieHolderRoom>> =
+        Observable.fromCallable {
+            appDao.fetchAllEntryPerDay()
+        }
 
     /*fun updateDailySales(id:Int, product_code: String, qtyperroll: Int, qtyperpack: Int, priceperroll: Double,priceperpack: Double)  =
         Observable.fromCallable {
