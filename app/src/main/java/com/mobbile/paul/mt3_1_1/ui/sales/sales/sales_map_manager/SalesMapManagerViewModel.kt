@@ -9,7 +9,7 @@ import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import javax.inject.Inject
 
 
-class Sales_Map_Manager_ViewModel @Inject constructor(val repository: Repository):   ViewModel() {
+class SalesMapManagerViewModel @Inject constructor(val repository: Repository):   ViewModel() {
 
     fun GoogleMapApi(origin: String, destination: String, sensor: String, mode: String, key: String)
             : MutableLiveData<GoogleGetApi>{
@@ -29,6 +29,6 @@ class Sales_Map_Manager_ViewModel @Inject constructor(val repository: Repository
     }
 
     companion object{
-        var TAG = "Sales_Map_Manager_ViewModel"
+        var TAG = "SalesMapManagerViewModel"
     }
 }

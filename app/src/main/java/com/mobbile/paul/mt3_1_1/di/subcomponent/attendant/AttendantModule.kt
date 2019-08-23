@@ -2,7 +2,7 @@ package com.mobbile.paul.mt3_1_1.di.subcomponent.attendant
 
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.di.modules.ViewModelKey
-import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.Sales_Attendant_ViewModel
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendantViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -11,6 +11,6 @@ import dagger.multibindings.IntoMap
 abstract class AttendantModule {
     @Binds
     @IntoMap
-    @ViewModelKey(Sales_Attendant_ViewModel::class)
-    abstract fun bindAttendantViewModel(viewModel: Sales_Attendant_ViewModel): ViewModel
+    @ViewModelKey(SalesAttendantViewModel::class)
+    abstract fun bindAttendantViewModel(viewModel: SalesAttendantViewModel): ViewModel
 }

@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class Sales_Attendant_ViewModel @Inject constructor(val repository: Repository): ViewModel() {
+class SalesAttendantViewModel @Inject constructor(val repository: Repository): ViewModel() {
 
     fun fetchBasket(sep: Int): LiveData<List<ProductsRoom>> {
 
@@ -33,5 +33,4 @@ class Sales_Attendant_ViewModel @Inject constructor(val repository: Repository):
     companion object {
         private val TAG = "ModulesViewMode"
     }
-
 }

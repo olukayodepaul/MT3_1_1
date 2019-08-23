@@ -12,6 +12,6 @@ class SalesHistoryFragment_ViewModel @Inject constructor(val repository: Reposit
     }
 
     companion object{
-        var TAG = "SalesFragment_ViewModel"
+        var TAG = "SalesFragmentViewModel"
     }
 }

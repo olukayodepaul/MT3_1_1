@@ -25,7 +25,7 @@ class UsersMap : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
-    lateinit var vmodel: Sales_Map_Manager_ViewModel
+    lateinit var vmodel: SalesMapManagerViewModel
     lateinit var mapFragment: SupportMapFragment
     lateinit var googleMap: GoogleMap
     lateinit var locationManager: LocationManager
@@ -39,7 +39,7 @@ class UsersMap : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_map)
-        vmodel = ViewModelProviders.of(this, modelFactory)[Sales_Map_Manager_ViewModel::class.java]
+        vmodel = ViewModelProviders.of(this, modelFactory)[SalesMapManagerViewModel::class.java]
         durt = findViewById(R.id.duration)
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)

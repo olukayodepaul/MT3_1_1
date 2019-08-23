@@ -13,18 +13,18 @@ import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_sales__attendant.*
 import javax.inject.Inject
 
-class Sales_Attendant : BaseActivity() {
+class SalesAttendant : BaseActivity() {
 
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
-    lateinit var vmodel: Sales_Attendant_ViewModel
-    private lateinit var mAdapter: Attendant_adapter
+    lateinit var vmodel: SalesAttendantViewModel
+    private lateinit var mAdapter: Attendantadapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales__attendant)
-        vmodel = ViewModelProviders.of(this, modelFactory)[Sales_Attendant_ViewModel::class.java]
+        vmodel = ViewModelProviders.of(this, modelFactory)[SalesAttendantViewModel::class.java]
         vmodel.fetchBasket(1).observe(this, observers)
         initViews()
         showProgressBar(true)
@@ -36,11 +36,11 @@ class Sales_Attendant : BaseActivity() {
         view_pager.layoutManager = layoutManager
     }
 
-    val observers = Observer<List<ProductsRoom>> { data ->
-        if (data != null) {
+    val observers = Observer<List<ProductsRoom>> {
+        if (it != null) {
             showProgressBar(false)
-            var list: List<ProductsRoom> = data
-            mAdapter = Attendant_adapter(list, this)
+            var list: List<ProductsRoom> = it
+            mAdapter = Attendantadapter(list, this)
             mAdapter.notifyDataSetChanged()
             view_pager.adapter = mAdapter
         }

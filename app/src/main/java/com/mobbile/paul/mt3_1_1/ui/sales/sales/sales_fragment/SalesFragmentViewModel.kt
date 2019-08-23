@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SalesFragment_ViewModel @Inject constructor(val repository: Repository): ViewModel()  {
+class SalesFragmentViewModel @Inject constructor(val repository: Repository): ViewModel()  {
 
 
     fun fetch() : LiveData<List<Bank_n_CustomersRoom>> {
@@ -33,7 +33,7 @@ class SalesFragment_ViewModel @Inject constructor(val repository: Repository): V
 
     companion object{
 
-        var TAG = "SalesFragment_ViewModel"
+        var TAG = "SalesFragmentViewModel"
     }
 }
 

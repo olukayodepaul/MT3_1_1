@@ -34,7 +34,7 @@
         -->
         <activity android:name=".ui.sales.sales.sales_map_manager.UsersMap" android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.sales.sales.sales_attendant.Sales_Attendant">
+        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant">
         </activity>
         <activity android:name=".ui.messages.MessagePageViewer">
         </activity>

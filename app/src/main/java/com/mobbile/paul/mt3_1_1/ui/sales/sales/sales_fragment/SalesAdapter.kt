@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
 import com.mobbile.paul.mt3_1_1.R
-import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.Sales_Attendant
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_adapter.view.*
@@ -47,7 +47,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                 var intent: Intent? = null
                 when(item.sort){
                     1->{
-                       intent = Intent(contexts, Sales_Attendant::class.java)
+                       intent = Intent(contexts, SalesAttendant::class.java)
                     }
                     2->{
                         intent = Intent(contexts,UsersMap::class.java)

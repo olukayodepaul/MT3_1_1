@@ -11,8 +11,8 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.attendant_adapter.view.*
 
 
-class Attendant_adapter(private var mItems: List<ProductsRoom>, private var contexts: Context):
-    RecyclerView.Adapter<Attendant_adapter.ViewHolder>() {
+class Attendantadapter(private var mItems: List<ProductsRoom>, private var contexts: Context):
+    RecyclerView.Adapter<Attendantadapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v = LayoutInflater.from(p0.context)
@@ -30,7 +30,7 @@ class Attendant_adapter(private var mItems: List<ProductsRoom>, private var cont
     }
 
     companion object {
-        private val TAG = "Attendant_adapter"
+        private val TAG = "Attendantadapter"
     }
 
     inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),

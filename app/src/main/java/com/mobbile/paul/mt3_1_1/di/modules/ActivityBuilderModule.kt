@@ -9,7 +9,7 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
-import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.Sales_Attendant
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import dagger.Module
@@ -49,7 +49,7 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [
         AttendantModule::class
     ])
-    abstract fun contributeAttendantActivity(): Sales_Attendant
+    abstract fun contributeAttendantActivity(): SalesAttendant
 
     @SalesMapScope
     @ContributesAndroidInjector(modules = [

@@ -22,7 +22,7 @@ class SalesFragment : DaggerFragment() {
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
 
-    lateinit var vmodel: SalesFragment_ViewModel
+    lateinit var vmodel: SalesFragmentViewModel
 
     private lateinit var mAdapter: SalesAdapter
 
@@ -35,7 +35,7 @@ class SalesFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmodel = ViewModelProviders.of(this, modelFactory)[SalesFragment_ViewModel::class.java]
+        vmodel = ViewModelProviders.of(this, modelFactory)[SalesFragmentViewModel::class.java]
         vmodel.fetch().observe(this, observers)
         initViews()
     }
