@@ -1,13 +1,25 @@
 package com.mobbile.paul.mt3_1_1.ui.auth
 
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.*
+import retrofit2.Response
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+
+    var mResult = MutableLiveData<SaveEntries>()
+
+    var sharedEditor = SaveEntries()
+
+    lateinit var timeOfNow: String
+
+    fun authMutable(): MutableLiveData<SaveEntries> {
+        return mResult
+    }
 
     fun auth(
         username: String,
@@ -15,82 +27,88 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
         imei: String,
         mdate: String,
         byPassReEntry: Boolean
-    ): MutableLiveData<SaveEntries> {
-
-        var mResult = MutableLiveData<SaveEntries>()
-        var sharedEditor = SaveEntries()
+    ) {
+        timeOfNow = mdate
 
         repository.getUsers(username, password, imei)
             .subscribe(
-                { data ->
-                    Log.d(TAG, data.body().toString())
-                    when (data.body()!!.status) {
+                {
+                    when (it.body()!!.status) {
                         200 -> {
+
                             if (!byPassReEntry) {
-                                insertEmployee(
-                                    data.body()!!.modules,
-                                    data.body()!!.customers,
-                                    data.body()!!.product,
-                                    data.body()!!.spinners
-                                )
+                                deleteEmployee(it)
+                                Log.d(TAG, "CALL 1")
+                            }else{
+                                sharedEditor.id = it.body()!!.id
+                                sharedEditor.name = it.body()!!.name
+                                sharedEditor.dates = timeOfNow
+                                mResult.postValue(sharedEditor)
+                                Log.d(TAG, "CALL 2")
                             }
-                            Log.d(TAG, "get information " + byPassReEntry.toString())
-                            sharedEditor.id = data.body()!!.id
-                            sharedEditor.name = data.body()!!.name
-                            sharedEditor.dates = mdate
                         }
                         404 -> {
-                            sharedEditor.id = data.body()!!.status
-                            sharedEditor.name = data.body()!!.msg
+                            sharedEditor.id = it.body()!!.status
+                            sharedEditor.name = it.body()!!.msg
                             sharedEditor.dates = ""
+                            mResult.postValue(sharedEditor)
                         }
                     }
-                    mResult.postValue(sharedEditor)
+
                 },
-                { error ->
+                {
                     sharedEditor.id = 404
-                    sharedEditor.name = error.message.toString()
+                    sharedEditor.name = it.message.toString()
                     sharedEditor.dates = ""
                     mResult.postValue(sharedEditor)
                 }).isDisposed
-
-        return mResult
     }
 
-    private fun insertEmployee(
-        employee: List<ModulesApi>,
-        customers: List<Bank_n_CustomersApi>,
-        products: List<ProductsApi>,
-        producttype: List<ProductTypeApi>
-    ) {
+    private fun insertEmployee(data: Response<EmployeesApi>) {
+
+        var employee: List<ModulesApi> = data.body()!!.modules
+        var customers: List<Bank_n_CustomersApi> = data.body()!!.customers
+        var products: List<ProductsApi> = data.body()!!.product
+        var producttype: List<ProductTypeApi> = data.body()!!.spinners
+
         repository.createModules(
             employee.map { it.toModulesEntity() },
             customers.map { it.toCustomersEntity() },
             products.map { it.toProductEntity() },
-            producttype.map { it.toProductTypeRoomEntity() }
+            producttype.map { it.toProductTypeRoomEntity()}
         ).subscribe(
             {
-                deleteEmployee( ModulesRoom(),
-                    Bank_n_CustomersRoom(),
-                    ProductsRoom(),
-                    ProductTypeRoom()
-                )
-            },{}
+                sharedEditor.id = data.body()!!.id
+                sharedEditor.name = data.body()!!.name
+                sharedEditor.dates = timeOfNow
+                mResult.postValue(sharedEditor)
+
+            }, {
+                sharedEditor.id = 404
+                sharedEditor.name = it.message.toString()
+                sharedEditor.dates = ""
+                mResult.postValue(sharedEditor)
+            }
+
         ).isDisposed
     }
 
-    private fun deleteEmployee(
-        employee: ModulesRoom,
-        customers: Bank_n_CustomersRoom,
-        products: ProductsRoom,
-        producttype: ProductTypeRoom
-    ) {
+
+    private fun deleteEmployee(data: Response<EmployeesApi>) {
         repository.deleteEmployee(
-            employee,
-            customers,
-            products,
-            producttype
-        ).subscribe()
+            ModulesRoom(),
+            Bank_n_CustomersRoom(),
+            ProductsRoom(),
+            ProductTypeRoom()
+        ).subscribe({
+            insertEmployee(data)
+        }, {
+            sharedEditor.id = 404
+            sharedEditor.name = it.message.toString()
+            sharedEditor.dates = ""
+            mResult.postValue(sharedEditor)
+
+        }).isDisposed
     }
 
     companion object {

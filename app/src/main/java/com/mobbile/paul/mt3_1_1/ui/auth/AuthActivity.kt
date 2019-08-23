@@ -55,6 +55,7 @@ class AuthActivity : BaseActivity() {
         btn_login.setOnClickListener {
             dataProcess()
         }
+        vmodel.authMutable().observe(this, loginObservers)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,7 +71,6 @@ class AuthActivity : BaseActivity() {
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             vmodel.auth("t0kTdEw", "3613", "356973100833183", dates, validateDateEntries())
-                .observe(this, loginObservers)
         } else {
             makeRequest()
         }

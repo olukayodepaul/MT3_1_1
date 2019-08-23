@@ -1,10 +1,13 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,10 +56,13 @@ class UsersMap : BaseActivity() {
         }
 
         imageView8.setOnClickListener {
+            var ads: String = "6.469266, 3.711638"
+            startMapIntent(this,ads ,'w', 't')
+            Log.d(TAG,"CHECK THIS")
         }
 
-        var origin: String = "13.0356745,77.5881522"
-        var destination: String = "13.029727, 77.5933021"
+        var origin: String = "6.469266, 3.711638"
+        var destination: String = "6.465085, 3.715622"
         var sensor: String = "false"
         var mode: String = "false"
         var key: String = getString(R.string.keys)
@@ -137,6 +143,17 @@ class UsersMap : BaseActivity() {
 
     companion object {
         var TAG = "UsersMap"
+    }
+
+    fun startMapIntent(ctx: Context, ads: String, mode: Char, avoid: Char): Any {
+        val uri = Uri.parse("google.navigation:q=$ads&mode=$mode&avoid=$avoid")
+        val mIntent = Intent(Intent.ACTION_VIEW, uri)
+        mIntent.`package` = "com.google.android.apps.maps"
+        return if (mIntent.resolveActivity(ctx.packageManager) != null) {
+            ctx.startActivity(mIntent)
+            true
+        } else
+            false
     }
 }
 
