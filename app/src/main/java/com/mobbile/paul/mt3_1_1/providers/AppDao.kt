@@ -1,9 +1,6 @@
 package com.example.kotlin_project.providers
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.mobbile.paul.mt3_1_1.models.*
 
 
@@ -22,6 +19,14 @@ interface AppDao {
     fun saveSales(
         salesen: List<SalesEntriesRoom>,
         salesh: List<SalesEntrieHolderRoom>
+    )
+
+    @Delete
+    fun deleteEmployee(
+        modules: ModulesRoom,
+        customers: Bank_n_CustomersRoom,
+        products: ProductsRoom,
+        producttype: ProductTypeRoom
     )
 
     @Query("SELECT * FROM ModulesRoom")

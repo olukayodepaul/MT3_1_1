@@ -77,6 +77,16 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun deleteEmployee(
+        employee: ModulesRoom,
+        customers: Bank_n_CustomersRoom,
+        products: ProductsRoom,
+        producttype: ProductTypeRoom
+    ) =
+        Observable.fromCallable { appDao.deleteEmployee(employee, customers, products, producttype) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun fetchAllEntryPerDay(): Observable<List<SalesEntrieHolderRoom>> =
         Observable.fromCallable {
             appDao.fetchAllEntryPerDay()

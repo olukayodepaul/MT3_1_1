@@ -32,8 +32,6 @@ class ModulesViewModel @Inject constructor(val repository: Repository) : ViewMod
         return mResult
     }
 
-
-
     companion object {
         private val TAG = "ModulesViewMode"
     }

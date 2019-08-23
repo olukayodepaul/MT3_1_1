@@ -124,7 +124,6 @@ data class ProductsApi(
     var packprice: String = ""
 )
 
-
 data class ProductTypeApi(
     @SerializedName("id")
     @Expose
@@ -139,7 +138,8 @@ data class ProductTypeApi(
 
 data class SaveEntries(
     var name: String = "",
-    var id: Int = 0
+    var id: Int = 0,
+    var dates :String = ""
 )
 
 data class GenSales(
@@ -188,7 +188,6 @@ data class SalesEntriesApi(
 )
 
 data class SalesEntrieHolderApi(
-    //constant
     @SerializedName("id")
     @Expose
     var id: Int = 0,
@@ -204,8 +203,6 @@ data class SalesEntrieHolderApi(
     @SerializedName("product_name")
     @Expose
     var product_name: String = "",
-    //variable
-
     @SerializedName("qty")
     @Expose
     var qty: Double = 0.0,
@@ -228,7 +225,6 @@ data class SalesEntrieHolderApi(
     @Expose
     var entrydate: String = ""
 )
-
 
 fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
     return SalesEntriesRoom(

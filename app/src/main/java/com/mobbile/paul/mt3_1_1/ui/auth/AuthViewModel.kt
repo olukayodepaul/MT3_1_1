@@ -9,8 +9,13 @@ import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
-
-    fun auth(username: String, password: String, imei: String): MutableLiveData<SaveEntries> {
+    fun auth(
+        username: String,
+        password: String,
+        imei: String,
+        mdate: String,
+        byPassReEntry: Boolean
+    ): MutableLiveData<SaveEntries> {
 
         var mResult = MutableLiveData<SaveEntries>()
         var sharedEditor = SaveEntries()
@@ -21,18 +26,23 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                     Log.d(TAG, data.body().toString())
                     when (data.body()!!.status) {
                         200 -> {
-                            insertEmployee(
-                                data.body()!!.modules,
-                                data.body()!!.customers,
-                                data.body()!!.product,
-                                data.body()!!.spinners
-                            )
+                            if (!byPassReEntry) {
+                                insertEmployee(
+                                    data.body()!!.modules,
+                                    data.body()!!.customers,
+                                    data.body()!!.product,
+                                    data.body()!!.spinners
+                                )
+                            }
+                            Log.d(TAG, "get information " + byPassReEntry.toString())
                             sharedEditor.id = data.body()!!.id
                             sharedEditor.name = data.body()!!.name
+                            sharedEditor.dates = mdate
                         }
                         404 -> {
                             sharedEditor.id = data.body()!!.status
                             sharedEditor.name = data.body()!!.msg
+                            sharedEditor.dates = ""
                         }
                     }
                     mResult.postValue(sharedEditor)
@@ -40,6 +50,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 { error ->
                     sharedEditor.id = 404
                     sharedEditor.name = error.message.toString()
+                    sharedEditor.dates = ""
                     mResult.postValue(sharedEditor)
                 }).isDisposed
 
@@ -57,12 +68,32 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
             customers.map { it.toCustomersEntity() },
             products.map { it.toProductEntity() },
             producttype.map { it.toProductTypeRoomEntity() }
-        ).subscribe().isDisposed
+        ).subscribe(
+            {
+                deleteEmployee( ModulesRoom(),
+                    Bank_n_CustomersRoom(),
+                    ProductsRoom(),
+                    ProductTypeRoom()
+                )
+            },{}
+        ).isDisposed
+    }
+
+    private fun deleteEmployee(
+        employee: ModulesRoom,
+        customers: Bank_n_CustomersRoom,
+        products: ProductsRoom,
+        producttype: ProductTypeRoom
+    ) {
+        repository.deleteEmployee(
+            employee,
+            customers,
+            products,
+            producttype
+        ).subscribe()
     }
 
     companion object {
         var TAG = "AuthViewModel"
     }
-
-
 }
