@@ -42,7 +42,7 @@ class SalesEntries : BaseActivity() {
             mAdapter.notifyDataSetChanged()
             _sales_entry_recycler.adapter = mAdapter
         }
-        showProgressBar(false)
+
     }
 
     fun initViews() {
