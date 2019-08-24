@@ -38,11 +38,12 @@ class SalesAttendant : BaseActivity() {
 
     val observers = Observer<List<ProductsRoom>> {
         if (it != null) {
-            showProgressBar(false)
+
             var list: List<ProductsRoom> = it
             mAdapter = Attendantadapter(list, this)
             mAdapter.notifyDataSetChanged()
             view_pager.adapter = mAdapter
         }
+        showProgressBar(false)
     }
 }

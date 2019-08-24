@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.amulyakhare.textdrawable.TextDrawable
+import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
@@ -40,6 +42,14 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
         LayoutContainer {
         fun bind(item: Bank_n_CustomersRoom) {
 
+            var letter: String? = item.outletname.substring(0,1)
+
+             var generator = ColorGenerator.MATERIAL
+
+            var drawable = TextDrawable.builder()
+                .buildRound(letter, generator.getRandomColor())
+
+            containerView.imageView.setImageDrawable(drawable)
             containerView.tv_name.text = item.outletname
             containerView.tv_titles.text = item.notice
 

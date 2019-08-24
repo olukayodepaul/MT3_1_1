@@ -21,13 +21,23 @@ interface AppDao {
         salesh: List<SalesEntrieHolderRoom>
     )
 
-    @Delete
-    fun deleteEmployee(
-        modules: ModulesRoom,
-        customers: Bank_n_CustomersRoom,
-        products: ProductsRoom,
-        producttype: ProductTypeRoom
-    )
+    @Query("DELETE FROM ModulesRoom")
+    fun deleteModulesRoom()
+
+    @Query("DELETE FROM customers")
+    fun deleteBank_n_CustomersRoom()
+
+    @Query("DELETE FROM products")
+    fun deleteProductsRoom()
+
+    @Query("DELETE FROM ProductTypeRoom")
+    fun deleteProductTypeRoom()
+
+    @Query("DELETE FROM salesentries")
+    fun deleteSalesEntriesRoom()
+
+    @Query("DELETE FROM salesentriesholders")
+    fun deleteSalesEntrieHolderRoom()
 
     @Query("SELECT * FROM ModulesRoom")
     fun fetchModules(): List<ModulesRoom>

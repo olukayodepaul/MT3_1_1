@@ -19,13 +19,13 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         api.getUser(username, password, imei)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
+            .map { it }
 
-    fun getUsers(urno: String ,customer: String): Single<Response<GenSales>> =
+    fun getUsers(urno: String, customer: String): Single<Response<GenSales>> =
         api.fetchSales(urno, customer)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
+            .map { it }
 
     fun createModules(
         employee: List<ModulesRoom>,
@@ -62,7 +62,7 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         mapi.getGooleMap(origin, destination, sensor, mode, key)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
+            .map { it }
 
     fun fetchDailySales(): Observable<List<SalesEntriesRoom>> =
         Observable.fromCallable {
@@ -73,21 +73,35 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         salesen: List<SalesEntriesRoom>,
         salesh: List<SalesEntrieHolderRoom>
     ) =
-        Observable.fromCallable {appDao.saveSales(salesen,salesh)}
+        Observable.fromCallable { appDao.saveSales(salesen, salesh) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun deleteEmployee(
-        employee: ModulesRoom,
-        customers: Bank_n_CustomersRoom,
-        products: ProductsRoom,
-        producttype: ProductTypeRoom
-    ) =
-        Observable.fromCallable { appDao.deleteEmployee(employee, customers, products, producttype) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun deleteAll() = Observable.mergeDelayError(
+        Observable.fromCallable {
+            appDao.deleteModulesRoom()
+        },
+        Observable.fromCallable {
+            appDao.deleteBank_n_CustomersRoom()
+        },
+        Observable.fromCallable {
+            appDao.deleteProductsRoom()
+        },
+        Observable.fromCallable {
+            appDao.deleteProductTypeRoom()
+        }
+    ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-    fun fetchAllEntryPerDay(): Observable<List<SalesEntrieHolderRoom>> =
+    fun deleteSalesEntry() = Observable.mergeDelayError(
+        Observable.fromCallable {
+            appDao.deleteSalesEntriesRoom()
+        },
+        Observable.fromCallable {
+            appDao.deleteSalesEntrieHolderRoom()
+        }
+    ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    fun fetchAllEntryPerDaily(): Observable<List<SalesEntrieHolderRoom>> =
         Observable.fromCallable {
             appDao.fetchAllEntryPerDay()
         }

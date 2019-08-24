@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -17,20 +16,15 @@ import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.gson.Gson
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SaveEntries
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.temporal.ChronoField
-import java.lang.reflect.Type
 import javax.inject.Inject
-import com.google.gson.reflect.TypeToken as TypeToken1
+
 
 @SuppressLint("ByteOrderMark")
 class AuthActivity : BaseActivity() {
@@ -76,7 +70,6 @@ class AuthActivity : BaseActivity() {
         }
     }
 
-    //action taken on request dialog either allow or deny
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

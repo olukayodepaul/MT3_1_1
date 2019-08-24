@@ -40,10 +40,11 @@ class SalesFragment : DaggerFragment() {
         initViews()
     }
 
-    val observers = Observer<List<Bank_n_CustomersRoom>> { data ->
+    val observers = Observer<List<Bank_n_CustomersRoom>> {
 
-        if (data != null) {
-            var list: List<Bank_n_CustomersRoom> = data
+        if (it != null) {
+            showProgressBar(false)
+            var list: List<Bank_n_CustomersRoom> = it
             mAdapter = SalesAdapter(list, this.requireContext())
             mAdapter.notifyDataSetChanged()
             _recycler.adapter = mAdapter
@@ -54,6 +55,14 @@ class SalesFragment : DaggerFragment() {
         _recycler.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this.requireContext())
         _recycler.layoutManager = layoutManager
+    }
+
+    fun showProgressBar(visible: Boolean) {
+        base_progress_bar.visibility =
+            if (visible)
+                View.VISIBLE
+            else
+                View.INVISIBLE
     }
 
     companion object{

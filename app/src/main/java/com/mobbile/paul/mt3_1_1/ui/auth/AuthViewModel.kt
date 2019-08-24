@@ -37,7 +37,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                         200 -> {
 
                             if (!byPassReEntry) {
-                                deleteEmployee(it)
+                                deleteAll(it)
                                 Log.d(TAG, "CALL 1")
                             }else{
                                 sharedEditor.id = it.body()!!.id
@@ -93,22 +93,19 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
         ).isDisposed
     }
 
-
-    private fun deleteEmployee(data: Response<EmployeesApi>) {
-        repository.deleteEmployee(
-            ModulesRoom(),
-            Bank_n_CustomersRoom(),
-            ProductsRoom(),
-            ProductTypeRoom()
-        ).subscribe({
-            insertEmployee(data)
-        }, {
-            sharedEditor.id = 404
-            sharedEditor.name = it.message.toString()
-            sharedEditor.dates = ""
-            mResult.postValue(sharedEditor)
-
-        }).isDisposed
+    private fun deleteAll(data: Response<EmployeesApi>){
+        repository.deleteAll()
+            .subscribe(
+                {
+                    insertEmployee(data)
+                },{
+                    Log.d(TAG, "CALL 4")
+                    sharedEditor.id = 404
+                    sharedEditor.name = it.message.toString()
+                    sharedEditor.dates = ""
+                    mResult.postValue(sharedEditor)
+                }
+            ).isDisposed
     }
 
     companion object {

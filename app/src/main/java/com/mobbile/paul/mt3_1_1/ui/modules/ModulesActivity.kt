@@ -41,10 +41,10 @@ class ModulesActivity : BaseActivity() {
         checkLocationPermission()
     }
 
-    val ModulesObservers = Observer<List<ModulesRoom>> { data ->
-        if (data != null) {
+    val ModulesObservers = Observer<List<ModulesRoom>> {
+        if (it != null) {
             showProgressBar(false)
-            var list: List<ModulesRoom> = data
+            var list: List<ModulesRoom> = it
             mAdapter = ModulesAdapter(list, this)
             mAdapter.notifyDataSetChanged()
             module_recycler.adapter = mAdapter
@@ -117,7 +117,7 @@ class ModulesActivity : BaseActivity() {
         if (hasGps) {
             initViews()
             Log.d(TAG,"LOCATION ENABLE 1")
-        }else{
+        }else {
             GPSRationaleEnable()
         }
     }
