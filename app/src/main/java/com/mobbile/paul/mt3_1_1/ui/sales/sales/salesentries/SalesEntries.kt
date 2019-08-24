@@ -2,6 +2,7 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +34,7 @@ class SalesEntries : BaseActivity() {
 
     var error = Observer<String> {
         showProgressBar(false)
+        reloadData()
     }
 
     val observerOfSalesEntry = Observer<List<SalesEntriesRoom>> {
@@ -49,6 +51,19 @@ class SalesEntries : BaseActivity() {
         _sales_entry_recycler.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         _sales_entry_recycler.layoutManager = layoutManager
+    }
+
+    fun reloadData() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Seems there is end point error, try _load")
+            .setTitle("Cloud Error")
+            .setIcon(R.drawable.icons8_cloud_refresh_256)
+            .setCancelable(false)
+            .setNegativeButton("Ok") { _, _ ->
+                vmodel.fetchSales("215370", "SWC2780")
+            }
+        val dialog  = builder.create()
+        dialog.show()
     }
 
     companion object {

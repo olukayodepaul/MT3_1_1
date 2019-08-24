@@ -90,7 +90,8 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         Observable.fromCallable {
             appDao.deleteProductTypeRoom()
         }
-    ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    ).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
     fun deleteSalesEntry() = Observable.mergeDelayError(
         Observable.fromCallable {
@@ -99,7 +100,8 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         Observable.fromCallable {
             appDao.deleteSalesEntrieHolderRoom()
         }
-    ).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    ).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
     fun fetchAllEntryPerDaily(): Observable<List<SalesEntrieHolderRoom>> =
         Observable.fromCallable {
