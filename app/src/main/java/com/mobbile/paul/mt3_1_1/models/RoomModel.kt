@@ -26,7 +26,10 @@ data class Bank_n_CustomersRoom(
     var token: String = "",
     var rostertime: String = "",
     var sort: Int = 0,
-    var outlet_waiver: String = ""
+    var outlet_waiver: String = "",
+    var lat: String = "",
+    var lng: String = ""
+
 )
 
 @Entity(tableName = "products")
@@ -57,12 +60,11 @@ data class SalesEntriesRoom (
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
     var product_id: Int = 0,
-    var product_code: String = "",
+    var soq: String = "",
     var product_name: String = "",
     var qty: String = "",
-    var soq: String = "",
-    var priceperroll: Double = 0.0,
-    var priceperpack: Double = 0.0
+    var price: String = "",
+    var seperator: String = ""
 )
 
 @Entity(tableName = "salesentriesholders")
@@ -70,15 +72,17 @@ data class SalesEntrieHolderRoom(
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
     var product_id: Int = 0,
-    var product_code: String = "",
     var soq: String = "",
     var product_name: String = "",
-    var qty: Double = 0.0,
-    var qtyperroll: Int = 0,
-    var qtyperpack: Int = 0,
-    var price: Double = 0.0,
-    var priceperroll: Int = 0,
-    var priceperpack: Int = 0,
-    var entrydate: String = ""
+    var qty: String = "",
+    var price: String = "",
+    var seperator: String = "",
+    var seperatorname: String = "",
+    var orders: Double = 0.0,
+    var inventory: Double = 0.0,
+    var pricing: Int = 0,
+    var entry_time: String = "",
+    var order_price: Double = 0.0
 )
+
 

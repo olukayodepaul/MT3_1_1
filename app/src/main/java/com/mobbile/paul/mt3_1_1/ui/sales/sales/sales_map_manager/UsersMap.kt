@@ -36,6 +36,9 @@ class UsersMap : BaseActivity() {
     private var hasNetwork = false //get location using Network
     lateinit var durt: TextView
     lateinit var dis: TextView
+    var urno: String = ""
+    var begin_lat_origin: String = ""
+    var begin_lng_origin: String = ""
 
 
 
@@ -47,26 +50,34 @@ class UsersMap : BaseActivity() {
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)
         setUpData()
+
+        urno = intent.getStringExtra("urno")
+        begin_lat_origin = intent.getStringExtra("lat")
+        begin_lng_origin = intent.getStringExtra("lng")
+        Log.d(TAG,urno+" "+ begin_lat_origin +" "+begin_lng_origin)
+
     }
 
     private fun setUpData(){
 
         textView5.setOnClickListener {
-            startActivity(Intent(this, SalesEntries::class.java))
+            var inten = Intent(this, SalesEntries::class.java)
+            inten.putExtra("urno", urno)
+            startActivity(inten)
         }
 
         imageView8.setOnClickListener {
-            var ads: String = "6.469266, 3.711638"
+            var ads: String = "$begin_lat_origin,$begin_lng_origin"
             startMapIntent(this,ads ,'w', 't')
             Log.d(TAG,"CHECK THIS")
         }
 
-        var origin: String = "6.469266, 3.711638"
-        var destination: String = "6.465085, 3.715622"
-        var sensor: String = "false"
-        var mode: String = "false"
-        var key: String = getString(R.string.keys)
-        initMap(origin, destination, sensor, mode, key)
+        //var origin: String = "$begin_lat_origin,$begin_lng_origin"
+        //var destination: String = "6.465085, 3.715622"
+        //var sensor: String = "false"
+        //var mode: String = "d"
+        //var key: String = getString(R.string.keys)
+        //initMap(origin, destination, sensor, mode, key)
     }
 
     private fun initMap(origin: String, destination: String, sensor: String, mode: String, key: String) {

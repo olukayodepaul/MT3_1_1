@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2fa94bf58b650caa17d2fe2d5293c8e3",
+    "identityHash": "fc019b18f7d27b5a17ab4738f1e48357",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "customers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `rostertime` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, PRIMARY KEY(`auto`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `rostertime` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, `lat` TEXT NOT NULL, `lng` TEXT NOT NULL, PRIMARY KEY(`auto`))",
         "fields": [
           {
             "fieldPath": "auto",
@@ -103,6 +103,18 @@
           {
             "fieldPath": "outlet_waiver",
             "columnName": "outlet_waiver",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lng",
+            "columnName": "lng",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -224,7 +236,7 @@
       },
       {
         "tableName": "salesentries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `product_code` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `soq` TEXT NOT NULL, `priceperroll` REAL NOT NULL, `priceperpack` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -239,8 +251,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "product_code",
-            "columnName": "product_code",
+            "fieldPath": "soq",
+            "columnName": "soq",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -257,21 +269,15 @@
             "notNull": true
           },
           {
-            "fieldPath": "soq",
-            "columnName": "soq",
+            "fieldPath": "price",
+            "columnName": "price",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "priceperroll",
-            "columnName": "priceperroll",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "priceperpack",
-            "columnName": "priceperpack",
-            "affinity": "REAL",
+            "fieldPath": "seperator",
+            "columnName": "seperator",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -286,7 +292,7 @@
       },
       {
         "tableName": "salesentriesholders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `product_code` TEXT NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` REAL NOT NULL, `qtyperroll` INTEGER NOT NULL, `qtyperpack` INTEGER NOT NULL, `price` REAL NOT NULL, `priceperroll` INTEGER NOT NULL, `priceperpack` INTEGER NOT NULL, `entrydate` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `seperatorname` TEXT NOT NULL, `orders` REAL NOT NULL, `inventory` REAL NOT NULL, `pricing` INTEGER NOT NULL, `entry_time` TEXT NOT NULL, `order_price` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -298,12 +304,6 @@
             "fieldPath": "product_id",
             "columnName": "product_id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "product_code",
-            "columnName": "product_code",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -321,43 +321,55 @@
           {
             "fieldPath": "qty",
             "columnName": "qty",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "qtyperroll",
-            "columnName": "qtyperroll",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "qtyperpack",
-            "columnName": "qtyperpack",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "price",
             "columnName": "price",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seperator",
+            "columnName": "seperator",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seperatorname",
+            "columnName": "seperatorname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orders",
+            "columnName": "orders",
             "affinity": "REAL",
             "notNull": true
           },
           {
-            "fieldPath": "priceperroll",
-            "columnName": "priceperroll",
+            "fieldPath": "inventory",
+            "columnName": "inventory",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pricing",
+            "columnName": "pricing",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "priceperpack",
-            "columnName": "priceperpack",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "entrydate",
-            "columnName": "entrydate",
+            "fieldPath": "entry_time",
+            "columnName": "entry_time",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "order_price",
+            "columnName": "order_price",
+            "affinity": "REAL",
             "notNull": true
           }
         ],
@@ -374,7 +386,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2fa94bf58b650caa17d2fe2d5293c8e3\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc019b18f7d27b5a17ab4738f1e48357\")"
     ]
   }
 }

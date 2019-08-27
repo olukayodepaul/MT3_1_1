@@ -40,10 +40,8 @@ class SalesViewpager : DaggerAppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_viewpager)
-
         val fragment = SalesFragment()
         replaceFragment(fragment)
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 

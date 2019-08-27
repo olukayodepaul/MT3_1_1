@@ -17,6 +17,9 @@ data class EmployeesApi(
     @SerializedName("msg")
     @Expose
     var msg: String = "",
+    @SerializedName("customer_code")
+    @Expose
+    var customer_code: String = "",
     @SerializedName("modules")
     @Expose
     var modules: List<ModulesApi>,
@@ -88,7 +91,13 @@ data class Bank_n_CustomersApi(
     var sort: Int = 0,
     @SerializedName("outlet_waiver")
     @Expose
-    var outlet_waiver: String = ""
+    var outlet_waiver: String = "",
+    @SerializedName("lat")
+    @Expose
+    var lat: String = "",
+    @SerializedName("lng")
+    @Expose
+    var lng: String = ""
 )
 
 data class ProductsApi(
@@ -139,7 +148,8 @@ data class ProductTypeApi(
 data class SaveEntries(
     var name: String = "",
     var id: Int = 0,
-    var dates :String = ""
+    var dates: String = "",
+    var customerno: String = ""
 )
 
 data class GenSales(
@@ -167,25 +177,28 @@ data class SalesEntriesApi(
     @SerializedName("product_id")
     @Expose
     var product_id: Int = 0,
-    @SerializedName("product_code")
+    @SerializedName("soq")
     @Expose
-    var product_code: String = "",
+    var soq: String = "",
     @SerializedName("product_name")
     @Expose
     var product_name: String = "",
     @SerializedName("qty")
     @Expose
     var qty: String = "",
-    @SerializedName("soq")
+    @SerializedName("price")
     @Expose
-    var soq: String = "",
-    @SerializedName("priceperroll")
+    var price: String = "",
+    @SerializedName("seperator")
     @Expose
-    var priceperroll: Double = 0.0,
-    @SerializedName("priceperpack")
-    @Expose
-    var priceperpack: Double = 0.0
+    var seperator: String = ""
 )
+
+fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
+    return SalesEntriesRoom(
+        id, product_id, soq, product_name, qty, price, seperator
+    )
+}
 
 data class SalesEntrieHolderApi(
     @SerializedName("id")
@@ -194,9 +207,6 @@ data class SalesEntrieHolderApi(
     @SerializedName("product_id")
     @Expose
     var product_id: Int = 0,
-    @SerializedName("product_code")
-    @Expose
-    var product_code: String = "",
     @SerializedName("soq")
     @Expose
     var soq: String = "",
@@ -205,47 +215,48 @@ data class SalesEntrieHolderApi(
     var product_name: String = "",
     @SerializedName("qty")
     @Expose
-    var qty: Double = 0.0,
-    @SerializedName("qtyperroll")
-    @Expose
-    var qtyperroll: Int = 0,
-    @SerializedName("qtyperpack")
-    @Expose
-    var qtyperpack: Int = 0,
+    var qty: String = "",
     @SerializedName("price")
     @Expose
-    var price: Double = 0.0,
-    @SerializedName("priceperroll")
+    var price: String = "",
+    @SerializedName("seperator")
     @Expose
-    var priceperroll: Int = 0,
-    @SerializedName("priceperpack")
+    var seperator: String = "",
+    @SerializedName("seperatorname")
     @Expose
-    var priceperpack: Int = 0,
-    @SerializedName("entrydate")
+    var seperatorname: String = "",
+    @SerializedName("orders")
     @Expose
-    var entrydate: String = ""
+    var orders: Double = 0.0,
+    @SerializedName("inventory")
+    @Expose
+    var inventory: Double = 0.0,
+    @SerializedName("pricing")
+    @Expose
+    var pricing: Int = 0,
+    @SerializedName("entry_time")
+    @Expose
+    var entry_time: String = "",
+    @SerializedName("order_price")
+    @Expose
+    var order_price: Double = 0.0
 )
-
-fun SalesEntriesApi.toSalesEntriesEntity(): SalesEntriesRoom {
-    return SalesEntriesRoom(
-        id, product_id, product_code, product_name, qty, soq, priceperroll, priceperpack
-    )
-}
 
 fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
     return SalesEntrieHolderRoom(
         id,
         product_id,
-        product_code,
         soq,
         product_name,
         qty,
-        qtyperroll,
-        qtyperpack,
         price,
-        priceperroll,
-        priceperpack,
-        entrydate
+        seperator,
+        seperatorname,
+        orders,
+        inventory,
+        pricing,
+        entry_time,
+        order_price
     )
 }
 
@@ -269,7 +280,9 @@ fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
         token,
         rostertime,
         sort,
-        outlet_waiver
+        outlet_waiver,
+        lat,
+        lng
     )
 }
 
@@ -296,5 +309,65 @@ fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
     )
 }
 
+data class postToServer(
+    @SerializedName("employee_id")
+    @Expose
+    var employee_id: Int = 0,
+    @SerializedName("customerno")
+    @Expose
+    var customerno: String = "",
+    @SerializedName("token")
+    @Expose
+    var token: String = "",
+    @SerializedName("distance")
+    @Expose
+    var distance: String = "",
+    @SerializedName("model")
+    @Expose
+    var model: String = "",
+    @SerializedName("fromoutletid")
+    @Expose
+    var fromoutletid: String = "",
+    @SerializedName("tooutletid")
+    @Expose
+    var tooutletid: String = "",
+    @SerializedName("sentryh")
+    @Expose
+    var sentryh: List<SalesEntrieHolderApi>
+)
+
+//conversion form room to api to push to server
+fun SalesEntrieHolderRoom.toSalesHolderEntity(): SalesEntrieHolderApi {
+    return SalesEntrieHolderApi(
+        id,
+        product_id,
+        soq,
+        product_name,
+        qty,
+        price,
+        seperator,
+        seperatorname,
+        orders,
+        inventory,
+        pricing,
+        entry_time,
+        order_price
+    )
+}
+
+data class postRecieveFromServer (
+    @SerializedName("status")
+    @Expose
+    var employee_id: Int = 0,
+    @SerializedName("saleshistory")
+    @Expose
+    var saleshistory: List<salesHistory>
+)
+
+data class salesHistory (
+    @SerializedName("status")
+    @Expose
+    var employee_id: Int = 0
+)
 
 

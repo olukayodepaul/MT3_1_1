@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -20,6 +21,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SaveEntries
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.threeten.bp.ZonedDateTime
@@ -34,7 +36,6 @@ class AuthActivity : BaseActivity() {
     lateinit var vmodel: AuthViewModel
     var zdate: ZonedDateTime = ZonedDateTime.now()
     var prefs: SharedPreferences? = null
-    val PREFS_FILENAME = "com.mt.v3.1.2.prefs"
     lateinit var dates: String
 
 
@@ -46,10 +47,12 @@ class AuthActivity : BaseActivity() {
         AndroidThreeTen.init(this)
         vmodel = ViewModelProviders.of(this, modelFactory)[AuthViewModel::class.java]
         prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
         btn_login.setOnClickListener {
             dataProcess()
         }
-        vmodel.authMutable().observe(this, loginObservers)
+        vmodel.authMutable().observe(this, ErrorObserver)
+        vmodel.authObservable().observe(this, intentObserver)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -64,7 +67,11 @@ class AuthActivity : BaseActivity() {
 
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
-            vmodel.auth("t0kTdEw", "3613", "356973100833183", dates, validateDateEntries())
+
+            val name_users = prefs!!.getString("entry_date", "")
+
+            vmodel.callAuthApi("t0kTdEw", "3613", "356973100833183", dates, name_users.equals(dates))
+
         } else {
             makeRequest()
         }
@@ -81,7 +88,6 @@ class AuthActivity : BaseActivity() {
                     Toast.makeText(applicationContext, "imei permission deny, please allow", Toast.LENGTH_LONG).show()
                 }
             }
-
         }
     }
 
@@ -89,41 +95,30 @@ class AuthActivity : BaseActivity() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), DEVICE_STATE_PERMISSION)
     }
 
-    private val loginObservers = Observer<SaveEntries> {
+    private val ErrorObserver = Observer<String> {
         showProgressBar(false)
-        when (it.id) {
-            404 -> {
-                Toast.makeText(applicationContext, it.name, Toast.LENGTH_SHORT).show()
-            }
-            else -> {
-                saveDataInSharePreference(it)
-            }
-        }
+        Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
     }
 
-    fun saveDataInSharePreference(data: SaveEntries) {
+    private val intentObserver = Observer<SaveEntries> {
         val editor = prefs!!.edit()
         editor.clear()
-        editor.putString("name_users", data.name)
-        editor.putInt("employee_id_user", data.id)
-        editor.putString("entry_date", data.dates)
+        editor.putString("name_users", it.name)
+        editor.putInt("employee_id_user", it.id)
+        editor.putString("entry_date", it.dates)
+        editor.putString("customerno", it.customerno)
         editor.apply()
         callIntent()
     }
 
-    fun validateDateEntries(): Boolean {
-        val name_users = prefs!!.getString("entry_date", "")
-        return name_users.equals(dates)
-    }
-
     fun callIntent() {
-        var intent = Intent(this, ModulesActivity::class.java)
+        val intent = Intent(this, ModulesActivity::class.java)
         startActivity(intent)
         finish()
     }
 
     companion object {
-        private val TAG = "ModulesActivity"
+        private val TAG = "AuthActivity"
         const val DEVICE_STATE_PERMISSION = 101
 
     }

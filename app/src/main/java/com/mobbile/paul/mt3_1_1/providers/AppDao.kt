@@ -2,6 +2,7 @@ package com.example.kotlin_project.providers
 
 import androidx.room.*
 import com.mobbile.paul.mt3_1_1.models.*
+import io.reactivex.Single
 
 
 @Dao
@@ -51,18 +52,21 @@ interface AppDao {
     @Query("SELECT * FROM salesentries")
     fun fetchDailySales(): List<SalesEntriesRoom>
 
+    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice where id=:id and product_id=:product_id")
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int, salesprice: Double)
 
     @Query("SELECT * FROM salesentriesholders")
     fun fetchAllEntryPerDay(): List<SalesEntrieHolderRoom>
 
-    @Query("UPDATE salesentriesholders SET  qtyperroll=:qtyperroll, qtyperpack=:qtyperpack, priceperroll=:priceperroll, priceperpack=:priceperpack where id=:id and product_code=:product_code")
-    fun updateDailySales(
-        id: Int,
-        product_code: String,
-        qtyperroll: Int,
-        qtyperpack: Int,
-        priceperroll: Double,
-        priceperpack: Double
-    )
+    @Query("SELECT count(id) FROM salesentriesholders WHERE inventory= 0.0 OR orders = 0.0 OR pricing = 0")
+    fun validateSalesEntry() : Single<Int>
 
+
+
+
+    /* @Query("SELECT SUM(orders) AS mOrder, SUM(salescommission) AS mSales, SUM(rollprice+packprice-salescommission) mPrice FROM Sales")
+     fun sumAllSalesCommission(): Single<SumSales>*/
 }
+
+
+

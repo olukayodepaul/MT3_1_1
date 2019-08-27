@@ -26,9 +26,9 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
         return mData
     }
 
-    fun fetchSales(urno: String, customerno: String) {
+    fun fetchSales(urno: String, customerno: String, employee_id: Int ) {
 
-        repository.getUsers(urno, customerno)
+        repository.getbasket(urno, customerno, employee_id )
             .subscribe(
                 {
                     when (it.body()!!.status) {

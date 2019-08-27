@@ -3,8 +3,11 @@ package com.example.kotlin_project.providers
 
 import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import com.mobbile.paul.mt3_1_1.models.GenSales
+import com.mobbile.paul.mt3_1_1.models.postRecieveFromServer
+import com.mobbile.paul.mt3_1_1.models.postToServer
 import io.reactivex.Single
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -24,7 +27,14 @@ interface Api {
     @POST("/mobiletrader/salesentry")
     fun fetchSales(
         @Query("urno") urno: String,
-        @Query("customerno") customerno: String
+        @Query("customerno") customerno: String,
+        @Query("employee_id") employee_id: Int
     ): Single<Response<GenSales>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/salesentry")
+    fun postSales(
+        @Body saleposttoserver: postToServer
+    ): Single<Response<postRecieveFromServer>>
 
 }

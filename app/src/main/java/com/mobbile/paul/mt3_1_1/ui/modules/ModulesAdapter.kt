@@ -56,10 +56,17 @@ class ModulesAdapter(private var mItems: List<ModulesRoom>, private var contexts
                 var intent: Intent? = null
 
                 when(switcher) {
-                    "1"->{intent = Intent(contexts, SalesViewpager::class.java)}
-                    "2"->{intent = Intent(contexts, CustomerPageViwer::class.java)}
-                    "3"->{intent = Intent(contexts, MessagePageViewer::class.java)}
-                    "4"->{intent = Intent(contexts, SupervisorPagerViwer::class.java)}
+                    "1"->{
+                        intent = Intent(contexts, SalesViewpager::class.java)
+                    }
+                    "2"->{
+                        intent = Intent(contexts, CustomerPageViwer::class.java)
+                    }
+                    "3"->{
+                        intent = Intent(contexts, MessagePageViewer::class.java)
+                    }
+                    "4"->{
+                        intent = Intent(contexts, SupervisorPagerViwer::class.java)}
                 }
                 contexts.startActivity(intent)
             }
