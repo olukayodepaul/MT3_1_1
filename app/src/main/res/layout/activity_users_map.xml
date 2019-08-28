@@ -38,19 +38,39 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp" android:contentDescription="@string/todo"/>
 
-            <TextView
-                    android:text="@string/cltn"
-                    android:layout_width="match_parent"
-                    android:layout_height="29dp"
+            <RelativeLayout
                     android:id="@+id/titles"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="65dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="MissingConstraints"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="@dimen/fontSize"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="65dp"
-                    android:layout_marginTop="4dp"/>
+                    tools:ignore="MissingConstraints">
+
+                <TextView
+                        android:id="@+id/rtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cltn"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fontSize"
+                        android:fontFamily="@font/roboto_bold"/>
+
+                <TextView
+                        android:id="@+id/r_outlet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rtitle"
+                        android:text="@string/cltn"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fontSSize"
+                        android:fontFamily="@font/montserrat_bold"/>
+
+            </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

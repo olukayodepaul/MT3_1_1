@@ -39,17 +39,20 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     fun fetchModules(): Single<List<ModulesRoom>> =
         Single.fromCallable {
             appDao.fetchModules()
-        }
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun fetchCustomers(): Observable<List<Bank_n_CustomersRoom>> =
         Observable.fromCallable {
             appDao.fetchCustomers()
-        }
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun fetchBasket(sep: Int): Observable<List<ProductsRoom>> =
         Observable.fromCallable {
             appDao.fetchBasket(sep)
-        }
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun fetchGoogleMap(
         origin: String,
@@ -66,7 +69,8 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     fun fetchDailySales(): Observable<List<SalesEntriesRoom>> =
         Observable.fromCallable {
             appDao.fetchDailySales()
-        }
+        } .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun createDailySales(
         salesen: List<SalesEntriesRoom>,
@@ -107,13 +111,15 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     ).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int, salesprice: Double)  =
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int,
+                         salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)  =
         Observable.fromCallable {
-            appDao.updateDailySales(orders, inventory, pricing, entry_time, id, product_id, salesprice )
+            appDao.updateDailySales(orders, inventory, pricing, entry_time, id, product_id,
+                salesprice, contOrder, contPrincing, contInventory )
     }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun validateSalesEntry(sep: Int): Observable<Single<Int>> =
+    fun validateSalesEntry(): Observable<Int> =
         Observable.fromCallable {
             appDao.validateSalesEntry()
         }.subscribeOn(Schedulers.io())

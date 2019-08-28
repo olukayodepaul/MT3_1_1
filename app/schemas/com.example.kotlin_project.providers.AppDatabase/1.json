@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fc019b18f7d27b5a17ab4738f1e48357",
+    "identityHash": "1d6874057772392abaa7143cc1a7dfde",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -292,7 +292,7 @@
       },
       {
         "tableName": "salesentriesholders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `seperatorname` TEXT NOT NULL, `orders` REAL NOT NULL, `inventory` REAL NOT NULL, `pricing` INTEGER NOT NULL, `entry_time` TEXT NOT NULL, `order_price` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `seperatorname` TEXT NOT NULL, `orders` REAL NOT NULL, `inventory` REAL NOT NULL, `pricing` INTEGER NOT NULL, `entry_time` TEXT NOT NULL, `order_price` REAL NOT NULL, `contorder` TEXT NOT NULL, `contprincing` TEXT NOT NULL, `continventory` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -371,6 +371,24 @@
             "columnName": "order_price",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "contorder",
+            "columnName": "contorder",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contprincing",
+            "columnName": "contprincing",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "continventory",
+            "columnName": "continventory",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -386,7 +404,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fc019b18f7d27b5a17ab4738f1e48357\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1d6874057772392abaa7143cc1a7dfde\")"
     ]
   }
 }

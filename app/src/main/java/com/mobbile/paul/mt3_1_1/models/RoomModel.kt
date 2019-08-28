@@ -82,7 +82,10 @@ data class SalesEntrieHolderRoom(
     var inventory: Double = 0.0,
     var pricing: Int = 0,
     var entry_time: String = "",
-    var order_price: Double = 0.0
+    var order_price: Double = 0.0,
+    var contorder: String = "",
+    var contprincing: String = "",
+    var continventory: String = ""
 )
 
 

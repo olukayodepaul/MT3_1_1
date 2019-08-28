@@ -19,8 +19,6 @@ class SalesFragmentViewModel @Inject constructor(val repository: Repository): Vi
         var mResult = MutableLiveData<List<Bank_n_CustomersRoom>>()
 
         repository.fetchCustomers()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mResult.postValue(it)
                 Log.d(TAG,"onObserve "+ it as ArrayList<Bank_n_CustomersRoom>)

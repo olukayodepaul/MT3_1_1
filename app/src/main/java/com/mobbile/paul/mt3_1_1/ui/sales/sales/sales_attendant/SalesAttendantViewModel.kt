@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.example.kotlin_project.providers.Repository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -18,8 +16,6 @@ class SalesAttendantViewModel @Inject constructor(val repository: Repository): V
         var mResult = MutableLiveData<List<ProductsRoom>>()
 
         repository.fetchBasket(sep)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mResult.postValue(it)
                 Log.d(TAG,"onObserve "+ it as ArrayList<ProductsRoom>)

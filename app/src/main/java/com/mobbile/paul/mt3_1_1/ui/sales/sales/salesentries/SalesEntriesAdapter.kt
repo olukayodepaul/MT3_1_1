@@ -1,6 +1,6 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 
-import android.content.Context
+
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,12 +13,10 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_entry_adapter.view.*
-import javax.inject.Inject
 
 
 class SalesEntriesAdapter(
     private var mItems: List<SalesEntriesRoom>,
-    private var contexts: Context,
     private var repository: Repository
 ) :
     RecyclerView.Adapter<SalesEntriesAdapter.ViewHolder>() {
@@ -53,7 +51,6 @@ class SalesEntriesAdapter(
             if (item.soq.isEmpty()) {
                 containerView.tv_soq.text = "0"
             }
-
 
             containerView.mt_pricing.addTextChangedListener(
                 object : TextWatcher {
@@ -121,25 +118,30 @@ class SalesEntriesAdapter(
 
                         } else {
 
-                            var trasformOrder: Double = 0.0
-                            var trasformPricing: Int = 0
-                            var trasformInventory: Double = 0.0
+                            var trasformOrder = 0.0
+                            var trasformPricing = 0
+                            var trasformInventory = 0.0
+                            var controltrasformOrder = ""
+                            var controltrasformPricing = ""
+                            var controltrasformInventory = ""
 
                             if (containerView.mt_order.text.toString().isNotEmpty()) {
                                 trasformOrder = containerView.mt_order.text.toString().toDouble()
+                                controltrasformOrder = "0"
                             }
 
                             if (containerView.mt_pricing.text.toString().isNotEmpty()) {
                                 trasformPricing = containerView.mt_pricing.text.toString().toInt()
+                                controltrasformPricing = "0"
                             }
 
                             if (containerView.mt_inventory.text.toString().isNotEmpty()) {
-                                trasformInventory =
-                                    containerView.mt_inventory.text.toString().toDouble()
+                                trasformInventory = containerView.mt_inventory.text.toString().toDouble()
+                                controltrasformInventory = "0"
+
                             }
 
                             if (item.qty.toDouble() < trasformOrder) {
-                                //Preference settings here to allow user post above basket
                                 containerView.mt_order.setText("")
                             } else {
                                 enterDailySales(
@@ -149,7 +151,10 @@ class SalesEntriesAdapter(
                                     "00:00:00",
                                     item.id,
                                     item.product_id,
-                                    trasformOrder * item.price.toDouble()
+                                    trasformOrder * item.price.toDouble(),
+                                    controltrasformOrder,
+                                    controltrasformPricing,
+                                    controltrasformInventory
                                 )
                             }
                         }
@@ -160,11 +165,12 @@ class SalesEntriesAdapter(
 
     fun enterDailySales(
         orders: Double, inventory: Double, pricing: Int,
-        entry_time: String, id: Int, product_id: Int, salesprice: Double
+        entry_time: String, id: Int, product_id: Int,
+        salesprice: Double, contOrder: String, contPrincing: String, contInventory: String
     ) {
         repository.updateDailySales(
             orders, inventory,
-            pricing, entry_time, id, product_id, salesprice
+            pricing, entry_time, id, product_id, salesprice, contOrder, contPrincing, contInventory
         ).subscribe()
     }
 

@@ -36,9 +36,11 @@ class UsersMap : BaseActivity() {
     private var hasNetwork = false //get location using Network
     lateinit var durt: TextView
     lateinit var dis: TextView
-    var urno: String = ""
-    var begin_lat_origin: String = ""
-    var begin_lng_origin: String = ""
+    var urno: String? = ""
+    var token: String? = ""
+    var begin_lat_origin: String? = ""
+    var begin_lng_origin: String? = ""
+    var outletname: String? = ""
 
 
 
@@ -54,15 +56,20 @@ class UsersMap : BaseActivity() {
         urno = intent.getStringExtra("urno")
         begin_lat_origin = intent.getStringExtra("lat")
         begin_lng_origin = intent.getStringExtra("lng")
+        token= intent.getStringExtra("token")
+        outletname = intent.getStringExtra("outletname")
+        r_outlet_name.text = outletname
         Log.d(TAG,urno+" "+ begin_lat_origin +" "+begin_lng_origin)
 
     }
 
-    private fun setUpData(){
+    private fun setUpData() {
 
         textView5.setOnClickListener {
             var inten = Intent(this, SalesEntries::class.java)
             inten.putExtra("urno", urno)
+            inten.putExtra("token", token)
+            inten.putExtra("outletname", outletname)
             startActivity(inten)
         }
 

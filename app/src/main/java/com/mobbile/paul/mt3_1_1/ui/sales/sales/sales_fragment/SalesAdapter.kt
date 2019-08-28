@@ -62,8 +62,10 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                     2->{
                         intent = Intent(contexts,UsersMap::class.java)
                         intent.putExtra("urno", item.urno)
+                        intent.putExtra("token", item.token)
                         intent.putExtra("lat", item.lat)
                         intent.putExtra("lng", item.lng)
+                        intent.putExtra("outletname", item.outletname)
                     }
                 }
                 contexts.startActivity(intent)

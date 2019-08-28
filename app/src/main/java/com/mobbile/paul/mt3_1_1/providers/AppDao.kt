@@ -49,19 +49,17 @@ interface AppDao {
     @Query("SELECT * FROM products where separator=:sep ")
     fun fetchBasket(sep: Int): List<ProductsRoom>
 
-    @Query("SELECT * FROM salesentries")
+    @Query("SELECT * FROM salesentries order by seperator ASC")
     fun fetchDailySales(): List<SalesEntriesRoom>
 
-    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice where id=:id and product_id=:product_id")
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int, salesprice: Double)
+    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice, contorder=:contOrder, contprincing=:contPrincing, continventory=:contInventory where id=:id and product_id=:product_id")
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int, salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)
 
     @Query("SELECT * FROM salesentriesholders")
     fun fetchAllEntryPerDay(): List<SalesEntrieHolderRoom>
 
-    @Query("SELECT count(id) FROM salesentriesholders WHERE inventory= 0.0 OR orders = 0.0 OR pricing = 0")
-    fun validateSalesEntry() : Single<Int>
-
-
+    @Query("SELECT count(id) FROM salesentriesholders WHERE contOrder= '' OR contPrincing = '' OR contInventory = ''")
+    fun validateSalesEntry() : Int
 
 
     /* @Query("SELECT SUM(orders) AS mOrder, SUM(salescommission) AS mSales, SUM(rollprice+packprice-salescommission) mPrice FROM Sales")

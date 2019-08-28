@@ -239,7 +239,16 @@ data class SalesEntrieHolderApi(
     var entry_time: String = "",
     @SerializedName("order_price")
     @Expose
-    var order_price: Double = 0.0
+    var order_price: Double = 0.0,
+    @SerializedName("contorder")
+    @Expose
+    var contorder: String = "",
+    @SerializedName("contprincing")
+    @Expose
+    var contprincing: String = "",
+    @SerializedName("continventory")
+    @Expose
+    var continventory: String = ""
 )
 
 fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
@@ -256,7 +265,10 @@ fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
         inventory,
         pricing,
         entry_time,
-        order_price
+        order_price,
+        contorder,
+        contprincing,
+        continventory
     )
 }
 

@@ -1,13 +1,12 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class SalesEntriesViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
@@ -73,13 +72,26 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
 
     fun fetchDailySales() {
         repository.fetchDailySales()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mData.postValue(it)
             }, {
                 mResult.postValue(it.message)
             }).isDisposed
+    }
+
+    fun validateEntryStatus() : MutableLiveData<Int>{
+
+        var mResult = MutableLiveData<Int>()
+
+        repository.validateSalesEntry()
+            .subscribe({
+                mResult.postValue(it)
+                Log.d(TAG, it.toString())
+            },{
+                mResult.postValue(null)
+            }).isDisposed
+
+        return mResult
     }
 
     companion object {
