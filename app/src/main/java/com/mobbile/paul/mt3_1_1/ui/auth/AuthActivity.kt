@@ -20,8 +20,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SaveEntries
-import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
+import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getDate
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.threeten.bp.ZonedDateTime
@@ -33,9 +35,13 @@ class AuthActivity : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
+
     lateinit var vmodel: AuthViewModel
+
     var zdate: ZonedDateTime = ZonedDateTime.now()
+
     var prefs: SharedPreferences? = null
+
     lateinit var dates: String
 
 
@@ -53,6 +59,8 @@ class AuthActivity : BaseActivity() {
         }
         vmodel.authMutable().observe(this, ErrorObserver)
         vmodel.authObservable().observe(this, intentObserver)
+
+        Log.d(TAG, "$getDate $getTime")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -112,7 +120,7 @@ class AuthActivity : BaseActivity() {
     }
 
     fun callIntent() {
-        val intent = Intent(this, ModulesActivity::class.java)
+        val intent = Intent(this, TakeOutletPicture::class.java)
         startActivity(intent)
         finish()
     }
@@ -120,6 +128,5 @@ class AuthActivity : BaseActivity() {
     companion object {
         private val TAG = "AuthActivity"
         const val DEVICE_STATE_PERMISSION = 101
-
     }
 }

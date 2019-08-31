@@ -11,6 +11,11 @@ import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
+import okhttp3.RequestBody
+import retrofit2.http.PartMap
+import retrofit2.http.Multipart
+
+
 
 
 interface Api {
@@ -32,9 +37,15 @@ interface Api {
     ): Single<Response<GenSales>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/salesentry")
+    @POST("/mobiletrader/postsales")
     fun postSales(
         @Body saleposttoserver: postToServer
     ): Single<Response<postRecieveFromServer>>
+
+    @Multipart
+    @POST("/mobiletrader/mapcustomers")
+    fun upload(
+        @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>
+    ): Single<Response<EmployeesApi>>
 
 }

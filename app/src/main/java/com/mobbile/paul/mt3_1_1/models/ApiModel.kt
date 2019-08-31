@@ -83,9 +83,9 @@ data class Bank_n_CustomersApi(
     @SerializedName("token")
     @Expose
     var token: String = "",
-    @SerializedName("rostertime")
+    @SerializedName("visit_sequence")
     @Expose
-    var rostertime: String = "",
+    var visit_sequence: String = "",
     @SerializedName("sort")
     @Expose
     var sort: Int = 0,
@@ -290,7 +290,7 @@ fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
         customerno,
         outletname,
         token,
-        rostertime,
+        visit_sequence,
         sort,
         outlet_waiver,
         lat,
@@ -322,33 +322,46 @@ fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
 }
 
 data class postToServer(
+
     @SerializedName("employee_id")
     @Expose
     var employee_id: Int = 0,
-    @SerializedName("customerno")
+    @SerializedName("urno")
     @Expose
-    var customerno: String = "",
+    var urno: String = "",
     @SerializedName("token")
     @Expose
     var token: String = "",
     @SerializedName("distance")
     @Expose
     var distance: String = "",
-    @SerializedName("model")
+    @SerializedName("arrivaltime")
     @Expose
-    var model: String = "",
-    @SerializedName("fromoutletid")
+    var arrivaltime: String = "",
+    @SerializedName("departuretime")
     @Expose
-    var fromoutletid: String = "",
-    @SerializedName("tooutletid")
+    var departuretime: String = "",
+    @SerializedName("dates")
     @Expose
-    var tooutletid: String = "",
-    @SerializedName("sentryh")
+    var dates: String = "",
+    @SerializedName("arrivallat")
     @Expose
-    var sentryh: List<SalesEntrieHolderApi>
+    var arrivallat: String = "",
+    @SerializedName("arrivallng")
+    @Expose
+    var arrivallng: String = "",
+    @SerializedName("departurelat")
+    @Expose
+    var departurelat: String = "",
+    @SerializedName("departurelng")
+    @Expose
+    var departurelng: String = "",
+    @SerializedName("saleslist")
+    @Expose
+    var saleslist: List<SalesEntrieHolderApi>? = null
 )
 
-//conversion form room to api to push to server
+
 fun SalesEntrieHolderRoom.toSalesHolderEntity(): SalesEntrieHolderApi {
     return SalesEntrieHolderApi(
         id,
@@ -380,6 +393,13 @@ data class salesHistory (
     @SerializedName("status")
     @Expose
     var employee_id: Int = 0
+)
+
+data class SumSales(
+    var sorder: Double = 0.0,
+    var spricing: Int = 0,
+    var sinventory: Double = 0.0,
+    var stotalsum: Double = 0.0
 )
 
 

@@ -12,5 +12,9 @@
         <item name="android:background">@color/blue_nblac</item>
     </style>
 
+    <style name="ToolbarThemes" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:background">@color/white</item>
+    </style>
+
 
 </resources>

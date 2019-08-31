@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,6 +20,12 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { it }
+
+    fun fetchPostSales(posttoserver: postToServer): Single<Response<postRecieveFromServer>> =
+        api.postSales(posttoserver)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
 
     fun getbasket(urno: String, customer: String, employee_id: Int): Single<Response<GenSales>> =
         api.fetchSales(urno, customer,employee_id)
@@ -125,12 +132,29 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    //fetch the result
-    /*fun fetchAllEntryPerDaily(): Observable<List<SalesEntrieHolderRoom>> =
+    fun fetchAllEntryPerDaily(): Observable<List<SalesEntrieHolderRoom>> =
         Observable.fromCallable {
             appDao.fetchAllEntryPerDay()
-        }*/
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
+    fun sumAllSalesEntry(): Observable<SumSales> =
+        Observable.fromCallable {
+            appDao.sumAllSalesEntry()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun pullAllSalesEntry(): Single<List<SalesEntrieHolderRoom>> =
+    Single.fromCallable {
+        appDao.pullAllSalesEntry()
+    }.subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+
+    fun getUploadImage(map: Map<String, RequestBody>): Single<Response<EmployeesApi>> =
+        api.upload(map)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { it }
 
 
     companion object {

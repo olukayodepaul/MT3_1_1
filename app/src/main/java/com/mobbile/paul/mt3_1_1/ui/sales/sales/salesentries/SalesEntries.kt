@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,46 +25,40 @@ class SalesEntries : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var repository: Repository
+
     lateinit var vmodel: SalesEntriesViewModel
+
     private lateinit var mAdapter: SalesEntriesAdapter
+
     var prefs: SharedPreferences? = null
     var urno: String = ""
     var token : String? = ""
     var customerno : String? =  ""
     var outletname : String? =  ""
     var employee_id : Int =  0
+    var visit_sequence : String? = ""
 
-
-
-    @Inject
-    lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_entries)
 
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesEntriesViewModel::class.java]
-
         prefs = getSharedPreferences(Utils.PREFS_FILENAME, Context.MODE_PRIVATE)
 
         customerno = prefs!!.getString("customerno", "")
-
         employee_id = prefs!!.getInt("employee_id_user", 0)
-
         urno = intent.getStringExtra("urno")
-
         outletname = intent.getStringExtra("outletname")
-
         token = intent.getStringExtra("token")
-
+        visit_sequence = intent.getStringExtra("visit_sequence")
         vmodel.fetchSales(urno, customerno.toString(), employee_id)
-
         vmodel.returnStringObservable().observe(this,error)
-
         vmodel.returnSalesData().observe(this, observerOfSalesEntry)
-
         tv_outlet_name.text = outletname
-
         initViews()
     }
 
@@ -89,7 +82,6 @@ class SalesEntries : BaseActivity() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         _sales_entry_recycler.layoutManager = layoutManager
         _sales_entry_recycler!!.setHasFixedSize(true)
-
         save_sales_entry.setOnClickListener {
             vmodel.validateEntryStatus().observe(this, countOserver)
         }
@@ -98,16 +90,20 @@ class SalesEntries : BaseActivity() {
     val countOserver = Observer<Int> {
         showProgressBar(true)
         if(it==0){
-            val intent = Intent(this, OrderedSku::class.java)
+            val intent = Intent(this@SalesEntries, OrderedSku::class.java)
+            intent.putExtra("urno",urno)
+            intent.putExtra("token",token)
+            intent.putExtra("outletname",outletname)
+            intent.putExtra("visit_sequence",visit_sequence)
             startActivity(intent)
         }else{
             showProgressBar(false)
             notifyValidation()
         }
-        Log.d(TAG, it.toString())
     }
 
     private fun reloadData() {
+        showProgressBar(true)
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Seems there is end point error, try _load")
             .setTitle("Cloud Error")

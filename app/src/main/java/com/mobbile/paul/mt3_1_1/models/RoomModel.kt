@@ -24,7 +24,7 @@ data class Bank_n_CustomersRoom(
     var customerno: String = "",
     var outletname: String = "",
     var token: String = "",
-    var rostertime: String = "",
+    var visit_sequence: String = "",
     var sort: Int = 0,
     var outlet_waiver: String = "",
     var lat: String = "",
@@ -87,5 +87,7 @@ data class SalesEntrieHolderRoom(
     var contprincing: String = "",
     var continventory: String = ""
 )
+
+
 
 

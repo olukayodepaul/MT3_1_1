@@ -3,7 +3,6 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_entry_adapter.view.*
 
@@ -46,7 +46,7 @@ class SalesEntriesAdapter(
         LayoutContainer {
         fun bind(item: SalesEntriesRoom) {
 
-            containerView.tv_skus.text = item.product_name
+            containerView.tv_skus.text = item.product_name.capitalize()
             containerView.tv_soq.text = item.soq
             if (item.soq.isEmpty()) {
                 containerView.tv_soq.text = "0"
@@ -70,6 +70,40 @@ class SalesEntriesAdapter(
                         count: Int
                     ) {
 
+                        var trasformOrder = 0.0
+                        var trasformPricing = 0
+                        var trasformInventory = 0.0
+                        var controltrasformOrder = ""
+                        var controltrasformPricing = ""
+                        var controltrasformInventory = ""
+
+                        if (containerView.mt_order.text.toString().isNotEmpty()) {
+                            trasformOrder = containerView.mt_order.text.toString().toDouble()
+                            controltrasformOrder = "0"
+                        }
+
+                        if (containerView.mt_pricing.text.toString().isNotEmpty()) {
+                            trasformPricing = containerView.mt_pricing.text.toString().toInt()
+                            controltrasformPricing = "0"
+                        }
+
+                        if (containerView.mt_inventory.text.toString().isNotEmpty()) {
+                            trasformInventory = containerView.mt_inventory.text.toString().toDouble()
+                            controltrasformInventory = "0"
+                        }
+
+                        enterDailySales(
+                            trasformOrder,
+                            trasformInventory,
+                            trasformPricing,
+                            getTime,
+                            item.id,
+                            item.product_id,
+                            trasformOrder * item.price.toDouble(),
+                            controltrasformOrder,
+                            controltrasformPricing,
+                            controltrasformInventory
+                        )
                     }
                 })
 
@@ -90,7 +124,48 @@ class SalesEntriesAdapter(
                         before: Int,
                         count: Int
                     ) {
-                        Log.d(TAG, "JH HFVH")
+                        if (containerView.mt_inventory.text.toString() == ".") {
+
+                            containerView.mt_inventory.setText("")
+
+                        } else {
+
+                            var trasformOrder = 0.0
+                            var trasformPricing = 0
+                            var trasformInventory = 0.0
+                            var controltrasformOrder = ""
+                            var controltrasformPricing = ""
+                            var controltrasformInventory = ""
+
+                            if (containerView.mt_order.text.toString().isNotEmpty()) {
+                                trasformOrder = containerView.mt_order.text.toString().toDouble()
+                                controltrasformOrder = "0"
+                            }
+
+                            if (containerView.mt_pricing.text.toString().isNotEmpty()) {
+                                trasformPricing = containerView.mt_pricing.text.toString().toInt()
+                                controltrasformPricing = "0"
+                            }
+
+                            if (containerView.mt_inventory.text.toString().isNotEmpty()) {
+                                trasformInventory =
+                                    containerView.mt_inventory.text.toString().toDouble()
+                                controltrasformInventory = "0"
+
+                            }
+                            enterDailySales(
+                                trasformOrder,
+                                trasformInventory,
+                                trasformPricing,
+                                getTime,
+                                item.id,
+                                item.product_id,
+                                trasformOrder * item.price.toDouble(),
+                                controltrasformOrder,
+                                controltrasformPricing,
+                                controltrasformInventory
+                            )
+                        }
                     }
                 })
 
@@ -136,7 +211,8 @@ class SalesEntriesAdapter(
                             }
 
                             if (containerView.mt_inventory.text.toString().isNotEmpty()) {
-                                trasformInventory = containerView.mt_inventory.text.toString().toDouble()
+                                trasformInventory =
+                                    containerView.mt_inventory.text.toString().toDouble()
                                 controltrasformInventory = "0"
 
                             }
@@ -148,7 +224,7 @@ class SalesEntriesAdapter(
                                     trasformOrder,
                                     trasformInventory,
                                     trasformPricing,
-                                    "00:00:00",
+                                    getTime,
                                     item.id,
                                     item.product_id,
                                     trasformOrder * item.price.toDouble(),
@@ -168,10 +244,12 @@ class SalesEntriesAdapter(
         entry_time: String, id: Int, product_id: Int,
         salesprice: Double, contOrder: String, contPrincing: String, contInventory: String
     ) {
-        repository.updateDailySales(
+        repository.updateDailySales (
             orders, inventory,
             pricing, entry_time, id, product_id, salesprice, contOrder, contPrincing, contInventory
         ).subscribe()
     }
+
+
 
 }

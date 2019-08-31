@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.mobbile.paul.mt3_1_1">
+        package="com.mobbile.paul.mt3_1_1">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
             android:name="com.mobiletraderv.paul.daggertraining.BaseApplication"
@@ -20,14 +23,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
         <activity
                 android:name=".ui.settings.SettingsActivity"
-                android:label="@string/title_activity_settings">
-        </activity>
-        <activity android:name=".ui.sales.sales.orderedsku.OrderedSku">
-        </activity>
-        <activity android:name=".ui.sales.sales.salesentries.SalesEntries" android:screenOrientation="portrait">
-        </activity>
+                android:label="@string/title_activity_settings"></activity>
+        <activity android:name=".ui.sales.sales.orderedsku.OrderedSku"></activity>
+        <activity
+                android:name=".ui.sales.sales.salesentries.SalesEntries"
+                android:screenOrientation="portrait"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -38,31 +41,39 @@
         -->
         <activity
                 android:name=".ui.sales.sales.sales_map_manager.UsersMap"
-                android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant">
-        </activity>
-        <activity android:name=".ui.messages.MessagePageViewer">
-        </activity>
-        <activity android:name=".ui.customers.CustomerPageViwer">
-        </activity>
-        <activity android:name=".ui.supervisor.SupervisorPagerViwer">
-        </activity>
-        <activity android:name=".ui.sales.SalesViewpager">
-        </activity>
+                android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant"></activity>
+        <activity android:name=".ui.messages.MessagePageViewer"></activity>
+        <activity android:name=".ui.customers.CustomerPageViwer"></activity>
+        <activity android:name=".ui.supervisor.SupervisorPagerViwer"></activity>
+        <activity android:name=".ui.sales.SalesViewpager"></activity>
         <activity android:name=".ui.auth.AuthActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.modules.ModulesActivity">
+        <activity android:name=".ui.modules.ModulesActivity"></activity>
+
+        <activity android:name=".ui.customers.pictures.TakeOutletPicture">
+
         </activity>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="@string/keys"/>
+                android:value="@string/keys" />
+
+        <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

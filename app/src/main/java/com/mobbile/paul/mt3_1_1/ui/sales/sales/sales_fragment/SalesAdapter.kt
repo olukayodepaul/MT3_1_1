@@ -55,7 +55,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
 
             containerView.setOnClickListener {
                 var intent: Intent? = null
-                when(item.sort){
+                when(item.sort) {
                     1->{
                        intent = Intent(contexts, SalesAttendant::class.java)
                     }
@@ -65,6 +65,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                         intent.putExtra("token", item.token)
                         intent.putExtra("lat", item.lat)
                         intent.putExtra("lng", item.lng)
+                        intent.putExtra("visit_sequence", item.lng)
                         intent.putExtra("outletname", item.outletname)
                     }
                 }

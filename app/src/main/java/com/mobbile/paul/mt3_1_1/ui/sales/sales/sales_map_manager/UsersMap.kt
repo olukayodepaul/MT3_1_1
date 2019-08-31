@@ -41,6 +41,7 @@ class UsersMap : BaseActivity() {
     var begin_lat_origin: String? = ""
     var begin_lng_origin: String? = ""
     var outletname: String? = ""
+    var visit_sequence: String? = ""
 
 
 
@@ -58,6 +59,7 @@ class UsersMap : BaseActivity() {
         begin_lng_origin = intent.getStringExtra("lng")
         token= intent.getStringExtra("token")
         outletname = intent.getStringExtra("outletname")
+        visit_sequence = intent.getStringExtra("visit_sequence")
         r_outlet_name.text = outletname
         Log.d(TAG,urno+" "+ begin_lat_origin +" "+begin_lng_origin)
 
@@ -70,6 +72,7 @@ class UsersMap : BaseActivity() {
             inten.putExtra("urno", urno)
             inten.putExtra("token", token)
             inten.putExtra("outletname", outletname)
+            inten.putExtra("visit_sequence", visit_sequence)
             startActivity(inten)
         }
 

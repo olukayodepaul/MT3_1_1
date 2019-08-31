@@ -7,8 +7,10 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
+import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
@@ -57,11 +59,22 @@ abstract class ActivityBuilderModule {
     ])
     abstract fun contributeSalesMapActivity(): UsersMap
 
-
     @SalesEntriesScope
     @ContributesAndroidInjector(modules = [
         SalesEntriesModule::class
     ])
     abstract fun contributeSalesEntriesActivity(): SalesEntries
+
+    @OrderScope
+    @ContributesAndroidInjector(modules = [
+        OrderModule::class
+    ])
+    abstract fun contributeOrderActivity(): OrderedSku
+
+    @TakeOutletPicsScope
+    @ContributesAndroidInjector(modules = [
+        TakeOutletPicsModule::class
+    ])
+    abstract fun contributeTakeOutletPicsActivity(): TakeOutletPicture
 
 }
