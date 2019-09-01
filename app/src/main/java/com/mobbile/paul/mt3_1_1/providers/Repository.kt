@@ -162,6 +162,12 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
+    fun updateCust(sort: Int, rostertime: String) =
+        Observable.fromCallable {
+            appDao.updateCust(sort, rostertime )
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
 }
 
 

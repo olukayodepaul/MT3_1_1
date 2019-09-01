@@ -66,6 +66,9 @@ interface AppDao {
 
     @Query("SELECT * FROM salesentriesholders")
     fun pullAllSalesEntry() : List<SalesEntrieHolderRoom>
+
+    @Query("update  customers set rostertime =:rostertime where sort=:sort")
+    fun updateCust(sort: Int, rostertime: String)
 }
 
 

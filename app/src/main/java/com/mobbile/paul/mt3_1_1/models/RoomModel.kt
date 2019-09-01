@@ -28,7 +28,8 @@ data class Bank_n_CustomersRoom(
     var sort: Int = 0,
     var outlet_waiver: String = "",
     var lat: String = "",
-    var lng: String = ""
+    var lng: String = "",
+    var rostertime: String = ""
 
 )
 

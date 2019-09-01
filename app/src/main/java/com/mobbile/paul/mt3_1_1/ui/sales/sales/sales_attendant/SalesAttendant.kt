@@ -16,7 +16,8 @@ import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
-import com.mobbile.paul.mt3_1_1.util.Utils
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_sales__attendant.*
 import java.text.SimpleDateFormat
@@ -35,16 +36,32 @@ class SalesAttendant : BaseActivity() {
     var timeStamp: String = ""
     var dateStamp: String = ""
 
+    var mLat: String? = ""
+    var mLng: String? = ""
+    var sharePref: SharedPreferences? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales__attendant)
+
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesAttendantViewModel::class.java]
         vmodel.fetchBasket(1).observe(this, observers)
-        prefs = getSharedPreferences(Utils.PREFS_FILENAME, Context.MODE_PRIVATE)
+
+        prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+        sharePref  = getSharedPreferences(LATLNG, Context.MODE_PRIVATE)
+
         userid = prefs!!.getInt("employee_id_user", 0)
+
         timeStamp = SimpleDateFormat("HH:mm:ss").format(Date())
         dateStamp = SimpleDateFormat("yyyy-MM-dd").format(Date())
+
         initViews()
+
+        //set starting latlng
+        mLat = intent.getStringExtra("lat")
+        mLng = intent.getStringExtra("lng")
+
+
         showProgressBar(true)
     }
 
@@ -65,43 +82,24 @@ class SalesAttendant : BaseActivity() {
 
         clockoutbtn.setOnClickListener {
             showProgressBar(true)
-            //this is where we capture the date
-            vmodel.getTask(userid, 2, dateStamp, timeStamp).observe(this, clockoutObserver)
+            vmodel.getTask(userid, 2, dateStamp, timeStamp).observe(this, resumeObserver)
         }
     }
 
     val resumeObserver = Observer<EmployeesApi> {
-
         when (it.status) {
             200 -> {
+                setLatLngStartingPoint()
                 msgSuccess("Resume Completed. Thanks!")
             }
             400 -> {
                 msgError(it.msg, 1)
             }
             else -> {
-                msgError("", 2)
+                msgError("",2)
             }
         }
         showProgressBar(false)
-    }
-
-
-    val clockoutObserver = Observer<EmployeesApi> {
-
-        when (it.status) {
-            200 -> {
-                msgSuccess("Clock out Completed. Thanks!")
-            }
-            400 -> {
-                msgError(it.msg, 1)
-            }
-            else -> {
-                msgError("", 2)
-            }
-        }
-        showProgressBar(false)
-
     }
 
     private fun msgSuccess(msg: String) {
@@ -122,7 +120,7 @@ class SalesAttendant : BaseActivity() {
     private fun msgError(msg: String, err: Int) {
 
         val msgs : String = if(err==2){
-            "Api end point error, check your network. Thanks!"
+            "Api Error, Please check your internet. Thanks!"
         }else{
             msg
         }
@@ -148,6 +146,15 @@ class SalesAttendant : BaseActivity() {
             view_pager.adapter = mAdapter
         }
         showProgressBar(false)
+    }
+
+    fun setLatLngStartingPoint() {
+
+        val editor = sharePref!!.edit()
+        editor.clear()
+        editor.putString("starting_lat", mLat)
+        editor.putString("starting_lng", mLng)
+        editor.apply()
     }
 
     companion object {

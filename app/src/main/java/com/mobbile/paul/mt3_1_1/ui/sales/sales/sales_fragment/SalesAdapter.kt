@@ -16,7 +16,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_adapter.view.*
 
 
-class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var contexts: Context):
+class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var contexts: Context) :
     RecyclerView.Adapter<SalesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
@@ -38,13 +38,14 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
         private val TAG = "ModulesActivity"
     }
 
-    inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),
+    inner class ViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: Bank_n_CustomersRoom) {
 
-            var letter: String? = item.outletname.substring(0,1)
+            var letter: String? = item.outletname.substring(0, 1)
 
-             var generator = ColorGenerator.MATERIAL
+            var generator = ColorGenerator.MATERIAL
 
             var drawable = TextDrawable.builder()
                 .buildRound(letter, generator.getRandomColor())
@@ -52,15 +53,18 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
             containerView.imageView.setImageDrawable(drawable)
             containerView.tv_name.text = item.outletname
             containerView.tv_titles.text = item.notice
+            containerView.timesetups.text = item.rostertime
 
             containerView.setOnClickListener {
                 var intent: Intent? = null
-                when(item.sort) {
-                    1->{
-                       intent = Intent(contexts, SalesAttendant::class.java)
+                when (item.sort) {
+                    1 -> {
+                        intent = Intent(contexts, SalesAttendant::class.java)
+                        intent.putExtra("lat", item.lat)
+                        intent.putExtra("lng", item.lng)
                     }
-                    2->{
-                        intent = Intent(contexts,UsersMap::class.java)
+                    2 -> {
+                        intent = Intent(contexts, UsersMap::class.java)
                         intent.putExtra("urno", item.urno)
                         intent.putExtra("token", item.token)
                         intent.putExtra("lat", item.lat)

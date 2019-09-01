@@ -7,10 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.EmployeesApi
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class SalesAttendantViewModel @Inject constructor(val repository: Repository): ViewModel() {
+
 
     fun fetchBasket(sep: Int): LiveData<List<ProductsRoom>> {
 
@@ -34,7 +38,12 @@ class SalesAttendantViewModel @Inject constructor(val repository: Repository): V
         repository.getTask(userid, taskid, dates, times)
             .subscribe({
                 if (it != null) {
+                    if(taskid==2){
+                        var timeStamp = SimpleDateFormat("HH:mm:ss").format(Date())
+                        updateCust(1, timeStamp)
+                    }
                     nResult.postValue(it.body())
+                    Log.d(TAG, "${taskid.toString()} this is to verify the taskid")
                 }
             },{
                 nResult.postValue(null)
@@ -45,6 +54,10 @@ class SalesAttendantViewModel @Inject constructor(val repository: Repository): V
 
 
 
+    fun updateCust(sort: Int, rostertime: String){
+        repository.updateCust(sort, rostertime)
+            .subscribe().isDisposed
+    }
 
     companion object {
         private val TAG = "ModulesViewMode"

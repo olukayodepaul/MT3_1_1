@@ -52,6 +52,7 @@ class UsersMap : BaseActivity() {
     var fusedLocationClient: FusedLocationProviderClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_map)
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesMapManagerViewModel::class.java]
@@ -72,6 +73,9 @@ class UsersMap : BaseActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        backbtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     fun checkLocationPermission() {
@@ -137,13 +141,6 @@ class UsersMap : BaseActivity() {
             startMapIntent(this, ads, 'w', 't')
             Log.d(TAG, "CHECK THIS")
         }
-
-        //var origin: String = "$begin_lat_origin,$begin_lng_origin"
-        //var destination: String = "6.465085, 3.715622"
-        //var sensor: String = "false"
-        //var mode: String = "d"
-        //var key: String = getString(R.string.keys)
-        //initMap(origin, destination, sensor, mode, key)
     }
 
     private fun initMap(

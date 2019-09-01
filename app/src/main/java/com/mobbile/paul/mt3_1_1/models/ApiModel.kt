@@ -97,7 +97,12 @@ data class Bank_n_CustomersApi(
     var lat: String = "",
     @SerializedName("lng")
     @Expose
-    var lng: String = ""
+    var lng: String = "",
+    @SerializedName("rostertime")
+    @Expose
+    var rostertime: String = ""
+
+
 )
 
 data class ProductsApi(
@@ -294,7 +299,8 @@ fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
         sort,
         outlet_waiver,
         lat,
-        lng
+        lng,
+        rostertime
     )
 }
 

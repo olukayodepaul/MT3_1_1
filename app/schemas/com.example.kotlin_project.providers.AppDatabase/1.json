@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dad82768edd0d6c480164325f39720d1",
+    "identityHash": "9d40fdbc3117d62285d46f05e8a0989b",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "customers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `visit_sequence` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, `lat` TEXT NOT NULL, `lng` TEXT NOT NULL, PRIMARY KEY(`auto`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `visit_sequence` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, `lat` TEXT NOT NULL, `lng` TEXT NOT NULL, `rostertime` TEXT NOT NULL, PRIMARY KEY(`auto`))",
         "fields": [
           {
             "fieldPath": "auto",
@@ -115,6 +115,12 @@
           {
             "fieldPath": "lng",
             "columnName": "lng",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rostertime",
+            "columnName": "rostertime",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -404,7 +410,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dad82768edd0d6c480164325f39720d1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9d40fdbc3117d62285d46f05e8a0989b\")"
     ]
   }
 }
