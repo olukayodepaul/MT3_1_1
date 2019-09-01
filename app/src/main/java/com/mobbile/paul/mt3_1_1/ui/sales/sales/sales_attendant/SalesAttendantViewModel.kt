@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.example.kotlin_project.providers.Repository
+import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import javax.inject.Inject
 
 
@@ -25,6 +26,25 @@ class SalesAttendantViewModel @Inject constructor(val repository: Repository): V
 
         return mResult
     }
+
+    fun getTask(userid: Int, taskid: Int, dates: String, times: String): MutableLiveData<EmployeesApi> {
+
+        var nResult = MutableLiveData<EmployeesApi>()
+
+        repository.getTask(userid, taskid, dates, times)
+            .subscribe({
+                if (it != null) {
+                    nResult.postValue(it.body())
+                }
+            },{
+                nResult.postValue(null)
+            }).isDisposed
+
+        return nResult
+    }
+
+
+
 
     companion object {
         private val TAG = "ModulesViewMode"

@@ -40,6 +40,11 @@ class SalesViewpager : DaggerAppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_viewpager)
+
+        backbtn.setOnClickListener {
+            onBackPressed()
+        }
+
         val fragment = SalesFragment()
         replaceFragment(fragment)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)

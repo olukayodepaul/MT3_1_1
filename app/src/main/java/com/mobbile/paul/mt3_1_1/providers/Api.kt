@@ -48,4 +48,15 @@ interface Api {
         @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>
     ): Single<Response<EmployeesApi>>
 
+    @Headers("Connection:close")
+    @POST("/mobiletrader/employeetask")
+    fun getTask(
+        @Query("userid") userid: Int,
+        @Query("taskid") taskid: Int,
+        @Query("dates") dates: String,
+        @Query("times") times: String
+    ): Single<Response<EmployeesApi>>
+
+
+
 }

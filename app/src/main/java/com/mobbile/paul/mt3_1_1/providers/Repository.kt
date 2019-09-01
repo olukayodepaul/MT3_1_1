@@ -19,7 +19,7 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         api.getUser(username, password, imei)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { it }
+            .map {it}
 
     fun fetchPostSales(posttoserver: postToServer): Single<Response<postRecieveFromServer>> =
         api.postSales(posttoserver)
@@ -154,12 +154,13 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         api.upload(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { it }
+            .map {it}
 
-
-    companion object {
-        private val TAG = "Repository"
-    }
+    fun getTask(userid: Int, taskid: Int, dates: String, times: String): Single<Response<EmployeesApi>> =
+        api.getTask(userid, taskid, dates, times)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
 
 }
 

@@ -42,6 +42,8 @@ class SalesFragment : DaggerFragment() {
 
     val observers = Observer<List<Bank_n_CustomersRoom>> {
 
+        //You have formally clocking. Thanks!
+
         if (it != null) {
             showProgressBar(false)
             var list: List<Bank_n_CustomersRoom> = it

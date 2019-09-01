@@ -1,17 +1,23 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -43,7 +49,7 @@ class UsersMap : BaseActivity() {
     var outletname: String? = ""
     var visit_sequence: String? = ""
 
-
+    var fusedLocationClient: FusedLocationProviderClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,21 +59,71 @@ class UsersMap : BaseActivity() {
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)
         setUpData()
+        checkLocationPermission()
 
         urno = intent.getStringExtra("urno")
         begin_lat_origin = intent.getStringExtra("lat")
         begin_lng_origin = intent.getStringExtra("lng")
-        token= intent.getStringExtra("token")
+        token = intent.getStringExtra("token")
         outletname = intent.getStringExtra("outletname")
         visit_sequence = intent.getStringExtra("visit_sequence")
         r_outlet_name.text = outletname
-        Log.d(TAG,urno+" "+ begin_lat_origin +" "+begin_lng_origin)
+        Log.d(TAG, urno + " " + begin_lat_origin + " " + begin_lng_origin)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+    }
+
+    fun checkLocationPermission() {
+
+        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
+            && coarsePermissionStatus == PackageManager.PERMISSION_DENIED)
+        {
+            requestLocationPermission()
+        } else {
+            getGPS()
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    GPSPermissionRationaleAlert()
+                }else{
+                    getGPS()
+                }
+            }
+        }
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+    }
+
+    private fun GPSPermissionRationaleAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Without allowing GPS permission, this application will not work for you")
+            .setTitle("GPS Permission")
+            .setCancelable(false)
+            .setNegativeButton("OK") { _, _ ->
+                requestLocationPermission()
+            }
+        val dialog  = builder.create()
+        dialog.show()
+    }
+
+    fun getGPS(){
 
     }
 
     private fun setUpData() {
 
-        textView5.setOnClickListener {
+        clockoutbtn.setOnClickListener {
             var inten = Intent(this, SalesEntries::class.java)
             inten.putExtra("urno", urno)
             inten.putExtra("token", token)
@@ -78,8 +134,8 @@ class UsersMap : BaseActivity() {
 
         imageView8.setOnClickListener {
             var ads: String = "$begin_lat_origin,$begin_lng_origin"
-            startMapIntent(this,ads ,'w', 't')
-            Log.d(TAG,"CHECK THIS")
+            startMapIntent(this, ads, 'w', 't')
+            Log.d(TAG, "CHECK THIS")
         }
 
         //var origin: String = "$begin_lat_origin,$begin_lng_origin"
@@ -90,15 +146,21 @@ class UsersMap : BaseActivity() {
         //initMap(origin, destination, sensor, mode, key)
     }
 
-    private fun initMap(origin: String, destination: String, sensor: String, mode: String, key: String) {
+    private fun initMap(
+        origin: String,
+        destination: String,
+        sensor: String,
+        mode: String,
+        key: String
+    ) {
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(OnMapReadyCallback {
             googleMap = it
-            vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
+            vmodel.GoogleMapApi(origin, destination, sensor, mode, key)
+                .observe(this, observeMapApiResponse)
         })
     }
-
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> { data ->
@@ -124,10 +186,10 @@ class UsersMap : BaseActivity() {
         var getStartLng: Double = data.routes[0].legs[0].start_location.lng
         var getEndLat: Double = data.routes[0].legs[0].end_location.lat
         var getEndtLng: Double = data.routes[0].legs[0].end_location.lng
-        var startAddress : String = data.routes[0].legs[0].start_address
-        var endAddress : String = data.routes[0].legs[0].end_address
-        var distanceCovered : String = data.routes[0].legs[0].distance.text
-        var duration : String = data.routes[0].legs[0].duration.text
+        var startAddress: String = data.routes[0].legs[0].start_address
+        var endAddress: String = data.routes[0].legs[0].end_address
+        var distanceCovered: String = data.routes[0].legs[0].distance.text
+        var duration: String = data.routes[0].legs[0].duration.text
 
         durt.text = duration
         dis.text = distanceCovered
@@ -136,8 +198,10 @@ class UsersMap : BaseActivity() {
         setPolygonLineOptions(result)
     }
 
-    private fun setMakerPosition(getStartLat : Double, getStartLng : Double,
-                                           getEndLat : Double, getEndtLng : Double){
+    private fun setMakerPosition(
+        getStartLat: Double, getStartLng: Double,
+        getEndLat: Double, getEndtLng: Double
+    ) {
         val startLatLng = LatLng(getStartLat, getStartLng)
         val endLatLng = LatLng(getEndLat, getEndtLng)
         googleMap.addMarker(MarkerOptions().position(startLatLng))
@@ -164,6 +228,7 @@ class UsersMap : BaseActivity() {
 
     companion object {
         var TAG = "UsersMap"
+        const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1235
     }
 
     fun startMapIntent(ctx: Context, ads: String, mode: Char, avoid: Char): Any {

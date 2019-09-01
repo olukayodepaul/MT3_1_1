@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SaveEntries
-import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
+import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getDate
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
@@ -120,7 +120,7 @@ class AuthActivity : BaseActivity() {
     }
 
     fun callIntent() {
-        val intent = Intent(this, TakeOutletPicture::class.java)
+        val intent = Intent(this, ModulesActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -128,5 +128,6 @@ class AuthActivity : BaseActivity() {
     companion object {
         private val TAG = "AuthActivity"
         const val DEVICE_STATE_PERMISSION = 101
+
     }
 }
