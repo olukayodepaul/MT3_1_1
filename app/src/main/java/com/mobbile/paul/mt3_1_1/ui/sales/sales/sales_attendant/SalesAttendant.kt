@@ -29,15 +29,23 @@ class SalesAttendant : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
+
     lateinit var vmodel: SalesAttendantViewModel
+
     private lateinit var mAdapter: Attendantadapter
+
     var prefs: SharedPreferences? = null
+
     var userid: Int = 0
+
     var timeStamp: String = ""
+
     var dateStamp: String = ""
 
     var mLat: String? = ""
+
     var mLng: String? = ""
+
     var sharePref: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,6 +163,8 @@ class SalesAttendant : BaseActivity() {
         editor.putString("starting_lat", mLat)
         editor.putString("starting_lng", mLng)
         editor.apply()
+
+        Log.d(TAG, "$mLat $mLng")
     }
 
     companion object {

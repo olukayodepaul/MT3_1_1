@@ -4,11 +4,13 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -16,8 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -25,7 +25,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
+import android.provider.Settings
+import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_users_map.*
 import javax.inject.Inject
@@ -37,19 +40,44 @@ class UsersMap : BaseActivity() {
     lateinit var vmodel: SalesMapManagerViewModel
     lateinit var mapFragment: SupportMapFragment
     lateinit var googleMap: GoogleMap
-    lateinit var locationManager: LocationManager
-    private var hasGPS = false //get location using GPS
-    private var hasNetwork = false //get location using Network
+
+    lateinit var data: GoogleGetApi
+
     lateinit var durt: TextView
+
     lateinit var dis: TextView
+
     var urno: String? = ""
+
     var token: String? = ""
-    var begin_lat_origin: String? = ""
-    var begin_lng_origin: String? = ""
+
+    var startinglat: String? = ""
+
+    var startinglng: String? = ""
+
     var outletname: String? = ""
+
     var visit_sequence: String? = ""
 
-    var fusedLocationClient: FusedLocationProviderClient? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    var sharePref: SharedPreferences? = null
+
+    var endinglat: String? = ""
+
+    var endinglng: String? = ""
+
+    var curlat : String? = ""
+
+    var curlng : String? = ""
+
+    lateinit var mLocationManager: LocationManager
+
+    lateinit var locationRequest: LocationRequest
+
+    lateinit var locationCallback: LocationCallback
+
+    private var hasGps = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -59,75 +87,43 @@ class UsersMap : BaseActivity() {
         durt = findViewById(R.id.duration)
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)
-        setUpData()
-        checkLocationPermission()
+        sharePref = getSharedPreferences(LATLNG, Context.MODE_PRIVATE)
+
+        startinglat = sharePref!!.getString("starting_lat", "")
+
+        startinglng = sharePref!!.getString("starting_lng", "")
+
+        endinglat = intent.getStringExtra("lat")
+
+        endinglng = intent.getStringExtra("lng")
 
         urno = intent.getStringExtra("urno")
-        begin_lat_origin = intent.getStringExtra("lat")
-        begin_lng_origin = intent.getStringExtra("lng")
+
         token = intent.getStringExtra("token")
+
         outletname = intent.getStringExtra("outletname")
+
         visit_sequence = intent.getStringExtra("visit_sequence")
-        r_outlet_name.text = outletname
-        Log.d(TAG, urno + " " + begin_lat_origin + " " + begin_lng_origin)
+
+        checkLocationPermission()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         backbtn.setOnClickListener {
-            onBackPressed()
+            //onBackPressed()
+            requestLocation()
         }
-    }
 
-    fun checkLocationPermission() {
-
-        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-
-        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
-            && coarsePermissionStatus == PackageManager.PERMISSION_DENIED)
-        {
-            requestLocationPermission()
-        } else {
-            getGPS()
+        imageView8.setOnClickListener {
+            val ads = "$startinglat,$startinglng"
+            startMapIntent(this, ads, 'w', 't')
+            Log.d(TAG, "CHECK THIS")
         }
-    }
-
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    GPSPermissionRationaleAlert()
-                }else{
-                    getGPS()
-                }
-            }
-        }
-    }
-
-    private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
-    }
-
-    private fun GPSPermissionRationaleAlert() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("Without allowing GPS permission, this application will not work for you")
-            .setTitle("GPS Permission")
-            .setCancelable(false)
-            .setNegativeButton("OK") { _, _ ->
-                requestLocationPermission()
-            }
-        val dialog  = builder.create()
-        dialog.show()
-    }
-
-    fun getGPS(){
-
-    }
-
-    private fun setUpData() {
 
         clockoutbtn.setOnClickListener {
+            //check
+            //1. curesponding outlet
+            //2. check resumption base on date and status
             var inten = Intent(this, SalesEntries::class.java)
             inten.putExtra("urno", urno)
             inten.putExtra("token", token)
@@ -136,10 +132,103 @@ class UsersMap : BaseActivity() {
             startActivity(inten)
         }
 
-        imageView8.setOnClickListener {
-            var ads: String = "$begin_lat_origin,$begin_lng_origin"
-            startMapIntent(this, ads, 'w', 't')
-            Log.d(TAG, "CHECK THIS")
+        buildLocationCallback()
+        buildLocationRequest()
+    }
+
+    fun checkLocationPermission() {
+
+        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
+        ) {
+            requestLocationPermission()
+        } else {
+            checkIfGpsIsEnale()
+        }
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION),
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    checkIfGpsIsEnale()
+                }else {
+                    requestLocationPermission()
+                }
+            }
+        }
+    }
+
+    private fun checkIfGpsIsEnale() {
+        mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        if (hasGps) {
+            if(!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()){
+                initMap(
+                    "$startinglat,$startinglng",
+                    "$endinglat,$endinglng",
+                    "false",
+                    "d",
+                    getString(R.string.keys)
+                )
+                //requestLocation()
+            }
+
+        }else {
+            GPSRationaleEnable()
+        }
+    }
+
+    private fun GPSRationaleEnable() {
+        mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        if(!hasGps) {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Your location need to be put On")
+                .setTitle("GPS Enable")
+                .setCancelable(false)
+                .setNegativeButton("OK") { _, _ ->
+                    callGpsIntent()
+                }
+            val dialog  = builder.create()
+            dialog.show()
+        }else {
+            if(!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()) {
+                initMap(
+                    "$startinglat,$startinglng",
+                    "$endinglat,$endinglng",
+                    "false",
+                    "d",
+                    getString(R.string.keys)
+                )
+                //requestLocation()
+            }
+        }
+    }
+
+    private fun callGpsIntent() {
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivityForResult(intent, ENABLE_GPS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            ENABLE_GPS -> {
+                GPSRationaleEnable()
+            }
         }
     }
 
@@ -153,49 +242,41 @@ class UsersMap : BaseActivity() {
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(OnMapReadyCallback {
+            showProgressBar(false)
             googleMap = it
-            vmodel.GoogleMapApi(origin, destination, sensor, mode, key)
-                .observe(this, observeMapApiResponse)
+            vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
         })
     }
 
 
-    val observeMapApiResponse = Observer<GoogleGetApi> { data ->
+    val observeMapApiResponse = Observer<GoogleGetApi> {
 
-        var result = ArrayList<LatLng>()
-        lateinit var startlatLng: LatLng
-        lateinit var endlatLng: LatLng
+        data = it
 
-        for (i in 0..(data!!.routes[0].legs[0].steps.size - 1)) {
-            startlatLng = LatLng(
-                data.routes[0].legs[0].steps[i].start_location.lat.toDouble(),
-                data.routes[0].legs[0].steps[i].start_location.lng.toDouble()
-            )
-            endlatLng = LatLng(
-                data.routes[0].legs[0].steps[i].end_location.lat.toDouble(),
-                data.routes[0].legs[0].steps[i].end_location.lng.toDouble()
-            )
-            result.add(startlatLng)
-            result.add(endlatLng)
-        }
-
-        var getStartLat: Double = data.routes[0].legs[0].start_location.lat
-        var getStartLng: Double = data.routes[0].legs[0].start_location.lng
-        var getEndLat: Double = data.routes[0].legs[0].end_location.lat
-        var getEndtLng: Double = data.routes[0].legs[0].end_location.lng
-        var startAddress: String = data.routes[0].legs[0].start_address
-        var endAddress: String = data.routes[0].legs[0].end_address
-        var distanceCovered: String = data.routes[0].legs[0].distance.text
-        var duration: String = data.routes[0].legs[0].duration.text
-
-        durt.text = duration
-        dis.text = distanceCovered
-
-        setMakerPosition(getStartLat, getStartLng, getEndLat, getEndtLng)
-        setPolygonLineOptions(result)
+        setMakerPosition(
+            startinglat!!.toDouble(),
+            startinglng!!.toDouble(),
+            endinglat!!.toDouble(),
+            endinglng!!.toDouble()
+        )
+        calculateRouteDistance()
     }
 
-    private fun setMakerPosition(
+    fun calculateRouteDistance() {
+        var distanceCovered: String = data.routes[0].legs[0].distance.text
+        var duration: String = data.routes[0].legs[0].duration.text
+        durt.text = duration
+        dis.text = distanceCovered
+    }
+
+    fun locationRouteOnMap() {
+
+        for (i in 0..(data!!.routes[0].legs[0].steps.size - 1)) {
+
+        }
+    }
+
+    private fun setMakerPosition (
         getStartLat: Double, getStartLng: Double,
         getEndLat: Double, getEndtLng: Double
     ) {
@@ -226,6 +307,7 @@ class UsersMap : BaseActivity() {
     companion object {
         var TAG = "UsersMap"
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1235
+        var ENABLE_GPS = 1000
     }
 
     fun startMapIntent(ctx: Context, ads: String, mode: Char, avoid: Char): Any {
@@ -238,6 +320,40 @@ class UsersMap : BaseActivity() {
         } else
             false
     }
+
+    private fun buildLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult?) {
+                super.onLocationResult(p0)
+                var location = p0!!.locations[p0.locations.size-1]
+                curlat = location.latitude.toString()
+                curlng = location.longitude.toString()
+
+                Log.d(TAG, "$curlat $curlng")
+            }
+        }
+    }
+
+    private fun buildLocationRequest() {
+
+        locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 3000
+        locationRequest.smallestDisplacement = 10f
+
+    }
+
+    private fun requestLocation(){
+
+        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
+        ) {
+            requestLocationPermission()
+        } else {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+        }
+    }
 }
-
-

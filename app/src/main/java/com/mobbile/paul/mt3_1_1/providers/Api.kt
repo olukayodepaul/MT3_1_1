@@ -16,8 +16,6 @@ import retrofit2.http.PartMap
 import retrofit2.http.Multipart
 
 
-
-
 interface Api {
 
     @Headers("Connection:close")
@@ -42,6 +40,7 @@ interface Api {
         @Body saleposttoserver: postToServer
     ): Single<Response<postRecieveFromServer>>
 
+    @Headers("Connection:close")
     @Multipart
     @POST("/mobiletrader/mapcustomers")
     fun upload(
@@ -56,7 +55,5 @@ interface Api {
         @Query("dates") dates: String,
         @Query("times") times: String
     ): Single<Response<EmployeesApi>>
-
-
 
 }
