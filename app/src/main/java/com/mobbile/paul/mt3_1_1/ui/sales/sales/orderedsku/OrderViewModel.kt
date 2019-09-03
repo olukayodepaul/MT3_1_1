@@ -43,7 +43,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
     fun postSalesToServer(employee_id: Int, urno: String,token: String,
                           distance: String, arrivaltime: String,
                           departuretime: String, dates: String, arrivallat: String, arrivallng: String,
-                          saleslist: List<SalesEntrieHolderApi>) {
+                          saleslist: List<SalesEntrieHolderApi>, visit_sequence : String) {
 
         var list = postToServer()
         list.employee_id = employee_id
@@ -55,6 +55,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
         list.dates = dates
         list.arrivallat = arrivallat
         list.arrivallng = arrivallng
+        list.visitsequence = visit_sequence
         list.saleslist = saleslist
 
         repository.fetchPostSales(list)

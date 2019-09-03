@@ -62,5 +62,4 @@ interface Api {
         @Query("userid") userid: Int,
         @Query("dates") dates: String
     ): Single<Response<EmployeesApi>>
-
 }

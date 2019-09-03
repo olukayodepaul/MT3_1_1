@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders
 
 
+import com.mobbile.paul.mt3_1_1.ui.sales.commission.SalesCommissionFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_fragment.SalesFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.SalesHistoryFragment
 import dagger.Module
@@ -15,5 +16,8 @@ abstract class FragmentBuilder {
 
     @ContributesAndroidInjector
     abstract fun  contributeSalesHistoryFragment(): SalesHistoryFragment
+
+    @ContributesAndroidInjector
+    abstract fun  contributeSalesCommissionFragment(): SalesCommissionFragment
 
 }

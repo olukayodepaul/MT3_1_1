@@ -3,6 +3,7 @@ package com.example.kotlin_project.di.modules
 import com.example.kotlin_project.di.main.*
 import com.mobbile.paul.mt3_1_1.di.subcomponent.attendant.AttendantModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.FragmentBuilder
+import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.SalesComissionModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
@@ -42,7 +43,8 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [
         FragmentBuilder::class,
         Sales_Module::class,
-        Saleshistory_Module::class
+        Saleshistory_Module::class,
+        SalesComissionModel::class
     ])
     abstract fun contributeSalesPagerActivity(): SalesViewpager
 

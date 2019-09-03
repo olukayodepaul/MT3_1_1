@@ -12,4 +12,9 @@
           android:icon="@drawable/sale_history"
     />
 
+    <item android:title="@string/menu_commission"
+            android:id="@+id/menu_commission"
+            android:icon="@drawable/ic_payment_black_24dp"
+            />
+
 </menu>

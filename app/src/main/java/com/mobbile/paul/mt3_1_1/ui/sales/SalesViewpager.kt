@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mobbile.paul.mt3_1_1.R
+import com.mobbile.paul.mt3_1_1.ui.sales.commission.SalesCommissionFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_fragment.SalesFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.SalesHistoryFragment
 import dagger.android.support.DaggerAppCompatActivity
@@ -12,17 +13,23 @@ import kotlinx.android.synthetic.main.activity_sales_viewpager.*
 class SalesViewpager : DaggerAppCompatActivity(){
 
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
+    private val bt = BottomNavigationView.OnNavigationItemSelectedListener {
+        when (it.itemId) {
             R.id.sales -> {
                 val fragment = SalesFragment()
-                titles.text = "Sales"
+                titles.text = getString(R.string.menu_sales)
                 replaceFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.saleshistory -> {
                 val fragment = SalesHistoryFragment()
-                titles.text = "Sales History"
+                titles.text = getString(R.string.menu_history)
+                replaceFragment(fragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.menu_commission -> {
+                val fragment = SalesCommissionFragment()
+                titles.text = getString(R.string.menu_commission)
                 replaceFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -47,7 +54,7 @@ class SalesViewpager : DaggerAppCompatActivity(){
 
         val fragment = SalesFragment()
         replaceFragment(fragment)
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemSelectedListener(bt)
     }
 
     companion object{

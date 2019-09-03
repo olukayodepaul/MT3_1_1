@@ -10,7 +10,8 @@
     <string name="hello_blank_fragment">Hello blank fragment FIRST</string>
 
     <string name="menu_sales">Sales</string>
-    <string name="menu_history">Sales History</string>
+    <string name="menu_history">History</string>
+    <string name="menu_commission">Commission</string>
     <string name="ats">Attendant</string>
     <string name="rt">Resume</string>
     <string name="ct">Clockout</string>

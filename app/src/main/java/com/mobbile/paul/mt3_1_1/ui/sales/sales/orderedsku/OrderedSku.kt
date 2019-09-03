@@ -106,7 +106,7 @@ class OrderedSku : BaseActivity() {
             vmodel.postSalesToServer(employee_id,urno, token!!,distance!!, arivaltime!!,
                 SimpleDateFormat("HH:mm:ss").format(Date()),
                 SimpleDateFormat("yyyy-MM-dd").format(Date()),
-                clat.toString(),clng.toString(),it)
+                clat.toString(),clng.toString(),it, visit_sequence!!)
         }
     }
 

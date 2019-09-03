@@ -360,6 +360,9 @@ data class postToServer(
     @SerializedName("arrivallng")
     @Expose
     var arrivallng: String = "",
+    @SerializedName("visitsequence")
+    @Expose
+    var visitsequence: String = "",
     @SerializedName("saleslist")
     @Expose
     var saleslist: List<SalesEntrieHolderApi>? = null

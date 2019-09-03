@@ -292,6 +292,7 @@ class UsersMap : BaseActivity() {
         val startLatLng = LatLng(getStartLat, getStartLng)
         val endLatLng = LatLng(getEndLat, getEndtLng)
         googleMap.addMarker(MarkerOptions().position(startLatLng))
+            .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         googleMap.addMarker(MarkerOptions().position(endLatLng))
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
@@ -384,7 +385,7 @@ class UsersMap : BaseActivity() {
                     intent.putExtra("visit_sequence", visit_sequence)
                     intent.putExtra("clat", it.curlat)
                     intent.putExtra("clng", it.curlng)
-                    intent.putExtra("distance", durt.text.toString())
+                    intent.putExtra("distance", dis.text.toString())
                     intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
                     startActivity(intent)
                 }
