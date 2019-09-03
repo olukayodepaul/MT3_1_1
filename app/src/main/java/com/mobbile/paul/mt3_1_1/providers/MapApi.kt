@@ -2,6 +2,7 @@ package com.mobbile.paul.mt3_1_1.providers
 
 
 
+import com.mobbile.paul.mt3_1_1.models.GoogleDistance
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -19,6 +20,15 @@ interface MapApi {
         @Query("mode") mode: String,
         @Query("key") key: String
     ): Single<GoogleGetApi>
+
+    @Headers("Connection:close")
+    @GET("/maps/api/distancematrix/json?")
+    fun fetchGoogleDistance(
+        @Query("units") units: String,
+        @Query("origins") origins: String,
+        @Query("destinations") destinations: String,
+        @Query("key") key: String
+    ): Single<GoogleDistance>
 }
 
 

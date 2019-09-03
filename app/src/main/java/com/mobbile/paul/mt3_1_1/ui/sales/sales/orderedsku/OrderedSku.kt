@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,6 +18,8 @@ import com.mobbile.paul.mt3_1_1.models.SumSales
 import com.mobbile.paul.mt3_1_1.util.Utils
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_ordered_sku.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class OrderedSku : BaseActivity() {
@@ -29,28 +32,56 @@ class OrderedSku : BaseActivity() {
     private lateinit var mAdapter: OrderAdapter
 
     var urno: String = ""
+
     var token : String? = ""
+
     var outletname : String? =  ""
+
     var prefs: SharedPreferences? = null
+
     var employee_id : Int =  0
+
     var visit_sequence : String? = ""
+
+    var clat  : Double =  0.0
+
+    var clng : Double = 0.0
+
+    var distance : String? = ""
+
+    var arivaltime : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_ordered_sku)
+
         vmodel = ViewModelProviders.of(this, modelFactory)[OrderViewModel::class.java]
+
         prefs = getSharedPreferences(Utils.PREFS_FILENAME, Context.MODE_PRIVATE)
 
         visit_sequence = intent.getStringExtra("visit_sequence")
+
         urno = intent.getStringExtra("urno")
+
         token = intent.getStringExtra("token")
-        token = intent.getStringExtra("token")
+
         outletname = intent.getStringExtra("outletname")
+
         employee_id = prefs!!.getInt("employee_id_user", 0)
 
+        clat = intent.getDoubleExtra("clat",0.0)
+
+        clng = intent.getDoubleExtra("clng",0.0)
+
+        distance = intent.getStringExtra("distance")
+
+        arivaltime = intent.getStringExtra("arivaltime")
+
         vmodel.fetch().observe(this, observerOfSalesEntry)
+
         tv_outlet_name.text = outletname
+
         IntAdapter()
 
     }
@@ -69,10 +100,13 @@ class OrderedSku : BaseActivity() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private val obervePullinSalesData = Observer<List<SalesEntrieHolderApi>> {
         if (it != null) {
-            vmodel.postSalesToServer(1, "888", "78hy","12","00:00:00", "00:00:00", "2019-08-28", "789.0",
-                "7.99", "78282.000","030303.8383", it)
+            vmodel.postSalesToServer(employee_id,urno, token!!,distance!!, arivaltime!!,
+                SimpleDateFormat("HH:mm:ss").format(Date()),
+                SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                clat.toString(),clng.toString(),it)
         }
     }
 

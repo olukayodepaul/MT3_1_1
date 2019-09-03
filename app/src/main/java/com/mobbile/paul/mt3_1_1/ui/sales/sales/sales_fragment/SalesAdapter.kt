@@ -69,7 +69,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                         intent.putExtra("token", item.token)
                         intent.putExtra("lat", item.lat)
                         intent.putExtra("lng", item.lng)
-                        intent.putExtra("visit_sequence", item.lng)
+                        intent.putExtra("visit_sequence", item.sequence_id)
                         intent.putExtra("outletname", item.outletname)
                     }
                 }

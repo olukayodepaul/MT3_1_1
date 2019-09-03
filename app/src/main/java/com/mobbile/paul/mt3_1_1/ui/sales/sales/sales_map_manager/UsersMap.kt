@@ -2,11 +2,13 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
@@ -27,11 +29,18 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
 import com.google.android.gms.location.*
+import com.mobbile.paul.mt3_1_1.models.EmployeesApi
+import com.mobbile.paul.mt3_1_1.models.salesEntryResponses
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.insideRadius
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_users_map.*
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class UsersMap : BaseActivity() {
 
@@ -40,6 +49,8 @@ class UsersMap : BaseActivity() {
     lateinit var vmodel: SalesMapManagerViewModel
     lateinit var mapFragment: SupportMapFragment
     lateinit var googleMap: GoogleMap
+
+    private var mLastLocation: Location? = null
 
     lateinit var data: GoogleGetApi
 
@@ -61,24 +72,21 @@ class UsersMap : BaseActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    lateinit var mLocationManager: LocationManager
+
     var sharePref: SharedPreferences? = null
+
+    var pref: SharedPreferences? = null
 
     var endinglat: String? = ""
 
     var endinglng: String? = ""
 
-    var curlat : String? = ""
-
-    var curlng : String? = ""
-
-    lateinit var mLocationManager: LocationManager
-
-    lateinit var locationRequest: LocationRequest
-
-    lateinit var locationCallback: LocationCallback
-
     private var hasGps = false
 
+    var dateStamp: String = ""
+
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -88,6 +96,9 @@ class UsersMap : BaseActivity() {
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)
         sharePref = getSharedPreferences(LATLNG, Context.MODE_PRIVATE)
+        pref = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
+        dateStamp = SimpleDateFormat("yyyy-MM-dd").format(Date())
 
         startinglat = sharePref!!.getString("starting_lat", "")
 
@@ -110,8 +121,7 @@ class UsersMap : BaseActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         backbtn.setOnClickListener {
-            //onBackPressed()
-            requestLocation()
+            onBackPressed()
         }
 
         imageView8.setOnClickListener {
@@ -121,25 +131,18 @@ class UsersMap : BaseActivity() {
         }
 
         clockoutbtn.setOnClickListener {
-            //check
-            //1. curesponding outlet
-            //2. check resumption base on date and status
-            var inten = Intent(this, SalesEntries::class.java)
-            inten.putExtra("urno", urno)
-            inten.putExtra("token", token)
-            inten.putExtra("outletname", outletname)
-            inten.putExtra("visit_sequence", visit_sequence)
-            startActivity(inten)
+            requestLocation()
         }
 
-        buildLocationCallback()
-        buildLocationRequest()
+        r_outlet_name.text = outletname
     }
 
     fun checkLocationPermission() {
 
-        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val accessPermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (accessPermissionStatus == PackageManager.PERMISSION_DENIED && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
         ) {
@@ -150,9 +153,13 @@ class UsersMap : BaseActivity() {
     }
 
     private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION),
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+        ActivityCompat.requestPermissions(
+            this, arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -164,7 +171,7 @@ class UsersMap : BaseActivity() {
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     checkIfGpsIsEnale()
-                }else {
+                } else {
                     requestLocationPermission()
                 }
             }
@@ -175,7 +182,7 @@ class UsersMap : BaseActivity() {
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (hasGps) {
-            if(!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()){
+            if (!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()) {
                 initMap(
                     "$startinglat,$startinglng",
                     "$endinglat,$endinglng",
@@ -186,7 +193,7 @@ class UsersMap : BaseActivity() {
                 //requestLocation()
             }
 
-        }else {
+        } else {
             GPSRationaleEnable()
         }
     }
@@ -194,7 +201,7 @@ class UsersMap : BaseActivity() {
     private fun GPSRationaleEnable() {
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        if(!hasGps) {
+        if (!hasGps) {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Your location need to be put On")
                 .setTitle("GPS Enable")
@@ -202,10 +209,10 @@ class UsersMap : BaseActivity() {
                 .setNegativeButton("OK") { _, _ ->
                     callGpsIntent()
                 }
-            val dialog  = builder.create()
+            val dialog = builder.create()
             dialog.show()
-        }else {
-            if(!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()) {
+        } else {
+            if (!startinglng.isNullOrBlank() || !startinglng.isNullOrBlank()) {
                 initMap(
                     "$startinglat,$startinglng",
                     "$endinglat,$endinglng",
@@ -244,7 +251,8 @@ class UsersMap : BaseActivity() {
         mapFragment.getMapAsync(OnMapReadyCallback {
             showProgressBar(false)
             googleMap = it
-            vmodel.GoogleMapApi(origin, destination, sensor, mode, key).observe(this, observeMapApiResponse)
+            vmodel.GoogleMapApi(origin, destination, sensor, mode, key)
+                .observe(this, observeMapApiResponse)
         })
     }
 
@@ -263,6 +271,7 @@ class UsersMap : BaseActivity() {
     }
 
     fun calculateRouteDistance() {
+
         var distanceCovered: String = data.routes[0].legs[0].distance.text
         var duration: String = data.routes[0].legs[0].duration.text
         durt.text = duration
@@ -276,7 +285,7 @@ class UsersMap : BaseActivity() {
         }
     }
 
-    private fun setMakerPosition (
+    private fun setMakerPosition(
         getStartLat: Double, getStartLng: Double,
         getEndLat: Double, getEndtLng: Double
     ) {
@@ -321,39 +330,83 @@ class UsersMap : BaseActivity() {
             false
     }
 
-    private fun buildLocationCallback() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult?) {
-                super.onLocationResult(p0)
-                var location = p0!!.locations[p0.locations.size-1]
-                curlat = location.latitude.toString()
-                curlng = location.longitude.toString()
 
-                Log.d(TAG, "$curlat $curlng")
+    private fun requestLocation() {
+
+        val accessPermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
+            && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
+        ) {
+            requestLocationPermission()
+        } else {
+
+            fusedLocationClient.lastLocation.addOnCompleteListener {
+
+                if (it.isSuccessful) {
+
+                    mLastLocation = it.result
+
+                    var checkCustomerOutlet: Boolean = insideRadius(
+                        mLastLocation!!.latitude,
+                        mLastLocation!!.longitude,
+                        endinglat!!.toDouble(),
+                        endinglng!!.toDouble()
+                    )
+
+                    if (!checkCustomerOutlet) {
+                        //msgError("You are not at the corresponding outlet. Thanks!")
+
+                        val im = pref!!.getInt("employee_id_user", 0)
+                        vmodel.confirmTask(im, dateStamp, mLastLocation!!.latitude, mLastLocation!!.longitude).observe(this, observeClockOut)
+
+                    } else {
+                        val im = pref!!.getInt("employee_id_user", 0)
+                        vmodel.confirmTask(im, dateStamp, mLastLocation!!.latitude, mLastLocation!!.longitude).observe(this, observeClockOut)
+                    }
+                }
             }
         }
     }
 
-    private fun buildLocationRequest() {
-
-        locationRequest = LocationRequest.create()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 5000
-        locationRequest.fastestInterval = 3000
-        locationRequest.smallestDisplacement = 10f
-
-    }
-
-    private fun requestLocation(){
-
-        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-
-        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
-        ) {
-            requestLocationPermission()
-        } else {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+    @SuppressLint("SimpleDateFormat")
+    private var observeClockOut = Observer<salesEntryResponses> {
+        if (it != null) {
+            when (it.status) {
+                200 -> {
+                    val intent = Intent(this, SalesEntries::class.java)
+                    intent.putExtra("urno", urno)
+                    intent.putExtra("token", token)
+                    intent.putExtra("outletname", outletname)
+                    intent.putExtra("visit_sequence", visit_sequence)
+                    intent.putExtra("clat", it.curlat)
+                    intent.putExtra("clng", it.curlng)
+                    intent.putExtra("distance", durt.text.toString())
+                    intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
+                    startActivity(intent)
+                }
+                400 -> {
+                    msgError(it.msg)
+                }
+            }
         }
     }
+
+    private fun msgError(msg: String) {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
+        builder.setMessage(msg)
+            .setTitle("Notice!")
+            .setIcon(R.drawable.icons8_error_90)
+            .setCancelable(false)
+            .setNegativeButton("OK") { _, _ ->
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
+
+
+

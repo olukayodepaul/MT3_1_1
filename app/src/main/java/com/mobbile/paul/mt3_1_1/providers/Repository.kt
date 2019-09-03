@@ -168,7 +168,23 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-}
+    fun confirmTask(user_id: Int, dates: String): Single<Response<EmployeesApi>> =
+        api.confirmTask(user_id, dates)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
 
+    fun fetchGoogleDistance (
+        units: String,
+        origins: String,
+        destinations: String,
+        key: String
+    ): Single<GoogleDistance> =
+        mapi.fetchGoogleDistance(units, origins, destinations, key)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+}
 
 

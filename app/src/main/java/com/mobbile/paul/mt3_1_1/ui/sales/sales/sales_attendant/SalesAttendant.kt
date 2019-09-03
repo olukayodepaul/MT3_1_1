@@ -98,7 +98,7 @@ class SalesAttendant : BaseActivity() {
         when (it.status) {
             200 -> {
                 setLatLngStartingPoint()
-                msgSuccess("Resume Completed. Thanks!")
+                msgSuccess(it.msg)
             }
             400 -> {
                 msgError(it.msg, 1)

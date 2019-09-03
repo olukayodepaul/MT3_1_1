@@ -100,7 +100,10 @@ data class Bank_n_CustomersApi(
     var lng: String = "",
     @SerializedName("rostertime")
     @Expose
-    var rostertime: String = ""
+    var rostertime: String = "",
+    @SerializedName("sequence_id")
+    @Expose
+    var sequence_id: String = ""
 
 
 )
@@ -300,7 +303,8 @@ fun Bank_n_CustomersApi.toCustomersEntity(): Bank_n_CustomersRoom {
         outlet_waiver,
         lat,
         lng,
-        rostertime
+        rostertime,
+        sequence_id
     )
 }
 
@@ -356,12 +360,6 @@ data class postToServer(
     @SerializedName("arrivallng")
     @Expose
     var arrivallng: String = "",
-    @SerializedName("departurelat")
-    @Expose
-    var departurelat: String = "",
-    @SerializedName("departurelng")
-    @Expose
-    var departurelng: String = "",
     @SerializedName("saleslist")
     @Expose
     var saleslist: List<SalesEntrieHolderApi>? = null
@@ -408,4 +406,10 @@ data class SumSales(
     var stotalsum: Double = 0.0
 )
 
+data class salesEntryResponses (
+    var status: Int = 0,
+    var msg: String = "",
+    var curlat: Double = 0.0,
+    var curlng : Double = 0.0
+)
 

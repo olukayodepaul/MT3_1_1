@@ -56,4 +56,11 @@ interface Api {
         @Query("times") times: String
     ): Single<Response<EmployeesApi>>
 
+    @Headers("Connection:close")
+    @POST("/mobiletrader/confirmtask")
+    fun confirmTask(
+        @Query("userid") userid: Int,
+        @Query("dates") dates: String
+    ): Single<Response<EmployeesApi>>
+
 }

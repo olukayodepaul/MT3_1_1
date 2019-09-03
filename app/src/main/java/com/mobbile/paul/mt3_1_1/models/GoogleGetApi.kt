@@ -30,27 +30,7 @@ data class Bounds(
     val southwest: Southwest
 )
 
-data class Distance(
 
-    @SerializedName("text")
-    @Expose
-    val text: String,
-
-    @SerializedName("value")
-    @Expose
-    val value: Int
-)
-
-data class Duration(
-
-    @SerializedName("text")
-    @Expose
-    val text: String,
-
-    @SerializedName("value")
-    @Expose
-    val value: Int
-)
 
 data class EndLocation(
 
@@ -224,5 +204,53 @@ data class Step(
     @SerializedName("travel_mode")
     @Expose
     val travel_mode: String
+)
 
+data class GoogleDistance(
+    @SerializedName("rows")
+    @Expose
+    val rows: List<Row>,
+    @SerializedName("status")
+    @Expose
+    val status: String
+)
+
+data class Row(
+    @SerializedName("elements")
+    @Expose
+    val elements: List<Element>
+)
+
+data class Element(
+    @SerializedName("distance")
+    @Expose
+    val distance: Distance,
+    @SerializedName("duration")
+    @Expose
+    val duration: Duration,
+    @SerializedName("status")
+    @Expose
+    val status: String
+)
+
+data class Distance(
+
+    @SerializedName("text")
+    @Expose
+    val text: String,
+
+    @SerializedName("value")
+    @Expose
+    val value: Int
+)
+
+data class Duration(
+
+    @SerializedName("text")
+    @Expose
+    val text: String,
+
+    @SerializedName("value")
+    @Expose
+    val value: Int
 )
