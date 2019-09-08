@@ -13,6 +13,8 @@ import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_entry_adapter.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class SalesEntriesAdapter(
@@ -46,7 +48,7 @@ class SalesEntriesAdapter(
         LayoutContainer {
         fun bind(item: SalesEntriesRoom) {
 
-            containerView.tv_skus.text = item.product_name.capitalize()
+            containerView.tv_skus.text = item.product_name.toLowerCase().capitalize()
             containerView.tv_soq.text = item.soq
             if (item.soq.isEmpty()) {
                 containerView.tv_soq.text = "0"
@@ -157,7 +159,7 @@ class SalesEntriesAdapter(
                                 trasformOrder,
                                 trasformInventory,
                                 trasformPricing,
-                                getTime,
+                                SimpleDateFormat("HH:mm:ss").format(Date()),
                                 item.id,
                                 item.product_id,
                                 trasformOrder * item.price.toDouble(),
@@ -224,7 +226,7 @@ class SalesEntriesAdapter(
                                     trasformOrder,
                                     trasformInventory,
                                     trasformPricing,
-                                    getTime,
+                                    SimpleDateFormat("HH:mm:ss").format(Date()),
                                     item.id,
                                     item.product_id,
                                     trasformOrder * item.price.toDouble(),
@@ -241,7 +243,7 @@ class SalesEntriesAdapter(
 
     fun enterDailySales(
         orders: Double, inventory: Double, pricing: Int,
-        entry_time: String, id: Int, product_id: Int,
+        entry_time: String, id: Int, product_id: String,
         salesprice: Double, contOrder: String, contPrincing: String, contInventory: String
     ) {
         repository.updateDailySales (
@@ -249,7 +251,4 @@ class SalesEntriesAdapter(
             pricing, entry_time, id, product_id, salesprice, contOrder, contPrincing, contInventory
         ).subscribe()
     }
-
-
-
 }

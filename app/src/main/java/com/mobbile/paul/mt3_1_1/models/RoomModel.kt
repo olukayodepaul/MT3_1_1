@@ -30,8 +30,8 @@ data class Bank_n_CustomersRoom(
     var lat: String = "",
     var lng: String = "",
     var rostertime: String = "",
-    var sequence_id: String = ""
-
+    var sequence_id: String = "",
+    var defaulttoken: String = ""
 )
 
 @Entity(tableName = "products")
@@ -46,7 +46,11 @@ data class ProductsRoom(
     var qty: String = "",
     var soq: String = "",
     var rollprice: String = "",
-    var packprice: String = ""
+    var packprice: String = "",
+    var totalqtysold: Double = 0.0,
+    var totalamountsold: Double = 0.0,
+    var totalcommission: Double = 0.0,
+    var balanceamount: Double = 0.0
 )
 
 @Entity
@@ -61,7 +65,7 @@ data class ProductTypeRoom (
 data class SalesEntriesRoom (
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
-    var product_id: Int = 0,
+    var product_id: String = "",
     var soq: String = "",
     var product_name: String = "",
     var qty: String = "",
@@ -73,7 +77,7 @@ data class SalesEntriesRoom (
 data class SalesEntrieHolderRoom(
     @PrimaryKey(autoGenerate = false)
     var id: Int = 0,
-    var product_id: Int = 0,
+    var product_id: String = "",
     var soq: String = "",
     var product_name: String = "",
     var qty: String = "",
@@ -87,8 +91,20 @@ data class SalesEntrieHolderRoom(
     var order_price: Double = 0.0,
     var contorder: String = "",
     var contprincing: String = "",
-    var continventory: String = ""
+    var continventory: String = "",
+    var mtcom: Double = 0.0,
+    var mtamt: Double = 0.0
 )
+
+@Entity(tableName = "saleshistory")
+data class repSalesHistoryRoom(
+    @PrimaryKey(autoGenerate = false)
+    var urno: Int = 0,
+    var outletname: String = "",
+    var times: String = ""
+)
+
+
 
 
 

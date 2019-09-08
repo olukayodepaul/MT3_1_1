@@ -10,7 +10,6 @@ import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderRoom
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.order_adapter_layout.view.*
 
-
 class OrderAdapter(private var mItems: List<SalesEntrieHolderRoom>):
     RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
 

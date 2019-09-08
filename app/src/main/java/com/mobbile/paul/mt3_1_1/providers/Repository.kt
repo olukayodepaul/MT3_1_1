@@ -87,6 +87,13 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun saveEntryHistory(
+        entryhistory: repSalesHistoryRoom
+    ) =
+        Observable.fromCallable { appDao.saveEntryHistory(entryhistory) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun deleteModulesRoom() = Observable.fromCallable {
         appDao.deleteModulesRoom()
     }.subscribeOn(Schedulers.io())
@@ -118,7 +125,7 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     ).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int,
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: String,
                          salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)  =
         Observable.fromCallable {
             appDao.updateDailySales(orders, inventory, pricing, entry_time, id, product_id,
@@ -184,6 +191,12 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
+
+    fun updateProducts(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String) =
+        Observable.fromCallable {
+            appDao.updateProducts(totalq, totalamt, totalcomm, balanceamt, productcode)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 }
 

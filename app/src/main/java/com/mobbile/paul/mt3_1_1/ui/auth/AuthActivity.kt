@@ -114,7 +114,7 @@ class AuthActivity : BaseActivity() {
         editor.putString("name_users", it.name)
         editor.putInt("employee_id_user", it.id)
         editor.putString("entry_date", it.dates)
-        editor.putString("customerno", it.customerno)
+        editor.putString("customerno", it.customerno) //this is the users customer number for dynamics
         editor.apply()
         callIntent()
     }

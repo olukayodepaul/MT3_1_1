@@ -12,7 +12,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -29,7 +28,6 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
 import com.google.android.gms.location.*
-import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import com.mobbile.paul.mt3_1_1.models.salesEntryResponses
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
@@ -70,6 +68,8 @@ class UsersMap : BaseActivity() {
 
     var visit_sequence: String? = ""
 
+    var defaulttoken : String? = ""
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     lateinit var mLocationManager: LocationManager
@@ -85,6 +85,8 @@ class UsersMap : BaseActivity() {
     private var hasGps = false
 
     var dateStamp: String = ""
+
+
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +117,8 @@ class UsersMap : BaseActivity() {
         outletname = intent.getStringExtra("outletname")
 
         visit_sequence = intent.getStringExtra("visit_sequence")
+
+        defaulttoken = intent.getStringExtra("defaulttoken")
 
         checkLocationPermission()
 
@@ -258,9 +262,7 @@ class UsersMap : BaseActivity() {
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> {
-
         data = it
-
         setMakerPosition(
             startinglat!!.toDouble(),
             startinglng!!.toDouble(),
@@ -271,7 +273,6 @@ class UsersMap : BaseActivity() {
     }
 
     fun calculateRouteDistance() {
-
         var distanceCovered: String = data.routes[0].legs[0].distance.text
         var duration: String = data.routes[0].legs[0].duration.text
         durt.text = duration
@@ -279,7 +280,6 @@ class UsersMap : BaseActivity() {
     }
 
     fun locationRouteOnMap() {
-
         for (i in 0..(data!!.routes[0].legs[0].steps.size - 1)) {
 
         }
@@ -334,10 +334,8 @@ class UsersMap : BaseActivity() {
 
     private fun requestLocation() {
 
-        val accessPermissionStatus =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
             && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
@@ -357,7 +355,6 @@ class UsersMap : BaseActivity() {
                         endinglat!!.toDouble(),
                         endinglng!!.toDouble()
                     )
-
                     if (!checkCustomerOutlet) {
                         //msgError("You are not at the corresponding outlet. Thanks!")
 
@@ -368,6 +365,7 @@ class UsersMap : BaseActivity() {
                         val im = pref!!.getInt("employee_id_user", 0)
                         vmodel.confirmTask(im, dateStamp, mLastLocation!!.latitude, mLastLocation!!.longitude).observe(this, observeClockOut)
                     }
+                    Log.d(TAG, "${mLastLocation!!.latitude}")
                 }
             }
         }
@@ -382,6 +380,7 @@ class UsersMap : BaseActivity() {
                     intent.putExtra("urno", urno)
                     intent.putExtra("token", token)
                     intent.putExtra("outletname", outletname)
+                    intent.putExtra("defaulttoken", defaulttoken)
                     intent.putExtra("visit_sequence", visit_sequence)
                     intent.putExtra("clat", it.curlat)
                     intent.putExtra("clng", it.curlng)

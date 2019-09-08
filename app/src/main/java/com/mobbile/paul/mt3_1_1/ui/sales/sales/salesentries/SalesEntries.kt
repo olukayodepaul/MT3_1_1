@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +16,7 @@ import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
-import com.mobbile.paul.mt3_1_1.util.Utils
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_sales_entries.*
 import javax.inject.Inject
@@ -47,6 +48,8 @@ class SalesEntries : BaseActivity() {
 
     var visit_sequence : String? = ""
 
+    var defaulttoken: String? = ""
+
     var clat  : Double =  0.0
 
     var clng : Double = 0.0
@@ -61,7 +64,7 @@ class SalesEntries : BaseActivity() {
         setContentView(R.layout.activity_sales_entries)
 
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesEntriesViewModel::class.java]
-        prefs = getSharedPreferences(Utils.PREFS_FILENAME, Context.MODE_PRIVATE)
+        prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
 
         customerno = prefs!!.getString("customerno", "")
 
@@ -70,6 +73,8 @@ class SalesEntries : BaseActivity() {
         urno = intent.getStringExtra("urno")
 
         outletname = intent.getStringExtra("outletname")
+
+        defaulttoken = intent.getStringExtra("defaulttoken")
 
         token = intent.getStringExtra("token")
 
@@ -92,6 +97,8 @@ class SalesEntries : BaseActivity() {
         tv_outlet_name.text = outletname
 
         initViews()
+
+        Log.d(TAG, "$defaulttoken this the default token")
     }
 
     var error = Observer<String> {
@@ -126,6 +133,7 @@ class SalesEntries : BaseActivity() {
             intent.putExtra("urno",urno)
             intent.putExtra("token",token)
             intent.putExtra("outletname",outletname)
+            intent.putExtra("defaulttoken",defaulttoken)
             intent.putExtra("visit_sequence",visit_sequence)
             intent.putExtra("clat", clat)
             intent.putExtra("clng", clng)

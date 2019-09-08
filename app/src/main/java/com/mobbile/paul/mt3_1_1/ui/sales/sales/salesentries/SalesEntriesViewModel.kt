@@ -25,14 +25,16 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
         return mData
     }
 
-    fun fetchSales(urno: String, customerno: String, employee_id: Int ) {
+    fun fetchSales(urno: String, customerno: String, employee_id: Int) {
 
-        repository.getbasket(urno, customerno, employee_id )
+        repository.getbasket(urno, customerno, employee_id)
             .subscribe(
                 {
+                    Log.d(TAG, it.body()!!.status.toString())
                     when (it.body()!!.status) {
                         200 -> {
                             data = it.body()!!
+                            Log.d(TAG, data.toString())
                             if (it.body() != null) {
                                 deleteSalesEntry()
                             } else {
@@ -44,8 +46,9 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
                         }
                     }
                 },
-                { error ->
-                    mResult.postValue(error.message)
+                {
+                    Log.d(TAG, it.message.toString())
+                    mResult.postValue(it.message)
                 }).isDisposed
     }
 
@@ -60,11 +63,12 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
 
     private fun insertSales(sdata: GenSales) {
         repository.createDailySales(
-            sdata.sentry.map {it.toSalesEntriesEntity()},
-            sdata.sentryh.map {it.toSalesEntrieHolderEntity()}
+            sdata.sentry.map { it.toSalesEntriesEntity() },
+            sdata.sentryh.map { it.toSalesEntrieHolderEntity() }
         ).subscribe({
             fetchDailySales()
         }, {
+            Log.d(TAG, it.message.toString())
             mResult.postValue(it.message)
         }
         ).isDisposed
@@ -79,15 +83,14 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
             }).isDisposed
     }
 
-    fun validateEntryStatus() : MutableLiveData<Int>{
-
+    fun validateEntryStatus(): MutableLiveData<Int> {
         var mResult = MutableLiveData<Int>()
-
         repository.validateSalesEntry()
             .subscribe({
                 mResult.postValue(it)
                 Log.d(TAG, it.toString())
-            },{
+            }, {
+                Log.d(TAG, it.message.toString())
                 mResult.postValue(null)
             }).isDisposed
 

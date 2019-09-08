@@ -10,6 +10,8 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
 import com.mobbile.paul.mt3_1_1.R
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.bank.BankActivity
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.depots.DepotsActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import kotlinx.android.extensions.LayoutContainer
@@ -71,7 +73,15 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                         intent.putExtra("lng", item.lng)
                         intent.putExtra("visit_sequence", item.sequence_id)
                         intent.putExtra("outletname", item.outletname)
+                        intent.putExtra("defaulttoken", item.defaulttoken)
                     }
+                    3 -> {
+                        intent = Intent(contexts, BankActivity::class.java)
+                    }
+                    4 -> {
+                        intent = Intent(contexts, DepotsActivity::class.java)
+                    }
+
                 }
                 contexts.startActivity(intent)
             }

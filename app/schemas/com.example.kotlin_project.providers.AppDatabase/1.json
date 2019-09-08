@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5ef11f37175333e1405e8cdb2951925c",
+    "identityHash": "3ed9279fdbec5888a1475eb9f30d71ac",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "customers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `visit_sequence` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, `lat` TEXT NOT NULL, `lng` TEXT NOT NULL, `rostertime` TEXT NOT NULL, `sequence_id` TEXT NOT NULL, PRIMARY KEY(`auto`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `notice` TEXT NOT NULL, `urno` TEXT NOT NULL, `customerno` TEXT NOT NULL, `outletname` TEXT NOT NULL, `token` TEXT NOT NULL, `visit_sequence` TEXT NOT NULL, `sort` INTEGER NOT NULL, `outlet_waiver` TEXT NOT NULL, `lat` TEXT NOT NULL, `lng` TEXT NOT NULL, `rostertime` TEXT NOT NULL, `sequence_id` TEXT NOT NULL, `defaulttoken` TEXT NOT NULL, PRIMARY KEY(`auto`))",
         "fields": [
           {
             "fieldPath": "auto",
@@ -129,6 +129,12 @@
             "columnName": "sequence_id",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "defaulttoken",
+            "columnName": "defaulttoken",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -142,7 +148,7 @@
       },
       {
         "tableName": "products",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `separator` TEXT NOT NULL, `separatorname` TEXT NOT NULL, `productcode` TEXT NOT NULL, `productname` TEXT NOT NULL, `qty` TEXT NOT NULL, `soq` TEXT NOT NULL, `rollprice` TEXT NOT NULL, `packprice` TEXT NOT NULL, PRIMARY KEY(`auto`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `separator` TEXT NOT NULL, `separatorname` TEXT NOT NULL, `productcode` TEXT NOT NULL, `productname` TEXT NOT NULL, `qty` TEXT NOT NULL, `soq` TEXT NOT NULL, `rollprice` TEXT NOT NULL, `packprice` TEXT NOT NULL, `totalqtysold` REAL NOT NULL, `totalamountsold` REAL NOT NULL, `totalcommission` REAL NOT NULL, `balanceamount` REAL NOT NULL, PRIMARY KEY(`auto`))",
         "fields": [
           {
             "fieldPath": "auto",
@@ -203,6 +209,30 @@
             "columnName": "packprice",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "totalqtysold",
+            "columnName": "totalqtysold",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalamountsold",
+            "columnName": "totalamountsold",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalcommission",
+            "columnName": "totalcommission",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceamount",
+            "columnName": "balanceamount",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -248,7 +278,7 @@
       },
       {
         "tableName": "salesentries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` TEXT NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -259,7 +289,7 @@
           {
             "fieldPath": "product_id",
             "columnName": "product_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -304,7 +334,7 @@
       },
       {
         "tableName": "salesentriesholders",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` INTEGER NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `seperatorname` TEXT NOT NULL, `orders` REAL NOT NULL, `inventory` REAL NOT NULL, `pricing` INTEGER NOT NULL, `entry_time` TEXT NOT NULL, `order_price` REAL NOT NULL, `contorder` TEXT NOT NULL, `contprincing` TEXT NOT NULL, `continventory` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` TEXT NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `seperatorname` TEXT NOT NULL, `orders` REAL NOT NULL, `inventory` REAL NOT NULL, `pricing` INTEGER NOT NULL, `entry_time` TEXT NOT NULL, `order_price` REAL NOT NULL, `contorder` TEXT NOT NULL, `contprincing` TEXT NOT NULL, `continventory` TEXT NOT NULL, `mtcom` REAL NOT NULL, `mtamt` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -315,7 +345,7 @@
           {
             "fieldPath": "product_id",
             "columnName": "product_id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -401,6 +431,18 @@
             "columnName": "continventory",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "mtcom",
+            "columnName": "mtcom",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mtamt",
+            "columnName": "mtamt",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -411,12 +453,44 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "saleshistory",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`urno` INTEGER NOT NULL, `outletname` TEXT NOT NULL, `times` TEXT NOT NULL, PRIMARY KEY(`urno`))",
+        "fields": [
+          {
+            "fieldPath": "urno",
+            "columnName": "urno",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "outletname",
+            "columnName": "outletname",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "times",
+            "columnName": "times",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "urno"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5ef11f37175333e1405e8cdb2951925c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3ed9279fdbec5888a1475eb9f30d71ac\")"
     ]
   }
 }

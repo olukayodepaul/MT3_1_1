@@ -6,9 +6,14 @@ import androidx.room.TypeConverters
 import com.mobbile.paul.mt3_1_1.models.*
 
 
-@Database(entities = [ModulesRoom::class, Bank_n_CustomersRoom::class,
+@Database(entities = [
+    ModulesRoom::class,
+    Bank_n_CustomersRoom::class,
     ProductsRoom::class,
-    ProductTypeRoom::class, SalesEntriesRoom::class, SalesEntrieHolderRoom::class], version = 1)
+    ProductTypeRoom::class,
+    SalesEntriesRoom::class,
+    SalesEntrieHolderRoom::class,
+    repSalesHistoryRoom::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract val appdao: AppDao

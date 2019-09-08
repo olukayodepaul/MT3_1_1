@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import javax.inject.Inject
 
 class OrderViewModel @Inject constructor(private val repository: Repository): ViewModel() {
 
+    lateinit var allData: postRecieveFromServer
 
     fun fetch() : LiveData<List<SalesEntrieHolderRoom>> {
 
@@ -60,10 +62,53 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
 
         repository.fetchPostSales(list)
             .subscribe({
-
+                if(it != null) {
+                    allData = it.body()!!
+                    saveEntryHistory()
+                }
             },{
 
             }).isDisposed
+    }
+
+    fun saveEntryHistory() {
+
+        var mappers =  repSalesHistoryApi()
+        mappers.outletname = allData.outletname
+        mappers.times = allData.times
+        mappers.urno = allData.urno
+
+        //insert sales history with mappers
+        repository.saveEntryHistory(mappers.toCustomersEntity())
+            .subscribe({
+
+                var upDate: List<UpdateProdcts> = allData.updateproductlist
+
+                for (i in 0..(upDate.size)) {
+
+                    UpdateDailySales(
+                        upDate.get(i).totalqtysold,
+                        upDate.get(i).balanceamount,
+                        upDate.get(i).totalcommission,
+                        upDate.get(i).balanceamount,
+                        upDate.get(i).product_code
+                    )
+
+                    Log.d(TAG, upDate.size.toString()+" "+i.toString())
+
+                    if(i==upDate.size-1) {
+
+                    }
+                }
+            },{
+
+            }).isDisposed
+    }
+
+
+    fun UpdateDailySales(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String){
+        repository.updateProducts(totalq,totalamt,totalcomm,balanceamt,productcode )
+            .subscribe().isDisposed
     }
 
     fun pullAllSalesEntry() : LiveData<List<SalesEntrieHolderApi>> {

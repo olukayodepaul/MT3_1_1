@@ -33,27 +33,28 @@ class OrderedSku : BaseActivity() {
 
     var urno: String = ""
 
-    var token : String? = ""
+    var token: String? = ""
 
-    var outletname : String? =  ""
+    var outletname: String? = ""
+
+    var defaulttoken: String? = ""
 
     var prefs: SharedPreferences? = null
 
-    var employee_id : Int =  0
+    var employee_id: Int = 0
 
-    var visit_sequence : String? = ""
+    var visit_sequence: String? = ""
 
-    var clat  : Double =  0.0
+    var clat: Double = 0.0
 
-    var clng : Double = 0.0
+    var clng: Double = 0.0
 
-    var distance : String? = ""
+    var distance: String? = ""
 
-    var arivaltime : String? = ""
+    var arivaltime: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_ordered_sku)
 
         vmodel = ViewModelProviders.of(this, modelFactory)[OrderViewModel::class.java]
@@ -68,11 +69,13 @@ class OrderedSku : BaseActivity() {
 
         outletname = intent.getStringExtra("outletname")
 
+        defaulttoken = intent.getStringExtra("defaulttoken")
+
         employee_id = prefs!!.getInt("employee_id_user", 0)
 
-        clat = intent.getDoubleExtra("clat",0.0)
+        clat = intent.getDoubleExtra("clat", 0.0)
 
-        clng = intent.getDoubleExtra("clng",0.0)
+        clng = intent.getDoubleExtra("clng", 0.0)
 
         distance = intent.getStringExtra("distance")
 
@@ -86,15 +89,15 @@ class OrderedSku : BaseActivity() {
 
     }
 
-    fun IntAdapter(){
+    fun IntAdapter() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         recycler_view_complete.layoutManager = layoutManager
         recycler_view_complete!!.setHasFixedSize(true)
 
         btn_complete.setOnClickListener {
-            if(!token.equals(token_form.text.toString())){
+            if (!token.equals(token_form.text.toString())) {
                 tokenVerify()
-            }else{
+            } else {
                 vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
             }
         }
@@ -103,10 +106,12 @@ class OrderedSku : BaseActivity() {
     @SuppressLint("SimpleDateFormat")
     private val obervePullinSalesData = Observer<List<SalesEntrieHolderApi>> {
         if (it != null) {
-            vmodel.postSalesToServer(employee_id,urno, token!!,distance!!, arivaltime!!,
+            vmodel.postSalesToServer(
+                employee_id, urno, token!!, distance!!, arivaltime!!,
                 SimpleDateFormat("HH:mm:ss").format(Date()),
                 SimpleDateFormat("yyyy-MM-dd").format(Date()),
-                clat.toString(),clng.toString(),it, visit_sequence!!)
+                clat.toString(), clng.toString(), it, visit_sequence!!
+            )
         }
     }
 
@@ -126,7 +131,7 @@ class OrderedSku : BaseActivity() {
     }
 
     private val obserTotal = Observer<SumSales> {
-        if(it!=null) {
+        if (it != null) {
             s_s_amount.text = it!!.stotalsum.toString()
             s_s_order.text = it!!.sorder.toString()
             s_s_pricing.text = it!!.spricing.toString()
@@ -145,7 +150,7 @@ class OrderedSku : BaseActivity() {
                 //Call submit end point
                 //miss commission of Mobile trader commission
             }
-        val dialog  = builder.create()
+        val dialog = builder.create()
         dialog.show()
     }
 

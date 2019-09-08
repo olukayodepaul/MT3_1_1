@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -23,14 +22,16 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
+        <activity android:name=".ui.sales.sales_history.salesdetails.SalesDetailsActivity"></activity>
+        <activity android:name=".ui.sales.sales.depots.DepotsActivity" />
+        <activity android:name=".ui.sales.sales.bank.BankActivity" />
         <activity
                 android:name=".ui.settings.SettingsActivity"
-                android:label="@string/title_activity_settings"></activity>
-        <activity android:name=".ui.sales.sales.orderedsku.OrderedSku"></activity>
+                android:label="@string/title_activity_settings" />
+        <activity android:name=".ui.sales.sales.orderedsku.OrderedSku" />
         <activity
                 android:name=".ui.sales.sales.salesentries.SalesEntries"
-                android:screenOrientation="portrait"></activity>
+                android:screenOrientation="portrait" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,12 +42,12 @@
         -->
         <activity
                 android:name=".ui.sales.sales.sales_map_manager.UsersMap"
-                android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant"></activity>
-        <activity android:name=".ui.messages.MessagePageViewer"></activity>
-        <activity android:name=".ui.customers.CustomerPageViwer"></activity>
-        <activity android:name=".ui.supervisor.SupervisorPagerViwer"></activity>
-        <activity android:name=".ui.sales.SalesViewpager"></activity>
+                android:screenOrientation="portrait" />
+        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant" />
+        <activity android:name=".ui.messages.MessagePageViewer" />
+        <activity android:name=".ui.customers.CustomerPageViwer" />
+        <activity android:name=".ui.supervisor.SupervisorPagerViwer" />
+        <activity android:name=".ui.sales.SalesViewpager" />
         <activity android:name=".ui.auth.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,11 +55,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.modules.ModulesActivity"></activity>
-
-        <activity android:name=".ui.customers.pictures.TakeOutletPicture">
-
-        </activity>
+        <activity android:name=".ui.modules.ModulesActivity" />
+        <activity android:name=".ui.customers.pictures.TakeOutletPicture" />
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
@@ -71,9 +69,8 @@
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths"/>
+                    android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

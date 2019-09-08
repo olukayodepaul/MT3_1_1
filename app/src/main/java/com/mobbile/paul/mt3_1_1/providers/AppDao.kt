@@ -22,6 +22,11 @@ interface AppDao {
         salesh: List<SalesEntrieHolderRoom>
     )
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveEntryHistory(
+        entryhistory: repSalesHistoryRoom
+    )
+
     @Query("DELETE FROM ModulesRoom")
     fun deleteModulesRoom()
 
@@ -52,8 +57,8 @@ interface AppDao {
     @Query("SELECT * FROM salesentries order by seperator ASC")
     fun fetchDailySales(): List<SalesEntriesRoom>
 
-    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice, contorder=:contOrder, contprincing=:contPrincing, continventory=:contInventory where id=:id and product_id=:product_id")
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: Int, salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)
+    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice, contorder=:contOrder, contprincing=:contPrincing, continventory=:contInventory, mtamt = mtcom * :orders where id=:id and product_id=:product_id")
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: String, salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)
 
     @Query("SELECT * FROM salesentriesholders order by seperator asc")
     fun fetchAllEntryPerDay(): List<SalesEntrieHolderRoom>
@@ -69,6 +74,15 @@ interface AppDao {
 
     @Query("update  customers set rostertime =:rostertime where sort=:sort")
     fun updateCust(sort: Int, rostertime: String)
-}
 
+    @Query("update  products set totalqtysold = totalqtysold + :totalq, totalamountsold = totalamountsold + :totalamt , totalcommission = totalcommission + :totalcomm , balanceamount = balanceamount + :balanceamt   where productcode = :productcode and separator = 1 ")
+    fun updateProducts(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String )
+
+
+
+}
+/*Back end thing*/
+//total_outlet->design an application that will be get all outlet count and put it on a table
+//qty_sole
+//
 

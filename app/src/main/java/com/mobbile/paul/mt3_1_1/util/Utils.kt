@@ -28,7 +28,6 @@ class Utils {
             return current.format(formatter)
         }
 
-        //5km
         fun insideRadius(currentLat: Double, currentLng: Double,
                          customerLat: Double, customerLng: Double
                          ): Boolean {

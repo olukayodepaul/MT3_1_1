@@ -44,7 +44,6 @@ class ModulesAdapter(private var mItems: List<ModulesRoom>, private var contexts
         fun bind(item: ModulesRoom) {
             containerView.tv_name.text = item.name
 
-            //glide view Images
             Glide.with(contexts)
                 .load(item.imageurl)
                 .override(50,50)

@@ -2,6 +2,7 @@ package com.example.kotlin_project.di.modules
 
 import com.example.kotlin_project.di.main.*
 import com.mobbile.paul.mt3_1_1.di.subcomponent.attendant.AttendantModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.bank_n_depot.BankModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.FragmentBuilder
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.SalesComissionModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
@@ -11,6 +12,8 @@ import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
 import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.bank.BankActivity
+import com.mobbile.paul.mt3_1_1.ui.sales.sales.depots.DepotsActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
@@ -79,4 +82,17 @@ abstract class ActivityBuilderModule {
     ])
     abstract fun contributeTakeOutletPicsActivity(): TakeOutletPicture
 
+
+    @BankScope
+    @ContributesAndroidInjector(modules = [
+        BankModel::class
+    ])
+    abstract fun contributeBankModel(): BankActivity
+
+
+    @DepotsScope
+    @ContributesAndroidInjector(modules = [
+        DepotsModule::class
+    ])
+    abstract fun contributeDepotsModule(): DepotsActivity
 }
