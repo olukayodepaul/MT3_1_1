@@ -148,7 +148,7 @@ class SalesEntries : BaseActivity() {
 
     private fun reloadData() {
         showProgressBar(true)
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
         builder.setMessage("Seems there is Network error, try _reload. Thanks!")
             .setTitle("Cloud Error")
             .setIcon(R.drawable.icons8_cloud_refresh_256)
@@ -161,7 +161,7 @@ class SalesEntries : BaseActivity() {
     }
 
     private fun notifyValidation() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
         builder.setMessage("Please enter all the fields and save. Thanks!")
             .setTitle("Error entries")
             .setIcon(R.drawable.icons8_error_90)

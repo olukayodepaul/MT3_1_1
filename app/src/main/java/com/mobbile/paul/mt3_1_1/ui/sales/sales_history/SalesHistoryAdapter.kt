@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales_history
 
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -21,7 +22,7 @@ class SalesHistoryAdapter(private var mItems: List<repSalesHistoryRoom>, private
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v = LayoutInflater.from(p0.context)
-            .inflate(R.layout.sales_adapter, p0, false)
+            .inflate(R.layout.sales_history_adapter, p0, false)
         return ViewHolder(v)
     }
 
@@ -44,23 +45,41 @@ class SalesHistoryAdapter(private var mItems: List<repSalesHistoryRoom>, private
         fun bind(item: repSalesHistoryRoom) {
 
             var letter: String? = item.outletname.substring(0, 1)
-
             var generator = ColorGenerator.MATERIAL
-
             var drawable = TextDrawable.builder()
                 .buildRound(letter, generator.getRandomColor())
 
             containerView.imageView.setImageDrawable(drawable)
-            containerView.tv_name.text = item.outletname
+            containerView.tv_name.text = item.outletname.toLowerCase().capitalize()
+            containerView.tv_titles.text = item.outletstatus
             containerView.timesetups.text = item.times
 
             containerView.setOnClickListener {
-                var intent: Intent? = null
-                intent = Intent(contexts, SalesDetailsActivity::class.java)
-                intent.putExtra("lat", item.urno)
-                contexts.startActivity(intent)
+
+                when(item.outletstatus) {
+                    "open"->{
+                        var intent = Intent(contexts, SalesDetailsActivity::class.java)
+                        intent.putExtra("token", item.urno)
+                        contexts.startActivity(intent)
+                    }
+                    "close"->{
+                        alert()
+                    }
+                }
             }
         }
+    }
+
+    fun alert(){
+        val builder = AlertDialog.Builder(contexts, R.style.AlertDialogDanger)
+        builder.setMessage("This customer did not purchase any product. Thanks!")
+            .setTitle("Outlet Close No Purchase")
+            .setIcon(R.drawable.icons8_error_90)
+            .setCancelable(false)
+            .setNegativeButton("OK") { _, _ ->
+            }
+        val dialog  = builder.create()
+        dialog.show()
     }
 }
 

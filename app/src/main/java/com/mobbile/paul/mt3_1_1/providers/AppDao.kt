@@ -22,6 +22,7 @@ interface AppDao {
         salesh: List<SalesEntrieHolderRoom>
     )
 
+    //this already handle update or insert into the database
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveEntryHistory(
         entryhistory: repSalesHistoryRoom
@@ -78,11 +79,16 @@ interface AppDao {
     @Query("update  products set totalqtysold = totalqtysold + :totalq, totalamountsold = totalamountsold + :totalamt , totalcommission = totalcommission + :totalcomm , balanceamount = balanceamount + :balanceamt   where productcode = :productcode and separator = 1 ")
     fun updateProducts(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String )
 
+    @Query("SELECT * FROM saleshistory")
+    fun fetchAllSalesEntries() : List<repSalesHistoryRoom>
+
+    @Query("SELECT * FROM PRODUCTS where separator = 1")
+    fun fetchSoldItems() : List<ProductsRoom>
+
+    @Query("SELECT SUM(qty) AS qty, SUM(totalqtysold)  AS tqsols, SUM(totalamountsold) AS tasole, SUM(totalcommission) AS tcco  FROM products where separator = 1")
+    fun sumProductEntry(): totalSumProductEntry
 
 
 }
-/*Back end thing*/
-//total_outlet->design an application that will be get all outlet count and put it on a table
-//qty_sole
-//
+
 

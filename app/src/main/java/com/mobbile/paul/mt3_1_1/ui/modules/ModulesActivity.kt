@@ -123,7 +123,7 @@ class ModulesActivity : BaseActivity() {
     }
 
     private fun GPSPermissionRationaleAlert() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
         builder.setMessage("Without allowing GPS permission, this application will not work for you")
             .setTitle("GPS Permission")
             .setCancelable(false)
@@ -138,7 +138,7 @@ class ModulesActivity : BaseActivity() {
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if(!hasGps) {
-            val builder = AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
             builder.setMessage("Your location need to be put On")
                 .setTitle("GPS Enable")
                 .setCancelable(false)

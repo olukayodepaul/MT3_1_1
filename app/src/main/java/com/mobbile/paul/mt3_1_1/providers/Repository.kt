@@ -198,6 +198,36 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun fetchAllSalesEntries(): Single<List<repSalesHistoryRoom>> =
+        Single.fromCallable {
+            appDao.fetchAllSalesEntries()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun outletSales(token: Int): Single<Response<OutletSalesHistory>> =
+        api.outletSales(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun fetchSoldItems(): Single<List<ProductsRoom>> =
+        Single.fromCallable {
+            appDao.fetchSoldItems()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun sumProductEntry(): Observable<totalSumProductEntry> =
+        Observable.fromCallable {
+            appDao.sumProductEntry()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun conputSalesCom(user_id: Int, dates: String): Single<Response<salesCommisssion>> =
+        api.conputSalesCom(user_id, dates)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
 }
 
 

@@ -13,6 +13,8 @@
     <string name="menu_history">History</string>
     <string name="menu_commission">Commission</string>
     <string name="ats">Attendant</string>
+    <string name="bnks">Payment Bank</string>
+    <string name="rcl">Depot Reconciliation</string>
     <string name="rt">Resume</string>
     <string name="ct">Clockout</string>
 

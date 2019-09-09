@@ -140,7 +140,7 @@ class OrderedSku : BaseActivity() {
     }
 
     private fun tokenVerify() {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
         builder.setMessage("Please enter valid customer code! Or do you want to use default token")
             .setTitle("Incorrect Token")
             .setIcon(R.drawable.icons8_validation_100)

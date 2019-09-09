@@ -18,6 +18,7 @@ import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
+import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.salesdetails.SalesDetailsActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -95,4 +96,13 @@ abstract class ActivityBuilderModule {
         DepotsModule::class
     ])
     abstract fun contributeDepotsModule(): DepotsActivity
+
+
+    @SalesDetailsScope
+    @ContributesAndroidInjector(
+        modules = [
+            SalesDetailsModule::class
+        ]
+    )
+    abstract fun contributeSalesDetailsModuleAndroidInjector(): SalesDetailsActivity
 }

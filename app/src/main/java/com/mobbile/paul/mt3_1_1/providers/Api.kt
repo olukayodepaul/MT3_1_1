@@ -1,10 +1,7 @@
 package com.example.kotlin_project.providers
 
 
-import com.mobbile.paul.mt3_1_1.models.EmployeesApi
-import com.mobbile.paul.mt3_1_1.models.GenSales
-import com.mobbile.paul.mt3_1_1.models.postRecieveFromServer
-import com.mobbile.paul.mt3_1_1.models.postToServer
+import com.mobbile.paul.mt3_1_1.models.*
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.Body
@@ -62,4 +59,19 @@ interface Api {
         @Query("userid") userid: Int,
         @Query("dates") dates: String
     ): Single<Response<EmployeesApi>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/outletsales")
+    fun outletSales(
+        @Query("token") token: Int
+    ): Single<Response<OutletSalesHistory>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/salescom")
+    fun conputSalesCom(
+        @Query("user_id") user_id: Int,
+        @Query("dates") dates: String
+    ): Single<Response<salesCommisssion>>
+
+
 }

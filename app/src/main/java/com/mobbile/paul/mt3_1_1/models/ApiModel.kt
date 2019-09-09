@@ -332,6 +332,9 @@ data class postRecieveFromServer (
     @SerializedName("times")
     @Expose
     var times: String = "",
+    @SerializedName("outletstatus")
+    @Expose
+    var outletstatus: String = "",
     @SerializedName("updateproductlist")
     @Expose
     var updateproductlist: List<UpdateProdcts>
@@ -487,14 +490,88 @@ data class repSalesHistoryApi (
     var outletname: String = "",
     @SerializedName("times")
     @Expose
-    var times: String = ""
+    var times: String = "",
+    @SerializedName("outletstatus")
+    @Expose
+    var outletstatus: String = ""
 )
 
 fun repSalesHistoryApi.toCustomersEntity(): repSalesHistoryRoom {
     return repSalesHistoryRoom(
-       urno, outletname, times
+       urno, outletname, times, outletstatus
     )
 }
+
+data class OutletSalesHistory (
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("shisto")
+    @Expose
+    var shisto: List<OutletSalesHistoryDetails>
+)
+
+data class OutletSalesHistoryDetails (
+    @SerializedName("product_name")
+    @Expose
+    var product_name: String = "",
+    @SerializedName("pricing")
+    @Expose
+    var pricing: String = "",
+    @SerializedName("inventory")
+    @Expose
+    var inventory: String = "",
+    @SerializedName("orders")
+    @Expose
+    var orders: String = "",
+    @SerializedName("amount")
+    @Expose
+    var amount: String = "",
+    @SerializedName("com")
+    @Expose
+    var com: String = ""
+)
+
+data class totalSumProductEntry(
+    var qty: Double = 0.0,
+    var tqsols: Double = 0.0,
+    var tasole: Double = 0.0,
+    var tcco: Double = 0.0
+)
+
+data class salesCommisssion (
+
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("flueamount")
+    @Expose
+    var flueamount: String = "",
+    @SerializedName("fluedate")
+    @Expose
+    var fluedate: String = "",
+    @SerializedName("ovmamount")
+    @Expose
+    var ovmamount: String = "",
+    @SerializedName("ovmdate")
+    @Expose
+    var ovmdate: String = "",
+    @SerializedName("salescomamount")
+    @Expose
+    var salescomamount: String = "",
+    @SerializedName("salescomdate")
+    @Expose
+    var salescomdate: String = "",
+    @SerializedName("mtcomamount")
+    @Expose
+    var mtcomamount: String = "",
+    @SerializedName("mtcomdate")
+    @Expose
+    var mtcomdate: String = ""
+
+)
+
+
 
 
 

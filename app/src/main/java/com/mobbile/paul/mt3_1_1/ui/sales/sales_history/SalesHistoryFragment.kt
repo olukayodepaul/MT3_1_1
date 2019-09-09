@@ -2,7 +2,6 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales_history
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +27,7 @@ class SalesHistoryFragment : DaggerFragment() {
     private lateinit var mAdapter: SalesHistoryAdapter
 
 
-
-    lateinit var vmodel: SalesHistoryFragment_ViewModel
+    lateinit var vmodel: SalesHistoryFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,16 +38,15 @@ class SalesHistoryFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        vmodel = ViewModelProviders.of(this, modelFactory)[SalesHistoryFragment_ViewModel::class.java]
+        vmodel = ViewModelProviders.of(this, modelFactory)[SalesHistoryFragmentViewModel::class.java]
+        vmodel.pullAllSalesEntry().observe(this, observers)
         initWidget()
     }
 
     fun initWidget(){
-
         h_widget.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this.requireContext())
         h_widget.layoutManager = layoutManager
-
     }
 
     val observers = Observer<List<repSalesHistoryRoom>> {
@@ -63,7 +60,7 @@ class SalesHistoryFragment : DaggerFragment() {
     }
 
     fun showProgressBar(visible: Boolean) {
-        base_progress_bar.visibility =
+        base_progress_bars.visibility =
             if (visible)
                 View.VISIBLE
             else

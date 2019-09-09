@@ -77,6 +77,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
         mappers.outletname = allData.outletname
         mappers.times = allData.times
         mappers.urno = allData.urno
+        mappers.outletstatus = allData.outletstatus
 
         //insert sales history with mappers
         repository.saveEntryHistory(mappers.toCustomersEntity())

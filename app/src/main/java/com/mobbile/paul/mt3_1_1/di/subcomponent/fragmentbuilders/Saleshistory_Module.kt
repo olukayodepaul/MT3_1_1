@@ -2,7 +2,7 @@ package com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders
 
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.di.modules.ViewModelKey
-import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.SalesHistoryFragment_ViewModel
+import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.SalesHistoryFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,7 +12,7 @@ abstract class Saleshistory_Module {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SalesHistoryFragment_ViewModel::class)
-    abstract fun bindsaleshistory_Module(viewModel: SalesHistoryFragment_ViewModel): ViewModel
+    @ViewModelKey(SalesHistoryFragmentViewModel::class)
+    abstract fun bindsaleshistory_Module(viewModel: SalesHistoryFragmentViewModel): ViewModel
 
 }

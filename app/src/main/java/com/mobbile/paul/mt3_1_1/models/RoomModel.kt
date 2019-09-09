@@ -101,7 +101,8 @@ data class repSalesHistoryRoom(
     @PrimaryKey(autoGenerate = false)
     var urno: Int = 0,
     var outletname: String = "",
-    var times: String = ""
+    var times: String = "",
+    var outletstatus: String = ""
 )
 
 
