@@ -9,6 +9,8 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
+import com.mobbile.paul.mt3_1_1.ui.customers.CustomerPageViwer
+import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.EditCustomerActivity
 import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
@@ -105,4 +107,21 @@ abstract class ActivityBuilderModule {
         ]
     )
     abstract fun contributeSalesDetailsModuleAndroidInjector(): SalesDetailsActivity
+
+    @CustomersScope
+    @ContributesAndroidInjector(
+        modules = [
+            CustomersModule::class
+        ]
+    )
+    abstract fun contributeCustomersModuleAndroidInjector(): CustomerPageViwer
+
+    @CustomersScope
+    @ContributesAndroidInjector(
+        modules = [
+            CustomersModule::class
+        ]
+    )
+    abstract fun contributeEditCustomerActivityAndroidInjector(): EditCustomerActivity
+
 }

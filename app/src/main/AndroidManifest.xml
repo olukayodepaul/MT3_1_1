@@ -22,7 +22,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.sales.sales_history.salesdetails.SalesDetailsActivity"></activity>
+        <activity android:name=".ui.customers.editcustomer.EditCustomerActivity"></activity>
+        <activity android:name=".ui.sales.sales_history.salesdetails.SalesDetailsActivity" />
         <activity android:name=".ui.sales.sales.depots.DepotsActivity" />
         <activity android:name=".ui.sales.sales.bank.BankActivity" />
         <activity
@@ -45,7 +46,7 @@
                 android:screenOrientation="portrait" />
         <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant" />
         <activity android:name=".ui.messages.MessagePageViewer" />
-        <activity android:name=".ui.customers.CustomerPageViwer" />
+        <activity android:name=".ui.customers.CustomerPageViwer" android:screenOrientation="portrait" />
         <activity android:name=".ui.supervisor.SupervisorPagerViwer" />
         <activity android:name=".ui.sales.SalesViewpager" />
         <activity android:name=".ui.auth.AuthActivity">

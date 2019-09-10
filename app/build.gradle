@@ -8,6 +8,11 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
+
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -35,7 +40,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
+
+
 
 dependencies {
 
@@ -152,6 +160,8 @@ dependencies {
     implementation 'com.github.salomonbrys.kotson:kotson:2.5.0'
 
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+
 
 
 }

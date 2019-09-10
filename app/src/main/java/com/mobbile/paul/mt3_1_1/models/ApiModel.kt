@@ -1,7 +1,9 @@
 package com.mobbile.paul.mt3_1_1.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
 data class EmployeesApi(
@@ -570,6 +572,70 @@ data class salesCommisssion (
     var mtcomdate: String = ""
 
 )
+
+data class AllCustomers (
+
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("repcustomers")
+    @Expose
+    var repcustomers: List<RepCustomers>? = null
+
+)
+
+@Parcelize
+data class RepCustomers(
+    @SerializedName("auto")
+    @Expose
+    var auto: Int = 0,
+    @SerializedName("id")
+    @Expose
+    var id: Int = 0,
+    @SerializedName("urno")
+    @Expose
+    var urno: Int = 0,
+    @SerializedName("customerno")
+    @Expose
+    var customerno: String = "",
+    @SerializedName("outletclassid")
+    @Expose
+    var outletclassid: String = "",
+    @SerializedName("outletlanguageid")
+    @Expose
+    var outletlanguageid: String = "",
+    @SerializedName("outlettypeid")
+    @Expose
+    var outlettypeid: String = "",
+    @SerializedName("outletname")
+    @Expose
+    var outletname: String = "",
+    @SerializedName("outletaddress")
+    @Expose
+    var outletaddress: String = "",
+    @SerializedName("contactname")
+    @Expose
+    var contactname: String = "",
+    @SerializedName("contactphone")
+    @Expose
+    var contactphone: String = "",
+    @SerializedName("latitude")
+    @Expose
+    var latitude: String = "",
+    @SerializedName("longitude")
+    @Expose
+    var longitude: String = "",
+    @SerializedName("outlet_pic")
+    @Expose
+    var outlet_pic: String = ""
+): Parcelable
+
+
+
+
+
+
+
 
 
 

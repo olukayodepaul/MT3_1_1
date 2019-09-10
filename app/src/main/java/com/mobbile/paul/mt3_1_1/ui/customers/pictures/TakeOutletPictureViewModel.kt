@@ -25,5 +25,6 @@ class TakeOutletPictureViewModel @Inject constructor(private val repository: Rep
             },{
                 //mResult.postValue(null)
             }).isDisposed
+
     }
 }

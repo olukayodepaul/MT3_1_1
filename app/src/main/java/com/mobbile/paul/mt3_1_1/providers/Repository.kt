@@ -228,6 +228,18 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
+    fun getAllCustomers(user_id: Int): Single<Response<AllCustomers>> =
+        api.getAllCustomers(user_id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun fatchSpinners(types: Int): Single<List<ProductTypeRoom>> =
+        Single.fromCallable {
+            appDao.fatchSpinners(types)
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
 }
 
 

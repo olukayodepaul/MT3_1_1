@@ -66,6 +66,7 @@ interface Api {
         @Query("token") token: Int
     ): Single<Response<OutletSalesHistory>>
 
+    //service not yet implemented
     @Headers("Connection:close")
     @POST("/mobiletrader/salescom")
     fun conputSalesCom(
@@ -73,5 +74,11 @@ interface Api {
         @Query("dates") dates: String
     ): Single<Response<salesCommisssion>>
 
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/allmycustomer")
+    fun getAllCustomers(
+        @Query("user_id") user_id: Int
+    ): Single<Response<AllCustomers>>
 
 }

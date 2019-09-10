@@ -88,6 +88,9 @@ interface AppDao {
     @Query("SELECT SUM(qty) AS qty, SUM(totalqtysold)  AS tqsols, SUM(totalamountsold) AS tasole, SUM(totalcommission) AS tcco  FROM products where separator = 1")
     fun sumProductEntry(): totalSumProductEntry
 
+    @Query("SELECT * FROM producttyperoom where sep = :types")
+    fun fatchSpinners(types: Int) : List<ProductTypeRoom>
+
 
 }
 
