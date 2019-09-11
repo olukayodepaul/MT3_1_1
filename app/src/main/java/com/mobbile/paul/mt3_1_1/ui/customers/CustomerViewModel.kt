@@ -21,9 +21,7 @@ class CustomerViewModel  @Inject constructor(private val repository: Repository)
     }
 
     fun getAllCustomers(user_id: Int) : LiveData<List<RepCustomers>> {
-
         var mResult = MutableLiveData<List<RepCustomers>>()
-
         repository.getAllCustomers(user_id)
             .subscribe({
                 if(it.body()!!.status==200) {
@@ -38,7 +36,6 @@ class CustomerViewModel  @Inject constructor(private val repository: Repository)
     }
 
     fun fetchSpinners() : LiveData<List<ProductTypeRoom>> {
-
         var mResult = MutableLiveData<List<ProductTypeRoom>>()
 
         repository.fetchSpinners()
@@ -53,7 +50,6 @@ class CustomerViewModel  @Inject constructor(private val repository: Repository)
     fun reSetCustomerProfile(outletname: String, contactname: String, address: String, phone : String,
                              outlet_class_id: Int, outlet_language_id : Int, outlet_type_id : Int,
                              custno : Int, lat: Double, lng: Double) {
-
         repository.reSetCustomerProfile(outletname, contactname, address, phone, outlet_class_id, outlet_language_id, outlet_type_id, custno, lat, lng)
             .subscribe({
                 vals = it!!.body()
@@ -62,7 +58,6 @@ class CustomerViewModel  @Inject constructor(private val repository: Repository)
                 Log.d(TAG, it.message)
                 mutaleResult.postValue(null)
             }).isDisposed
-
     }
 
 

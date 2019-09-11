@@ -18,8 +18,7 @@ import kotlinx.android.synthetic.main.customer_adapter.view.tv_titles
 
 
 
-class CustomersAdapter(private var mItems: List<RepCustomers>, private var context: Context) :
-    RecyclerView.Adapter<CustomersAdapter.ViewHolder>() {
+class CustomersAdapter(private var mItems: List<RepCustomers>, private var context: Context) : RecyclerView.Adapter<CustomersAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v = LayoutInflater.from(p0.context)
@@ -40,8 +39,7 @@ class CustomersAdapter(private var mItems: List<RepCustomers>, private var conte
         private val TAG = "CustomersAdapter"
     }
 
-    inner class ViewHolder(override val containerView: View) :
-        RecyclerView.ViewHolder(containerView),
+    inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: RepCustomers) {
 

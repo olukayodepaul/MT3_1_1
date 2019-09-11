@@ -46,7 +46,7 @@ class EditCustomerActivity : BaseActivity() {
 
     lateinit var preferedLangAdapter : PreferedLanguageSpinnerAdapter
 
-    lateinit var outletTypeAdapter: CustomerClassSpinnerAdapter
+    lateinit var outletTypeAdapter: OutletTypeSpinnerAdapter
 
     private var hasGps = false
 
@@ -71,7 +71,7 @@ class EditCustomerActivity : BaseActivity() {
 
         customerClassAdapter = CustomerClassSpinnerAdapter()
         preferedLangAdapter = PreferedLanguageSpinnerAdapter()
-        outletTypeAdapter = CustomerClassSpinnerAdapter()
+        outletTypeAdapter = OutletTypeSpinnerAdapter()
 
         checkLocationPermission()
 
@@ -96,6 +96,8 @@ class EditCustomerActivity : BaseActivity() {
             val preLangsList = ArrayList<String>()
             val outletTypeList = ArrayList<String>()
             if (customerClassAdapter.size() > 0) { customerClassAdapter.clear()}
+            if (preferedLangAdapter.size() > 0) { preferedLangAdapter.clear()}
+            if (outletTypeAdapter.size() > 0) { outletTypeAdapter.clear()}
             for(i in it.indices) {
                 when(it[i].sep) {
                     1->{
@@ -126,7 +128,6 @@ class EditCustomerActivity : BaseActivity() {
             mOutletType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             outlettypeedit!!.adapter = mOutletType
             outlettypeedit!!.setSelection(outletTypeAdapter.getIndexById(customers.outlettypeid.toInt()))
-
             showProgressBar(false)
         }
     }
