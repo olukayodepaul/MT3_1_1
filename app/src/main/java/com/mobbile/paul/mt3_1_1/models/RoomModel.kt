@@ -56,6 +56,7 @@ data class ProductsRoom(
 @Entity
 data class ProductTypeRoom (
     @PrimaryKey(autoGenerate = false)
+    var auto : Int = 0 ,
     var id: Int = 0,
     var name: String = "",
     var sep: Int = 0

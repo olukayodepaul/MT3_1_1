@@ -1,5 +1,6 @@
 package com.mobbile.paul.mt3_1_1.ui.customers.pictures
 
+import androidx.lifecycle.Observer
 import android.app.ProgressDialog
 import android.net.Uri
 import android.os.Bundle
@@ -13,8 +14,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
@@ -25,6 +24,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.mobbile.paul.mt3_1_1.BuildConfig
+import com.mobbile.paul.mt3_1_1.models.Attendance
+import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import java.io.File
 import java.io.IOException
@@ -39,8 +40,6 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
     internal lateinit var modelFactory: ViewModelProvider.Factory
 
     lateinit var vmodel: TakeOutletPictureViewModel
-
-    private lateinit var pickImage: Button
 
     private lateinit var upload: Button
 
@@ -58,34 +57,44 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
 
     private var postPath: String? = null
 
+    var urno: Int? = 0
+
+    var url: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_take_outlet_picture)
-
         vmodel = ViewModelProviders.of(this, modelFactory)[TakeOutletPictureViewModel::class.java]
-
-        pickImage = findViewById(R.id.pickImage)
         upload = findViewById(R.id.upload)
         save_pics = findViewById(R.id.save_pics)
 
-        pickImage.setOnClickListener(this)
+
         upload.setOnClickListener(this)
         save_pics.setOnClickListener(this)
 
         imageView = findViewById(R.id.imageView)
-        initDialog()
 
+        urno = intent.getIntExtra("urno",0)
+
+        url = intent.getStringExtra("url")
+
+        Glide.with(this)
+            .load(url)
+            .centerCrop()
+            .into(imageView!!)
+
+        showProgressBar(false)
+
+        initDialog()
     }
 
     protected fun initDialog() {
-
         pDialog = ProgressDialog(this)
         pDialog.setMessage(getString(R.string.msg_loading))
         pDialog.setCancelable(true)
-
     }
 
-    protected fun showpDialog() {
+    protected fun showDialog() {
         if (!pDialog.isShowing) pDialog.show()
     }
 
@@ -100,28 +109,28 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
         }else{
             when(values){
                 1->{
-
                     var  pickPhoto = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                     pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     startActivityForResult(pickPhoto, REQUEST_PICK_PHOTO)
                 }
                 2->{
-
                     val callCameraApplicationIntent = Intent()
                     callCameraApplicationIntent.action = MediaStore.ACTION_IMAGE_CAPTURE
-
                     var photoFile: File? = null
-
                     try {
-
                         photoFile = createImageFile()
                         val outputUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", photoFile)
                         callCameraApplicationIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
                         callCameraApplicationIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         startActivityForResult(callCameraApplicationIntent, CAMERA_PIC_REQUEST)
-
                     } catch (e: IOException) {
                         e.printStackTrace()
+                    }
+                }
+                3->{
+                    if(!postPath.isNullOrBlank()){
+                        showDialog()
+                        vmodel.uploadPhoto(postPath!!, urno!!).observe(this, ObserveImage)
                     }
                 }
             }
@@ -130,17 +139,12 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
 
     @Throws(IOException::class)
     internal fun createImageFile(): File {
-
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmSS").format(Date())
         val imageFileName = "MT_" + timeStamp
         var storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/Images")
-
         if (!storageDirectory!!.exists()) storageDirectory.mkdir()
-
         val image = File(storageDirectory, imageFileName + ".jpg")
-
         mImageFileLocation = image.absolutePath
-
         return image
     }
 
@@ -152,43 +156,35 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
         when (requestCode) {
             REQUEST_PICK_PHOTO -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    imagePermissionRationare()
+                    requestImagePermission()
                 }
             }
         }
     }
 
-    private fun imagePermissionRationare() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("Without allowing Camera permission, you will not bbe able to take picture")
-            .setTitle("Camera Permission")
-            .setCancelable(false)
-            .setNegativeButton("OK") { _, _ ->
-                requestImagePermission()
-            }
-        val dialog  = builder.create()
-        dialog.show()
-    }
-
     override fun onClick(v: View?) {
-
         when (v!!.id) {
-
-            R.id.pickImage-> {
-                checkCameraPermission(1)
-            }
             R.id.upload-> {
                 checkCameraPermission(2)
             }
             R.id.save_pics-> {
-                if(!postPath.isNullOrBlank()){
-                    showpDialog()
-                    vmodel.uploadPhoto(postPath!!)
-                }else{
-                    //Comment from here
-                }
+                //check permission here
+                checkCameraPermission(3)
             }
         }
+    }
+
+    val ObserveImage = Observer<Attendance> {
+        if(it!=null){
+            if(it.status==200) {
+                Messages(1, "Success", it.msg)
+            }else{
+                Messages(2, "Error", it.msg)
+            }
+        }else{
+            Messages(1, "Error", "Error with the Internet, check your network. Thanks!")
+        }
+        initDialog()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -203,26 +199,21 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_TAKE_PHOTO || requestCode == REQUEST_PICK_PHOTO) {
                 if (data != null) {
-
                     val dp = getPathDeprecated(this, data.data)
                     imageView!!.setImageURI(data.data)
                     Log.d(TAG, dp!!)
-
                     postPath = dp
                 }
-
             } else if (requestCode == CAMERA_PIC_REQUEST) {
-
-                    Glide.with(this).load(mImageFileLocation).into(imageView!!)
+                    Glide.with(this)
+                        .load(mImageFileLocation)
+                        .centerCrop()
+                        .into(imageView!!)
                     postPath = mImageFileLocation
-
-                    Log.d(TAG, "$postPath part 2")
             }
-
         } else if (resultCode != Activity.RESULT_CANCELED) {
             Toast.makeText(this, "Sorry, there was an error!", Toast.LENGTH_LONG).show()
         }
@@ -242,12 +233,30 @@ class TakeOutletPicture : BaseActivity(),  View.OnClickListener  {
         return uri.path
     }
 
-
-
-    companion object{
+    companion object {
         private val REQUEST_TAKE_PHOTO = 0
         private val REQUEST_PICK_PHOTO = 2
         private val CAMERA_PIC_REQUEST = 1111
         val TAG = "TakeOutletPicture"
+    }
+
+    private fun Messages(status: Int, msg: String, title: String) {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
+        builder.setMessage(title)
+            .setTitle(msg)
+            .setIcon(R.drawable.icons8_google_alerts_100)
+            .setCancelable(false)
+            .setNegativeButton("OK") { _, _ ->
+
+                when(status){
+                   1->{
+                       var intent = Intent(this, ModulesActivity::class.java )
+                       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                       startActivity(intent)
+                   }
+                }
+            }
+        val dialog  = builder.create()
+        dialog.show()
     }
 }

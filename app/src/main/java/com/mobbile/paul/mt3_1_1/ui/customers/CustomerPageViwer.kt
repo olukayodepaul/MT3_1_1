@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.RepCustomers
-import com.mobbile.paul.mt3_1_1.util.Utils
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_customer_page_viwer.*

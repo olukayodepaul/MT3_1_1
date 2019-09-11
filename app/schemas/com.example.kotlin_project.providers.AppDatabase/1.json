@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f93d29f22da47c22b6d977e6fc165507",
+    "identityHash": "f4a1327bf5d1921e81c6d98b8e155a8e",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -246,8 +246,14 @@
       },
       {
         "tableName": "ProductTypeRoom",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `sep` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`auto` INTEGER NOT NULL, `id` INTEGER NOT NULL, `name` TEXT NOT NULL, `sep` INTEGER NOT NULL, PRIMARY KEY(`auto`))",
         "fields": [
+          {
+            "fieldPath": "auto",
+            "columnName": "auto",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
@@ -269,7 +275,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "auto"
           ],
           "autoGenerate": false
         },
@@ -496,7 +502,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f93d29f22da47c22b6d977e6fc165507\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4a1327bf5d1921e81c6d98b8e155a8e\")"
     ]
   }
 }

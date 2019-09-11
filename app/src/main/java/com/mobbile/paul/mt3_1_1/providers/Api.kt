@@ -41,8 +41,9 @@ interface Api {
     @Multipart
     @POST("/mobiletrader/mapcustomers")
     fun upload(
+        @Query("urno") urno: Int,
         @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>
-    ): Single<Response<EmployeesApi>>
+    ): Single<Response<Attendance>>
 
     @Headers("Connection:close")
     @POST("/mobiletrader/employeetask")
@@ -74,11 +75,24 @@ interface Api {
         @Query("dates") dates: String
     ): Single<Response<salesCommisssion>>
 
-
     @Headers("Connection:close")
     @POST("/mobiletrader/allmycustomer")
     fun getAllCustomers(
         @Query("user_id") user_id: Int
     ): Single<Response<AllCustomers>>
+
+    @POST("/mobiletrader/customerprofile")
+    fun reSetCustomerProfile (
+    @Query("outletname") outletname: String,
+    @Query("contactname") contactname: String,
+    @Query("address") address: String,
+    @Query("phone") phone: String,
+    @Query("outlet_class_id") outlet_class_id: Int,
+    @Query("outlet_language_id")  outlet_language_id: Int,
+    @Query("outlet_type_id") outlet_type_id : Int,
+    @Query("custno") custno : Int,
+    @Query("lat") lat: Double,
+    @Query("lng") lng: Double
+    ): Single<Response<Attendance>>
 
 }

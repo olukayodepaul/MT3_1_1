@@ -159,6 +159,9 @@ data class ProductsApi(
 )
 
 data class ProductTypeApi(
+    @SerializedName("auto")
+    @Expose
+    var auto: Int = 0,
     @SerializedName("id")
     @Expose
     var id: Int = 0,
@@ -234,6 +237,7 @@ fun ProductsApi.toProductEntity(): ProductsRoom {
 
 fun ProductTypeApi.toProductTypeRoomEntity(): ProductTypeRoom {
     return ProductTypeRoom(
+        auto,
         id,
         name,
         sep
@@ -459,7 +463,6 @@ data class SalesEntrieHolderApi(
     var mtamt: Double = 0.0
 )
 
-//
 fun SalesEntrieHolderApi.toSalesEntrieHolderEntity(): SalesEntrieHolderRoom {
     return SalesEntrieHolderRoom(
         id,
@@ -542,7 +545,6 @@ data class totalSumProductEntry(
 )
 
 data class salesCommisssion (
-
     @SerializedName("status")
     @Expose
     var status: Int = 0,
@@ -570,18 +572,15 @@ data class salesCommisssion (
     @SerializedName("mtcomdate")
     @Expose
     var mtcomdate: String = ""
-
 )
 
 data class AllCustomers (
-
     @SerializedName("status")
     @Expose
     var status: Int = 0,
     @SerializedName("repcustomers")
     @Expose
     var repcustomers: List<RepCustomers>? = null
-
 )
 
 @Parcelize
@@ -630,7 +629,17 @@ data class RepCustomers(
     var outlet_pic: String = ""
 ): Parcelable
 
-
+data class Attendance(
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("msg")
+    @Expose
+    var msg: String = "",
+    @SerializedName("rtype")
+    @Expose
+    var rtype: Int = 0
+)
 
 
 

@@ -157,8 +157,8 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     }.subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
 
-    fun getUploadImage(map: Map<String, RequestBody>): Single<Response<EmployeesApi>> =
-        api.upload(map)
+    fun getUploadImage(map: Map<String, RequestBody>, urno: Int): Single<Response<Attendance>> =
+        api.upload(urno, map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
@@ -234,9 +234,23 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
-    fun fatchSpinners(types: Int): Single<List<ProductTypeRoom>> =
+    fun fetchSpinners(): Single<List<ProductTypeRoom>> =
         Single.fromCallable {
-            appDao.fatchSpinners(types)
+            appDao.fetchSpinners()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun reSetCustomerProfile(outletname: String, contactname: String, address: String, phone : String,
+                             outlet_class_id: Int, outlet_language_id : Int, outlet_type_id : Int,
+                             custno : Int, lat: Double, lng: Double): Single<Response<Attendance>> =
+        api.reSetCustomerProfile(outletname, contactname, address, phone, outlet_class_id, outlet_language_id, outlet_type_id, custno, lat, lng)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun updareLocalCustomer(outletname: String, lat: String, lng: String, urno: String ) =
+        Observable.fromCallable {
+            appDao.updareLocalCustomer(outletname, lat, lng, urno)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

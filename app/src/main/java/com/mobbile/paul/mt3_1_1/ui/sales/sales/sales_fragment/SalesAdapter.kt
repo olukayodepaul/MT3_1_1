@@ -53,7 +53,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                 .buildRound(letter, generator.getRandomColor())
 
             containerView.imageView.setImageDrawable(drawable)
-            containerView.tv_name.text = item.outletname
+            containerView.tv_name.text = item.outletname.toLowerCase().capitalize()
             containerView.tv_titles.text = item.notice
             containerView.timesetups.text = item.rostertime
 

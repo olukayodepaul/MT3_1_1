@@ -2,7 +2,7 @@ package com.mobbile.paul.mt3_1_1.ui.customers.editcustomer
 
 import java.util.ArrayList
 
-class OutletTypeSpinnerAdapter {
+class CustomerClassSpinnerAdapter {
 
     var nodes: ArrayList<Caches> = ArrayList()
 
