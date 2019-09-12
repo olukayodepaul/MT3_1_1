@@ -60,7 +60,6 @@ class CustomerViewModel  @Inject constructor(private val repository: Repository)
             }).isDisposed
     }
 
-
     fun updareLocalCustomer(outletname: String, lat: String, lng: String, urno: String) {
         repository.updareLocalCustomer(outletname, lat, lng, urno)
             .subscribe({

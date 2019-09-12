@@ -22,6 +22,9 @@ data class EmployeesApi(
     @SerializedName("customer_code")
     @Expose
     var customer_code: String = "",
+    @SerializedName("mode")
+    @Expose
+    var mode: String = "",
     @SerializedName("modules")
     @Expose
     var modules: List<ModulesApi>,
@@ -177,7 +180,8 @@ data class SaveEntries(
     var name: String = "",
     var id: Int = 0,
     var dates: String = "",
-    var customerno: String = ""
+    var customerno: String = "",
+    var mode: String = ""
 )
 
 //convert api to room
@@ -548,30 +552,24 @@ data class salesCommisssion (
     @SerializedName("status")
     @Expose
     var status: Int = 0,
-    @SerializedName("flueamount")
+    @SerializedName("comlist")
     @Expose
-    var flueamount: String = "",
-    @SerializedName("fluedate")
+    var comlist: List<salesCommissionList>? = null
+)
+
+data class salesCommissionList(
+    @SerializedName("commisssiontype")
     @Expose
-    var fluedate: String = "",
-    @SerializedName("ovmamount")
+    var commisssiontype: String = "",
+    @SerializedName("dates")
     @Expose
-    var ovmamount: String = "",
-    @SerializedName("ovmdate")
+    var dates: String = "",
+    @SerializedName("kays")
     @Expose
-    var ovmdate: String = "",
-    @SerializedName("salescomamount")
+    var kays: String = "",
+    @SerializedName("amount")
     @Expose
-    var salescomamount: String = "",
-    @SerializedName("salescomdate")
-    @Expose
-    var salescomdate: String = "",
-    @SerializedName("mtcomamount")
-    @Expose
-    var mtcomamount: String = "",
-    @SerializedName("mtcomdate")
-    @Expose
-    var mtcomdate: String = ""
+    var amount: String = ""
 )
 
 data class AllCustomers (
@@ -639,6 +637,27 @@ data class Attendance(
     @SerializedName("rtype")
     @Expose
     var rtype: Int = 0
+)
+
+data class postRecieveClose (
+    @SerializedName("status")
+    @Expose
+    var status: Int = 0,
+    @SerializedName("msg")
+    @Expose
+    var msg: String = "",
+    @SerializedName("outletname")
+    @Expose
+    var outletname: String = "",
+    @SerializedName("urno")
+    @Expose
+    var urno: Int = 0,
+    @SerializedName("times")
+    @Expose
+    var times: String = "",
+    @SerializedName("outletstatus")
+    @Expose
+    var outletstatus: String = ""
 )
 
 

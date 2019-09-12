@@ -175,6 +175,12 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    fun updateCustTrans(urno: Int, rostertime: String) =
+        Observable.fromCallable {
+            appDao.updateCustTrans(urno, rostertime )
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
     fun confirmTask(user_id: Int, dates: String): Single<Response<EmployeesApi>> =
         api.confirmTask(user_id, dates)
             .subscribeOn(Schedulers.io())
@@ -253,6 +259,20 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             appDao.updareLocalCustomer(outletname, lat, lng, urno)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun OtherTask(userid: Int, taskid: Int, dates: String, times: String): Single<Response<EmployeesApi>> =
+        api.OtherTask(userid, taskid, dates, times)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String): Single<Response<postRecieveClose>> =
+        api.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+
 
 }
 

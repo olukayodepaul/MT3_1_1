@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant
 
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -48,6 +49,7 @@ class SalesAttendant : BaseActivity() {
 
     var sharePref: SharedPreferences? = null
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales__attendant)
@@ -157,14 +159,11 @@ class SalesAttendant : BaseActivity() {
     }
 
     fun setLatLngStartingPoint() {
-
+        sharePref!!.edit().clear().apply()
         val editor = sharePref!!.edit()
-        editor.clear()
         editor.putString("starting_lat", mLat)
         editor.putString("starting_lng", mLng)
         editor.apply()
-
-        Log.d(TAG, "$mLat $mLng")
     }
 
     companion object {

@@ -95,4 +95,26 @@ interface Api {
     @Query("lng") lng: Double
     ): Single<Response<Attendance>>
 
+    @Headers("Connection:close")
+    @POST("/mobiletrader/othertask")
+    fun OtherTask(
+        @Query("userid") userid: Int,
+        @Query("taskid") taskid: Int,
+        @Query("dates") dates: String,
+        @Query("times") times: String
+    ): Single<Response<EmployeesApi>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/outletsalesclose")
+    fun setOutletClose(
+        @Query("userid") userid: Int,
+        @Query("urno") urno: String,
+        @Query("dates") dates: String,
+        @Query("times") times: String,
+        @Query("lat") lat: String,
+        @Query("lng") lng: String,
+        @Query("distance") distance: String,
+        @Query("visitsequence") visitsequence: String
+    ): Single<Response<postRecieveClose>>
+
 }

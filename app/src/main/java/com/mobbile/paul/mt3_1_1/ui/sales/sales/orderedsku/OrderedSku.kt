@@ -3,6 +3,7 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -15,7 +16,9 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderApi
 import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderRoom
 import com.mobbile.paul.mt3_1_1.models.SumSales
-import com.mobbile.paul.mt3_1_1.util.Utils
+import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_ordered_sku.*
 import java.text.SimpleDateFormat
@@ -41,6 +44,8 @@ class OrderedSku : BaseActivity() {
 
     var prefs: SharedPreferences? = null
 
+    var latlng: SharedPreferences? = null
+
     var employee_id: Int = 0
 
     var visit_sequence: String? = ""
@@ -59,7 +64,9 @@ class OrderedSku : BaseActivity() {
 
         vmodel = ViewModelProviders.of(this, modelFactory)[OrderViewModel::class.java]
 
-        prefs = getSharedPreferences(Utils.PREFS_FILENAME, Context.MODE_PRIVATE)
+        prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
+        latlng = getSharedPreferences(LATLNG, Context.MODE_PRIVATE)
 
         visit_sequence = intent.getStringExtra("visit_sequence")
 
@@ -87,7 +94,11 @@ class OrderedSku : BaseActivity() {
 
         IntAdapter()
 
+        vmodel.setMutableResponse().observe(this, obServeOfPost)
+
     }
+
+
 
     fun IntAdapter() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
@@ -95,10 +106,11 @@ class OrderedSku : BaseActivity() {
         recycler_view_complete!!.setHasFixedSize(true)
 
         btn_complete.setOnClickListener {
-            if (!token.equals(token_form.text.toString())) {
-                tokenVerify()
-            } else {
+            showProgressBar(true)
+            if (token.equals(token_form.text.toString())) {
                 vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
+            } else {
+                tokenVerify(2, "Error",  "Invalid Customer Verification code ")
             }
         }
     }
@@ -112,6 +124,18 @@ class OrderedSku : BaseActivity() {
                 SimpleDateFormat("yyyy-MM-dd").format(Date()),
                 clat.toString(), clng.toString(), it, visit_sequence!!
             )
+        }
+    }
+
+    val obServeOfPost = Observer<String>{
+        val rsp  = it.split("~")
+        when(rsp[0]){
+            "200"->{
+                tokenVerify(1, "Success",  rsp[1])
+            }
+            else->{
+                tokenVerify(2, "Error",  rsp[1])
+            }
         }
     }
 
@@ -132,23 +156,32 @@ class OrderedSku : BaseActivity() {
 
     private val obserTotal = Observer<SumSales> {
         if (it != null) {
-            s_s_amount.text = it!!.stotalsum.toString()
-            s_s_order.text = it!!.sorder.toString()
-            s_s_pricing.text = it!!.spricing.toString()
-            s_s_invetory.text = it!!.sinventory.toString()
+            s_s_amount.text = it.stotalsum.toString()
+            s_s_order.text = it.sorder.toString()
+            s_s_pricing.text = it.spricing.toString()
+            s_s_invetory.text = it.sinventory.toString()
         }
     }
 
-    private fun tokenVerify() {
+
+    private fun tokenVerify(status: Int, title: String, msg: String) {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
-        builder.setMessage("Please enter valid customer code! Or do you want to use default token")
-            .setTitle("Incorrect Token")
-            .setIcon(R.drawable.icons8_validation_100)
+        builder.setMessage(msg)
+            .setTitle(title)
+            .setIcon(R.drawable.icons8_google_alerts_100)
             .setCancelable(false)
-            .setNegativeButton("Cancel") { _, _ ->
-            }.setPositiveButton("Ok") { _, _ ->
-                //Call submit end point
-                //miss commission of Mobile trader commission
+            .setPositiveButton("Ok") { _, _ ->
+                if(status==1) {
+                    latlng!!.edit().clear().apply()
+                    val editor = latlng!!.edit()
+                    editor.putString("starting_lat", clat.toString())
+                    editor.putString("starting_lng", clng.toString())
+                    editor.apply()
+
+                    val intent = Intent(this, SalesViewpager::class.java )
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
             }
         val dialog = builder.create()
         dialog.show()

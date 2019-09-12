@@ -1,7 +1,6 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,12 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(private val repository: Repository): ViewModel() {
 
     lateinit var allData: postRecieveFromServer
+
+    var mutableRespose = MutableLiveData<String>()
+
+    fun setMutableResponse(): MutableLiveData<String> {
+        return mutableRespose
+    }
 
     fun fetch() : LiveData<List<SalesEntrieHolderRoom>> {
 
@@ -47,7 +52,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
                           departuretime: String, dates: String, arrivallat: String, arrivallng: String,
                           saleslist: List<SalesEntrieHolderApi>, visit_sequence : String) {
 
-        var list = postToServer()
+        val list = postToServer()
         list.employee_id = employee_id
         list.urno = urno
         list.token = token
@@ -64,52 +69,54 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
             .subscribe({
                 if(it != null) {
                     allData = it.body()!!
-                    saveEntryHistory()
+                    updateCustTrans(urno.toInt(), "open $arrivaltime")
                 }
             },{
-
+                mutableRespose.postValue("400~$it.message")
             }).isDisposed
     }
 
     fun saveEntryHistory() {
-
         var mappers =  repSalesHistoryApi()
         mappers.outletname = allData.outletname
         mappers.times = allData.times
         mappers.urno = allData.urno
         mappers.outletstatus = allData.outletstatus
-
-        //insert sales history with mappers
-        repository.saveEntryHistory(mappers.toCustomersEntity())
+        repository.saveEntryHistory(mappers.toCustomersEntity()) //save sales sales history then update the product table
             .subscribe({
 
-                var upDate: List<UpdateProdcts> = allData.updateproductlist
+               var upDate: List<UpdateProdcts> = allData.updateproductlist
 
-                for (i in 0..(upDate.size)) {
-
+                for (i in 0 until upDate.count()) {
                     UpdateDailySales(
-                        upDate.get(i).totalqtysold,
-                        upDate.get(i).balanceamount,
-                        upDate.get(i).totalcommission,
-                        upDate.get(i).balanceamount,
-                        upDate.get(i).product_code
+                        upDate[i].totalqtysold,
+                        upDate[i].balanceamount,
+                        upDate[i].totalcommission,
+                        upDate[i].balanceamount,
+                        upDate[i].product_code
                     )
-
-                    Log.d(TAG, upDate.size.toString()+" "+i.toString())
-
-                    if(i==upDate.size-1) {
-
-                    }
                 }
+                mutableRespose.postValue("200~Sales successfully entered. Thanks!")
             },{
-
+                mutableRespose.postValue("400~$it.message")
             }).isDisposed
     }
 
-
     fun UpdateDailySales(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String){
         repository.updateProducts(totalq,totalamt,totalcomm,balanceamt,productcode )
-            .subscribe().isDisposed
+            .subscribe({
+            },{
+                mutableRespose.postValue("400~$it.message")
+            }).isDisposed
+    }
+
+    fun updateCustTrans(urno: Int, rostertime: String) {
+        repository.updateCustTrans(urno, rostertime)
+            .subscribe({
+                saveEntryHistory()
+            },{
+                mutableRespose.postValue("400~$it.message")
+            }).isDisposed
     }
 
     fun pullAllSalesEntry() : LiveData<List<SalesEntrieHolderApi>> {
@@ -120,14 +127,14 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
             .subscribe({data->
                 mResult.postValue(data.map{it.toSalesHolderEntity()})
             },{
-                mResult.postValue(null)
+                mutableRespose.postValue("400~$it.message")
             }).isDisposed
 
         return mResult
     }
 
     companion object{
-        var TAG = "OrderViewModel"
+        var TAG = "OrderViewModels"
     }
 
 }

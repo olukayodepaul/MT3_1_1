@@ -28,7 +28,9 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
 import com.google.android.gms.location.*
+import com.mobbile.paul.mt3_1_1.models.postRecieveClose
 import com.mobbile.paul.mt3_1_1.models.salesEntryResponses
+import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
@@ -44,8 +46,11 @@ class UsersMap : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
+
     lateinit var vmodel: SalesMapManagerViewModel
+
     lateinit var mapFragment: SupportMapFragment
+
     lateinit var googleMap: GoogleMap
 
     private var mLastLocation: Location? = null
@@ -68,7 +73,7 @@ class UsersMap : BaseActivity() {
 
     var visit_sequence: String? = ""
 
-    var defaulttoken : String? = ""
+    var defaulttoken: String? = ""
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -85,7 +90,6 @@ class UsersMap : BaseActivity() {
     private var hasGps = false
 
     var dateStamp: String = ""
-
 
 
     @SuppressLint("SimpleDateFormat")
@@ -138,6 +142,10 @@ class UsersMap : BaseActivity() {
             requestLocation()
         }
 
+        resumebtn.setOnClickListener {
+            outletClose()
+        }
+
         r_outlet_name.text = outletname
     }
 
@@ -183,6 +191,7 @@ class UsersMap : BaseActivity() {
     }
 
     private fun checkIfGpsIsEnale() {
+        val mode = pref!!.getString("mode", "")
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (hasGps) {
@@ -191,18 +200,17 @@ class UsersMap : BaseActivity() {
                     "$startinglat,$startinglng",
                     "$endinglat,$endinglng",
                     "false",
-                    "d",
+                    mode!!,
                     getString(R.string.keys)
                 )
-                //requestLocation()
             }
-
         } else {
             GPSRationaleEnable()
         }
     }
 
     private fun GPSRationaleEnable() {
+        val mode = pref!!.getString("mode", "")
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (!hasGps) {
@@ -221,10 +229,9 @@ class UsersMap : BaseActivity() {
                     "$startinglat,$startinglng",
                     "$endinglat,$endinglng",
                     "false",
-                    "d",
+                    mode!!,
                     getString(R.string.keys)
                 )
-                //requestLocation()
             }
         }
     }
@@ -280,6 +287,7 @@ class UsersMap : BaseActivity() {
     }
 
     fun locationRouteOnMap() {
+        //for the google data
         for (i in 0..(data!!.routes[0].legs[0].steps.size - 1)) {
 
         }
@@ -302,6 +310,7 @@ class UsersMap : BaseActivity() {
         )
     }
 
+    //polyline
     private fun setPolygonLineOptions(result: ArrayList<LatLng>) {
         googleMap.addPolyline(
             PolylineOptions()
@@ -334,19 +343,23 @@ class UsersMap : BaseActivity() {
 
     private fun requestLocation() {
 
-        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        val accessPermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
             && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
         ) {
             requestLocationPermission()
-        } else {
-
+        } else if (!hasGps) {
+            callGpsIntent()
+        }else {
             fusedLocationClient.lastLocation.addOnCompleteListener {
-
                 if (it.isSuccessful) {
-
                     mLastLocation = it.result
 
                     var checkCustomerOutlet: Boolean = insideRadius(
@@ -356,16 +369,16 @@ class UsersMap : BaseActivity() {
                         endinglng!!.toDouble()
                     )
                     if (!checkCustomerOutlet) {
-                        //msgError("You are not at the corresponding outlet. Thanks!")
-
-                        val im = pref!!.getInt("employee_id_user", 0)
-                        vmodel.confirmTask(im, dateStamp, mLastLocation!!.latitude, mLastLocation!!.longitude).observe(this, observeClockOut)
-
+                        msgError("You are not at the corresponding outlet. Thanks!")
                     } else {
                         val im = pref!!.getInt("employee_id_user", 0)
-                        vmodel.confirmTask(im, dateStamp, mLastLocation!!.latitude, mLastLocation!!.longitude).observe(this, observeClockOut)
+                        vmodel.confirmTask(
+                            im,
+                            dateStamp,
+                            mLastLocation!!.latitude,
+                            mLastLocation!!.longitude
+                        ).observe(this, observeClockOut)
                     }
-                    Log.d(TAG, "${mLastLocation!!.latitude}")
                 }
             }
         }
@@ -395,11 +408,97 @@ class UsersMap : BaseActivity() {
         }
     }
 
+    fun outletClose() {
+
+        mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        val accessPermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
+            && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
+        ) {
+            requestLocationPermission()
+
+        } else if (!hasGps) {
+            callGpsIntent()
+        } else {
+            showProgressBar(true)
+            fusedLocationClient.lastLocation.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    mLastLocation = it.result
+
+                    var checkCustomerOutlet: Boolean = insideRadius(
+                        mLastLocation!!.latitude,
+                        mLastLocation!!.longitude,
+                        endinglat!!.toDouble(),
+                        endinglng!!.toDouble()
+                    )
+                    if (!checkCustomerOutlet) {
+                        msgError("You are not at the corresponding outlet. Thanks!")
+                    } else {
+                        val im = pref!!.getInt("employee_id_user", 0)
+                        vmodel.setOutletClose(
+                            im,
+                            urno.toString(),
+                            SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                            SimpleDateFormat("HH:mm:ss").format(Date()),
+                            mLastLocation!!.latitude.toString(),
+                            mLastLocation!!.longitude.toString(),
+                            dis.text.toString(),
+                            visit_sequence!!
+                        ).observe(this, ObserveClseOutlets)
+                    }
+                }
+            }
+        }
+    }
+
+    val ObserveClseOutlets = Observer<postRecieveClose> {
+        if(it!=null){
+            if(it.status==200) {
+                Errorchecker(1, "Success", "Network Error, please check your GPS and data. Thanks!")
+            }else {
+                Errorchecker(2, "Error","Network Error, please check your GPS and data. Thanks!")
+            }
+        }else{
+            Errorchecker(2, "Error", "Network Error, please check your GPS and data. Thanks!")
+        }
+        showProgressBar(false)
+    }
+
+    private fun Errorchecker(status: Int, title: String, msg: String) {
+        val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
+        builder.setMessage(msg)
+            .setTitle(title)
+            .setIcon(R.drawable.icons8_google_alerts_100)
+            .setCancelable(false)
+            .setPositiveButton("Ok") { _, _ ->
+                if(status==1) {
+
+                    sharePref!!.edit().clear().apply()
+                    val editor = sharePref!!.edit()
+                    editor.putString("starting_lat", endinglat)
+                    editor.putString("starting_lng", endinglng)
+                    editor.apply()
+                    val intent = Intent(this, SalesViewpager::class.java )
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+
     private fun msgError(msg: String) {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
         builder.setMessage(msg)
             .setTitle("Notice!")
-            .setIcon(R.drawable.icons8_error_90)
+            .setIcon(R.drawable.icons8_google_alerts_100)
             .setCancelable(false)
             .setNegativeButton("OK") { _, _ ->
             }
@@ -407,6 +506,3 @@ class UsersMap : BaseActivity() {
         dialog.show()
     }
 }
-
-
-

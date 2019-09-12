@@ -5,7 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.sales.sales.orderedsku.OrderedSku">
+        tools:context=".ui.sales.sales.orderedsku.OrderedSku"
+        android:background="@color/ballReleasegb">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -106,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="230dp"
+                        android:layout_marginEnd="240dp"
                         android:layout_marginBottom="15dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="SKU"
@@ -120,10 +121,10 @@
 
                 <TextView
                         android:id="@+id/mt_inventory_id_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="165dp"
+                        android:layout_marginEnd="177dp"
                         android:layout_marginBottom="15dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="Inventory"
@@ -139,7 +140,7 @@
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="113dp"
+                        android:layout_marginEnd="123dp"
                         android:layout_marginBottom="15dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="Pricing"
@@ -155,7 +156,7 @@
                         android:layout_width="48dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:layout_marginEnd="65dp"
+                        android:layout_marginEnd="72dp"
                         android:layout_marginBottom="15dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="Order"
@@ -168,7 +169,7 @@
 
                 <TextView
                         android:id="@+id/mt_amount_id_tv"
-                        android:layout_width="55dp"
+                        android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="4dp"
@@ -205,20 +206,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginEnd="240dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="TOTAL ENTRIES"
                         android:textAlignment="textEnd"
                         android:textColor="@color/white"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:textSize="13sp"
-                         />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/s_s_amount"
-                        android:layout_width="48dp"
+                        android:layout_width="65dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="4dp"
@@ -237,7 +240,7 @@
                         android:layout_width="48dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="65dp"
+                        android:layout_marginEnd="72dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="000,0"
@@ -253,7 +256,7 @@
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="113dp"
+                        android:layout_marginEnd="123dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="00"
@@ -266,10 +269,10 @@
 
                 <TextView
                         android:id="@+id/s_s_invetory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="165dp"
+                        android:layout_marginEnd="177dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:text="000,0"

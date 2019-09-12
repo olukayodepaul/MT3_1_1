@@ -2,12 +2,11 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.providers.Repository
-import com.mobbile.paul.mt3_1_1.models.EmployeesApi
-import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
-import com.mobbile.paul.mt3_1_1.models.salesEntryResponses
+import com.mobbile.paul.mt3_1_1.models.*
 import javax.inject.Inject
 
 
@@ -57,7 +56,7 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
         return qResult
     }
 
-    //Google api distance
+    //Google api distance did not use this api to calculate geofencing
     private fun calculateDistance(units: String, origins: String, destinations: String, key: String, data: EmployeesApi) {
 
         repository.fetchGoogleDistance(units, origins, destinations, key)
@@ -80,6 +79,30 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
                 rs.msg = it.message.toString()
                 rs.status = 400
                 nResult.postValue(rs)
+            }).isDisposed
+    }
+
+    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String) : LiveData<postRecieveClose> {
+
+        var qResult = MutableLiveData<postRecieveClose>()
+
+        repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
+            .subscribe({
+                updateCustTrans(urno.toInt(), "Close $times")
+                qResult.postValue(it.body()!!)
+                Log.d(TAG, it.body()!!.toString())
+            },{
+                qResult.postValue(null)
+            })
+            .isDisposed
+
+        return qResult
+    }
+
+    fun updateCustTrans(urno: Int, rostertime: String) {
+        repository.updateCustTrans(urno, rostertime)
+            .subscribe({
+            },{
             }).isDisposed
     }
 

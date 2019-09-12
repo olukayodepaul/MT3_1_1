@@ -32,7 +32,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-
 class EditCustomerActivity : BaseActivity() {
 
     @Inject

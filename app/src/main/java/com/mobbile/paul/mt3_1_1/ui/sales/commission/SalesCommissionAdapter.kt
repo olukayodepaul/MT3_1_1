@@ -1,4 +1,4 @@
-package com.mobbile.paul.mt3_1_1.ui.sales.sales.bank
+package com.mobbile.paul.mt3_1_1.ui.sales.commission
 
 
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.R
-import com.mobbile.paul.mt3_1_1.models.ProductsRoom
+import com.mobbile.paul.mt3_1_1.models.salesCommissionList
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.bank_adapter.view.*
+import kotlinx.android.synthetic.main.sales_commission_adapter.view.*
 
 
-class BankAdapter(private var mItems: List<ProductsRoom>) :
-    RecyclerView.Adapter<BankAdapter.ViewHolder>() {
+class SalesCommissionAdapter(private var mItems: List<salesCommissionList>) :
+    RecyclerView.Adapter<SalesCommissionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val v = LayoutInflater.from(p0.context)
-            .inflate(R.layout.bank_adapter, p0, false)
+            .inflate(R.layout.sales_commission_adapter, p0, false)
         return ViewHolder(v)
     }
 
@@ -30,17 +30,16 @@ class BankAdapter(private var mItems: List<ProductsRoom>) :
     }
 
     companion object {
-        private val TAG = "BankAdapter"
+        private val TAG = "SalesCommissionAdapter"
     }
 
     inner class ViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
-        fun bind(item: ProductsRoom) {
-            containerView.tv_sku_q.text = item.productname.toLowerCase().capitalize()
-            containerView.order_tv_q.text = item.totalqtysold.toString()
-            containerView.amt_tv_q.text = (item.totalamountsold-item.totalcommission).toString()
-            containerView.tv_aty_q.text = item.totalcommission.toString()
+        fun bind(item: salesCommissionList) {
+            containerView.flue_float.text = item.commisssiontype.toLowerCase().capitalize()
+            containerView.flue_float_amount.text = item.amount
+            containerView.flue_float_date.text = item.dates
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.commission
 
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +10,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.mobbile.paul.mt3_1_1.R
-import com.mobbile.paul.mt3_1_1.models.salesCommisssion
+import com.mobbile.paul.mt3_1_1.models.salesCommissionList
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_for_sales.*
 import kotlinx.android.synthetic.main.fragment_sales_history.*
-import kotlinx.android.synthetic.main.fragment_sales_history.base_progress_bar
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -24,6 +29,11 @@ class SalesCommissionFragment : DaggerFragment() {
     internal lateinit var modelFactory: ViewModelProvider.Factory
 
     lateinit var vmodel: SalesCommissionFragmentViewModel
+
+    private lateinit var mAdapter: SalesCommissionAdapter
+
+    var prefs: SharedPreferences? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,24 +45,35 @@ class SalesCommissionFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesCommissionFragmentViewModel::class.java]
-        vmodel.conputSalesCom(0,"").observe(this, observers)
+        prefs = activity!!.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
+        vmodel.conputSalesCom(
+            prefs!!.getInt("employee_id_user", 0),
+            SimpleDateFormat("yyyy-MM-dd").format(Date())
+        ).observe(this, observers)
+
+        initViews()
+
         showProgressBar(true)
     }
 
-    val observers = Observer<salesCommisssion> {
+    val observers = Observer<List<salesCommissionList>> {
+
         if (it != null) {
             showProgressBar(false)
-            flue_float_amount.text = it.flueamount
-            flue_float_date.text = it.fluedate
-            ovm_amount.text = it.ovmamount
-            ovm_date.text = it.ovmdate
-            sales_com_amount.text = it.salescomamount
-            sales_com_date.text = it.salescomdate
-            mt_com_amount.text = it.mtcomamount
-            mt_com_date.text = it.mtcomdate
+            var list: List<salesCommissionList> = it
+            mAdapter = SalesCommissionAdapter(list)
+            mAdapter.notifyDataSetChanged()
+            _sales_recy_view.adapter = mAdapter
         }
+
     }
 
+    fun initViews() {
+        _sales_recy_view.setHasFixedSize(true)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
+        _sales_recy_view.layoutManager = layoutManager
+    }
 
     fun showProgressBar(visible: Boolean) {
         base_progress_bar.visibility =

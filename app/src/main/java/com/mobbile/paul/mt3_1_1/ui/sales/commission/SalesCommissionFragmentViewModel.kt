@@ -5,17 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.providers.Repository
-import com.mobbile.paul.mt3_1_1.models.salesCommisssion
+import com.mobbile.paul.mt3_1_1.models.salesCommissionList
 import javax.inject.Inject
 
 class SalesCommissionFragmentViewModel @Inject constructor(val repository: Repository): ViewModel() {
 
 
-    fun conputSalesCom(user_id: Int, dates: String) : LiveData<salesCommisssion> {
-        var mResult = MutableLiveData<salesCommisssion>()
+    fun conputSalesCom(user_id: Int, dates: String) : LiveData<List<salesCommissionList>> {
+        var mResult = MutableLiveData<List<salesCommissionList>>()
         repository.conputSalesCom(user_id, dates)
             .subscribe({
-                mResult.postValue(it!!.body())
+                if(it.body()!!.status==200){
+                    mResult.postValue(it!!.body()!!.comlist)
+                }else{
+                    mResult.postValue(null)
+                }
             },{
                 mResult.postValue(null)
             }).isDisposed

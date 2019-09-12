@@ -37,7 +37,7 @@ class DepotAdapter(private var mItems: List<ProductsRoom>) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: ProductsRoom) {
-            containerView.tv_sku_q.text = item.productname
+            containerView.tv_sku_q.text = item.productname.toLowerCase().capitalize()
             containerView.order_tv_q.text = item.qty
             containerView.amt_tv_q.text = item.totalqtysold.toString()
             containerView.tv_aty_q.text = (item.qty.toDouble()-item.totalqtysold).toString()

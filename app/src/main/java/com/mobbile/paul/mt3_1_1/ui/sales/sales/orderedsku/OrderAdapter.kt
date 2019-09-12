@@ -35,7 +35,7 @@ class OrderAdapter(private var mItems: List<SalesEntrieHolderRoom>):
     inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: SalesEntrieHolderRoom) {
-            containerView.mt_sku_id_tv.text = item.product_name.capitalize()
+            containerView.mt_sku_id_tv.text = item.product_name.toLowerCase().capitalize()
             containerView.mt_inventory_id_tv.text = item.inventory.toString()
             containerView.mt_pricing_id_tv.text = item.pricing.toString()
             containerView.mt_order_id_tv.text = item.orders.toString()

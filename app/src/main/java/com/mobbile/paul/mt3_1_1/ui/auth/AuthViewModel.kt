@@ -43,8 +43,6 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
                     data = it.body()!!
 
-                    Log.d(TAG, it.body()!!.spinners.toString())
-
                     when (it.body()!!.status) {
                         200 -> {
                             if (!byPassReEntry) {
@@ -54,6 +52,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                                 sharedEditor.name = it.body()!!.name
                                 sharedEditor.customerno = it.body()!!.customer_code
                                 sharedEditor.dates = dayOfNow
+                                sharedEditor.mode = it.body()!!.mode
                                 ObResult.postValue(sharedEditor)
                             }
                         }

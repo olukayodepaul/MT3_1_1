@@ -93,6 +93,10 @@ interface AppDao {
 
     @Query("update customers set outletname = :outletname, lat = :lat, lng = :lng where sort = 2 and urno = :urno")
     fun updareLocalCustomer(outletname: String, lat: String, lng: String, urno: String )
+
+    @Query("update  customers set rostertime =:rostertime where sort=2 and urno=:urno")
+    fun updateCustTrans(urno: Int, rostertime: String)
+
 }
 
 
