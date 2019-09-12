@@ -95,10 +95,7 @@ class OrderedSku : BaseActivity() {
         IntAdapter()
 
         vmodel.setMutableResponse().observe(this, obServeOfPost)
-
     }
-
-
 
     fun IntAdapter() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
@@ -107,7 +104,7 @@ class OrderedSku : BaseActivity() {
 
         btn_complete.setOnClickListener {
             showProgressBar(true)
-            if (token.equals(token_form.text.toString())) {
+            if (token.equals(token_form.text.toString()) || defaulttoken.equals(token_form.text.toString())) {
                 vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
             } else {
                 tokenVerify(2, "Error",  "Invalid Customer Verification code ")

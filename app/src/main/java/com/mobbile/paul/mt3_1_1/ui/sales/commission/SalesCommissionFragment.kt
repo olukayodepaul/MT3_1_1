@@ -58,7 +58,6 @@ class SalesCommissionFragment : DaggerFragment() {
     }
 
     val observers = Observer<List<salesCommissionList>> {
-
         if (it != null) {
             showProgressBar(false)
             var list: List<salesCommissionList> = it
@@ -66,7 +65,6 @@ class SalesCommissionFragment : DaggerFragment() {
             mAdapter.notifyDataSetChanged()
             _sales_recy_view.adapter = mAdapter
         }
-
     }
 
     fun initViews() {
