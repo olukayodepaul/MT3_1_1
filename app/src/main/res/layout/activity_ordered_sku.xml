@@ -61,7 +61,7 @@
                 </RelativeLayout>
 
                 <ImageView
-                        android:id="@+id/imageView7"
+                        android:id="@+id/back_btn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="17dp"
@@ -243,7 +243,7 @@
                         android:layout_marginEnd="72dp"
                         android:layout_marginBottom="10dp"
                         android:fontFamily="@font/montserrat_semi_bold"
-                        android:text="000,0"
+                        android:text="0,0"
                         android:textAlignment="textEnd"
                         android:textColor="@color/white"
                         android:textSize="13sp"
@@ -326,8 +326,10 @@
                             android:id="@+id/token_form"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:inputType="text"
                             android:layout_toRightOf="@+id/key_icons"
+                            android:inputType="textPassword"
+                            android:textSize="25sp"
+                            android:textAlignment="center"
                             />
 
                 </RelativeLayout>
@@ -340,11 +342,12 @@
                         android:layout_marginStart="30dp"
                         android:layout_below="@+id/ma_be_button"
                         android:text="COMPLETE"
-                        android:background="@color/bg_black"
                         android:textColor="@color/white"
                         android:fontFamily="@font/montserrat_semi_bold"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="20dp"
+                        android:background="@drawable/design_login_btn"
+                        android:textSize="15sp"
                         />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

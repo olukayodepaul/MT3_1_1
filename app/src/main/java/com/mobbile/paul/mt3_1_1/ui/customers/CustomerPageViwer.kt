@@ -34,6 +34,10 @@ class CustomerPageViwer : BaseActivity() {
         pref = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         vmodel.getAllCustomers(pref!!.getInt("employee_id_user", 0)).observe(this, observers)
         initWidget()
+
+        backbtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     val observers = Observer<List<RepCustomers>> {

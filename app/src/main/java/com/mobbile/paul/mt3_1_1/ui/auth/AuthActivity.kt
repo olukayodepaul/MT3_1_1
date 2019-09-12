@@ -65,20 +65,16 @@ class AuthActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun dataProcess() {
-
         val permit = checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-
         val username: String = et_email.text.toString()
         val password: String = et_password.text.toString()
         val tel = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         dates = zdate.toLocalDate().toString()
-
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
             //vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
             vmodel.callAuthApi("a89L656", "5226", "351736103817460", dates, name_users.equals(dates))
-
         } else {
             makeRequest()
         }

@@ -21,6 +21,8 @@ import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_ordered_sku.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -95,6 +97,10 @@ class OrderedSku : BaseActivity() {
         IntAdapter()
 
         vmodel.setMutableResponse().observe(this, obServeOfPost)
+
+        back_btn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     fun IntAdapter() {
@@ -103,11 +109,12 @@ class OrderedSku : BaseActivity() {
         recycler_view_complete!!.setHasFixedSize(true)
 
         btn_complete.setOnClickListener {
-            showProgressBar(true)
-            if (token.equals(token_form.text.toString()) || defaulttoken.equals(token_form.text.toString())) {
-                vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
+
+            if (!token.equals(token_form.text.toString())) {
+                tokenVerify(2, "Error",  "Invalid Customer Verification code")
             } else {
-                tokenVerify(2, "Error",  "Invalid Customer Verification code ")
+                showProgressBar(true)
+                vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
             }
         }
     }
@@ -153,7 +160,7 @@ class OrderedSku : BaseActivity() {
 
     private val obserTotal = Observer<SumSales> {
         if (it != null) {
-            s_s_amount.text = it.stotalsum.toString()
+            s_s_amount.text = String.format("%,.1f",it.stotalsum)
             s_s_order.text = it.sorder.toString()
             s_s_pricing.text = it.spricing.toString()
             s_s_invetory.text = it.sinventory.toString()

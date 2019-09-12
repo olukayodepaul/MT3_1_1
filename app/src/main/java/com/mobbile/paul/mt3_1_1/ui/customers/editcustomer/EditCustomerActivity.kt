@@ -87,6 +87,10 @@ class EditCustomerActivity : BaseActivity() {
         }
 
         vmodel.MutableOfLiveData().observe(this, ObserProfileEdit)
+
+        backbtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     val languageObserver = Observer<List<ProductTypeRoom>> {

@@ -478,7 +478,6 @@ class UsersMap : BaseActivity() {
             .setCancelable(false)
             .setPositiveButton("Ok") { _, _ ->
                 if(status==1) {
-
                     sharePref!!.edit().clear().apply()
                     val editor = sharePref!!.edit()
                     editor.putString("starting_lat", endinglat)

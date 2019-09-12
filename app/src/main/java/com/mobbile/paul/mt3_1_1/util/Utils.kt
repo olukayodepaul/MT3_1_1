@@ -31,7 +31,7 @@ class Utils {
         fun insideRadius(currentLat: Double, currentLng: Double,
                          customerLat: Double, customerLng: Double
                          ): Boolean {
-            val ky = 40000 / 360
+            val ky = 400000 / 360
             val kx = cos(Math.PI * customerLat / 180.0) * ky
             val dx = abs(customerLng - currentLng) * kx
             val dy = abs(customerLat - currentLat) * ky

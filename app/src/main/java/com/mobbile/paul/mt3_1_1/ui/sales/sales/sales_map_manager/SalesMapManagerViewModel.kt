@@ -88,9 +88,13 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
 
         repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
             .subscribe({
-                updateCustTrans(urno.toInt(), "Close $times")
-                qResult.postValue(it.body()!!)
-                Log.d(TAG, it.body()!!.toString())
+                Log.d(TAG, it.body()!!.status.toString())
+                if(it.body()!!.status==200){
+                    updateCustTrans(urno.toInt(), "Close $times")
+                    qResult.postValue(it.body()!!)
+                }else{
+                    qResult.postValue(null)
+                }
             },{
                 qResult.postValue(null)
             })

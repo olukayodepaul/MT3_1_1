@@ -99,8 +99,16 @@ class SalesEntries : BaseActivity() {
         initViews()
 
         Log.d(TAG, "$defaulttoken this the default token")
+
+        back_btn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        showProgressBar(false)
+    }
     var error = Observer<String> {
         showProgressBar(false)
         reloadData()

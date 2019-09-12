@@ -63,7 +63,7 @@ android:orientation="vertical">
                         android:layout_width="26dp"
                         android:layout_height="26dp"
                         app:srcCompat="@drawable/arrow"
-                        android:id="@+id/imageView7"
+                        android:id="@+id/back_btn"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textView"
                         tools:ignore="MissingConstraints" app:layout_constraintTop_toTopOf="parent"
