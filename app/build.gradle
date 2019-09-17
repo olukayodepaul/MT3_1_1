@@ -8,6 +8,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'androidx.navigation.safeargs'
 
+apply plugin: 'com.android.application'
+
 
 androidExtensions {
     experimental = true
@@ -160,8 +162,6 @@ dependencies {
     implementation 'com.github.salomonbrys.kotson:kotson:2.5.0'
 
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-
-
 
 
 }

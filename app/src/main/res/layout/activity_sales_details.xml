@@ -7,42 +7,67 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".ui.sales.sales_history.salesdetails.SalesDetailsActivity">
 
-<androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ToolbarTheme"
-
-        >
-    <androidx.cardview.widget.CardView
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="40dp">
+            android:layout_height="60dp"
+            android:theme="@style/ToolbarTheme"
+            tools:ignore="MissingConstraints">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
-            <TextView
-                    android:text="@string/Themodules"
+                android:elevation="40dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:id="@+id/textView"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="MissingConstraints"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textSize="@dimen/fontSize"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="100dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-</androidx.appcompat.widget.Toolbar>
+                    android:layout_height="match_parent">
+
+                <RelativeLayout
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="60dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="MissingConstraints">
+
+                    <TextView
+                            android:id="@+id/tv_modules"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="Sales Details"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fontSize" />
+
+                </RelativeLayout>
+
+                <ImageView
+                        android:id="@+id/back_btn"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginBottom="17dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:srcCompat="@drawable/arrow"
+                        tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.Toolbar>
 
 <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/h_widget_s"

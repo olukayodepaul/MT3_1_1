@@ -72,6 +72,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 {
                     deleteCustomersRooml()
                 }, {
+                    deleteCustomersRooml()
                     mResult.postValue(it.message)
                 }
             ).isDisposed
@@ -83,6 +84,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 {
                     deleteProductsRoom()
                 }, {
+                    deleteProductsRoom()
                     mResult.postValue(it.message)
                 }
             ).isDisposed
@@ -94,6 +96,7 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 {
                     deleteProductTypeRoom()
                 }, {
+                    deleteProductTypeRoom()
                     mResult.postValue(it.message)
                 }
             ).isDisposed
@@ -103,8 +106,21 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
         repository.deleteProductTypeRoom()
             .subscribe(
                 {
+                    salesHistoryRomm()
+                }, {
+                    salesHistoryRomm()
+                    mResult.postValue(it.message)
+                }
+            ).isDisposed
+    }
+
+    private fun salesHistoryRomm() {
+        repository.salesHistoryRomm()
+            .subscribe(
+                {
                     insertEmployee()
                 }, {
+                    insertEmployee()
                     mResult.postValue(it.message)
                 }
             ).isDisposed
@@ -120,9 +136,9 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
         ).subscribe(
             {
-                sharedEditor.id = data!!.id //this is the employee id
-                sharedEditor.name = data!!.name
-                sharedEditor.customerno = data!!.customer_code
+                sharedEditor.id = data.id //this is the employee id
+                sharedEditor.name = data.name
+                sharedEditor.customerno = data.customer_code
                 sharedEditor.dates = dayOfNow
                 ObResult.postValue(sharedEditor)
 

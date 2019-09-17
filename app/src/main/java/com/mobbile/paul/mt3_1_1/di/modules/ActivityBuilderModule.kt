@@ -8,6 +8,7 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.SalesComissionM
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.settings.SettingsModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
 import com.mobbile.paul.mt3_1_1.ui.customers.CustomerPageViwer
 import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.EditCustomerActivity
@@ -21,6 +22,7 @@ import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_attendant.SalesAttendant
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager.UsersMap
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.salesdetails.SalesDetailsActivity
+import com.mobbile.paul.mt3_1_1.ui.settings.SettingsActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -123,5 +125,13 @@ abstract class ActivityBuilderModule {
         ]
     )
     abstract fun contributeEditCustomerActivityAndroidInjector(): EditCustomerActivity
+
+    @SettingsScope
+    @ContributesAndroidInjector(
+        modules = [
+            SettingsModule::class
+        ]
+    )
+    abstract fun contributeSettingsModuleCustAndroidInjector(): SettingsActivity
 
 }

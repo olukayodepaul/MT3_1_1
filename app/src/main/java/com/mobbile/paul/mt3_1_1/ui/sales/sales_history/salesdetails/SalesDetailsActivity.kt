@@ -30,6 +30,9 @@ class SalesDetailsActivity : BaseActivity() {
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesDetailsViewModel::class.java]
         token = intent.getIntExtra("token",0)
         vmodel.outletSales(token!!).observe(this, observers)
+        back_btn.setOnClickListener {
+            onBackPressed()
+        }
         initWidget()
     }
 

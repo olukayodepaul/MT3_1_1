@@ -8,11 +8,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -27,20 +25,22 @@ import com.google.android.gms.maps.model.*
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
+import android.util.Log
 import com.google.android.gms.location.*
-import com.mobbile.paul.mt3_1_1.models.postRecieveClose
-import com.mobbile.paul.mt3_1_1.models.salesEntryResponses
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.insideRadius
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
+import com.mobbile.paul.mt3_1_1.viewmodel.CloseOutlets
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_users_map.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import kotlin.Char as Char1
 
 class UsersMap : BaseActivity() {
 
@@ -52,8 +52,6 @@ class UsersMap : BaseActivity() {
     lateinit var mapFragment: SupportMapFragment
 
     lateinit var googleMap: GoogleMap
-
-    private var mLastLocation: Location? = null
 
     lateinit var data: GoogleGetApi
 
@@ -124,18 +122,18 @@ class UsersMap : BaseActivity() {
 
         defaulttoken = intent.getStringExtra("defaulttoken")
 
-        checkLocationPermission()
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if(sharePref!!.getString("assertiondate", "")!=SimpleDateFormat("yyyy-MM-dd").format(Date())) {
+            Errorchecker(4, "Attendant Error","Please Clock out to proceed. Thanks!")
+        }
 
         backbtn.setOnClickListener {
             onBackPressed()
         }
 
-        imageView8.setOnClickListener {
+        navigations.setOnClickListener {
+            val mode = pref!!.getString("mode", "").toString().single()
             val ads = "$startinglat,$startinglng"
-            startMapIntent(this, ads, 'w', 't')
-            Log.d(TAG, "CHECK THIS")
+            startMapIntent(this, ads, mode, 't')
         }
 
         clockoutbtn.setOnClickListener {
@@ -147,6 +145,14 @@ class UsersMap : BaseActivity() {
         }
 
         r_outlet_name.text = outletname
+
+        if (!isInternetAvailable(this)) {
+            msgError("No Internet Connection! Thanks!")
+        } else {
+            checkLocationPermission()
+        }
+
+        vmodel.MutableProcess().observe(this, ObserveClseOutlets)
     }
 
     fun checkLocationPermission() {
@@ -167,10 +173,8 @@ class UsersMap : BaseActivity() {
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this, arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+            ), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
         )
     }
 
@@ -310,7 +314,6 @@ class UsersMap : BaseActivity() {
         )
     }
 
-    //polyline
     private fun setPolygonLineOptions(result: ArrayList<LatLng>) {
         googleMap.addPolyline(
             PolylineOptions()
@@ -329,7 +332,7 @@ class UsersMap : BaseActivity() {
         var ENABLE_GPS = 1000
     }
 
-    fun startMapIntent(ctx: Context, ads: String, mode: Char, avoid: Char): Any {
+    fun startMapIntent(ctx: Context, ads: String, mode: Char1, avoid: Char1): Any {
         val uri = Uri.parse("google.navigation:q=$ads&mode=$mode&avoid=$avoid")
         val mIntent = Intent(Intent.ACTION_VIEW, uri)
         mIntent.`package` = "com.google.android.apps.maps"
@@ -342,6 +345,8 @@ class UsersMap : BaseActivity() {
 
 
     private fun requestLocation() {
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -357,12 +362,14 @@ class UsersMap : BaseActivity() {
             requestLocationPermission()
         } else if (!hasGps) {
             callGpsIntent()
-        }else {
+        } else {
             fusedLocationClient.lastLocation.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    mLastLocation = it.result
 
-                    var checkCustomerOutlet: Boolean = insideRadius(
+                if (it.isSuccessful && it.result != null) {
+
+                    val mLastLocation = it.result
+
+                    val checkCustomerOutlet: Boolean = insideRadius(
                         mLastLocation!!.latitude,
                         mLastLocation!!.longitude,
                         endinglat!!.toDouble(),
@@ -371,20 +378,35 @@ class UsersMap : BaseActivity() {
                     if (!checkCustomerOutlet) {
                         msgError("You are not at the corresponding outlet. Thanks!")
                     } else {
-                        val im = pref!!.getInt("employee_id_user", 0)
-                        vmodel.confirmTask(
-                            im,
+                        /*vmodel.confirmTask(
+                            pref!!.getInt("employee_id_user", 0),
                             dateStamp,
-                            mLastLocation!!.latitude,
-                            mLastLocation!!.longitude
-                        ).observe(this, observeClockOut)
+                            mLastLocation.latitude,
+                            mLastLocation.longitude
+                        ).observe(this, observeClockOut)*/
+                        val intent = Intent(this, SalesEntries::class.java)
+                        intent.putExtra("urno", urno)
+                        intent.putExtra("token", token)
+                        intent.putExtra("outletname", outletname)
+                        intent.putExtra("defaulttoken", defaulttoken)
+                        intent.putExtra("visit_sequence", visit_sequence)
+                        intent.putExtra("clat", mLastLocation.latitude)
+                        intent.putExtra("clng", mLastLocation.latitude)
+                        intent.putExtra("arrivallat", endinglat)
+                        intent.putExtra("arrivalng", endinglng)
+                        intent.putExtra("distance", dis.text.toString())
+                        intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
+                        startActivity(intent)
                     }
+                } else {
+                    msgError("Please Change your GPS setting to Higher Accuracy. Thanks!")
                 }
+
             }
         }
     }
 
-    @SuppressLint("SimpleDateFormat")
+    /*@SuppressLint("SimpleDateFormat")
     private var observeClockOut = Observer<salesEntryResponses> {
         if (it != null) {
             when (it.status) {
@@ -406,9 +428,12 @@ class UsersMap : BaseActivity() {
                 }
             }
         }
-    }
+    }*/
 
+    @SuppressLint("SimpleDateFormat")
     fun outletClose() {
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -428,46 +453,46 @@ class UsersMap : BaseActivity() {
         } else {
             showProgressBar(true)
             fusedLocationClient.lastLocation.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    mLastLocation = it.result
 
-                    var checkCustomerOutlet: Boolean = insideRadius(
+                if (it.isSuccessful && it.result != null) {
+
+                    val mLastLocation = it.result
+
+                    val checkCustomerOutlet: Boolean = insideRadius(
                         mLastLocation!!.latitude,
-                        mLastLocation!!.longitude,
+                        mLastLocation.longitude,
                         endinglat!!.toDouble(),
                         endinglng!!.toDouble()
                     )
                     if (!checkCustomerOutlet) {
+                        showProgressBar(false)
                         msgError("You are not at the corresponding outlet. Thanks!")
                     } else {
-                        val im = pref!!.getInt("employee_id_user", 0)
                         vmodel.setOutletClose(
-                            im,
+                            pref!!.getInt("employee_id_user", 0),
                             urno.toString(),
                             SimpleDateFormat("yyyy-MM-dd").format(Date()),
                             SimpleDateFormat("HH:mm:ss").format(Date()),
-                            mLastLocation!!.latitude.toString(),
-                            mLastLocation!!.longitude.toString(),
+                            mLastLocation.latitude.toString(),
+                            mLastLocation.longitude.toString(),
                             dis.text.toString(),
                             visit_sequence!!
-                        ).observe(this, ObserveClseOutlets)
+                        )
                     }
+                } else {
+                    msgError("Please Change your GPS setting to Higher Accuracy, if not Thanks!")
                 }
             }
         }
     }
 
-    val ObserveClseOutlets = Observer<postRecieveClose> {
-        if(it!=null){
-            if(it.status==200) {
-                Errorchecker(1, "Success", "Network Error, please check your GPS and data. Thanks!")
-            }else {
-                Errorchecker(2, "Error","Network Error, please check your GPS and data. Thanks!")
-            }
-        }else{
-            Errorchecker(2, "Error", "Network Error, please check your GPS and data. Thanks!")
-        }
+    val ObserveClseOutlets = Observer<CloseOutlets> {
         showProgressBar(false)
+        if (it.status == 200) {
+            Errorchecker(1, "", it.msg)
+        } else {
+            Errorchecker(2, "Error", it.msg)
+        }
     }
 
     private fun Errorchecker(status: Int, title: String, msg: String) {
@@ -477,13 +502,18 @@ class UsersMap : BaseActivity() {
             .setIcon(R.drawable.icons8_google_alerts_100)
             .setCancelable(false)
             .setPositiveButton("Ok") { _, _ ->
-                if(status==1) {
+                if (status == 1) {
                     sharePref!!.edit().clear().apply()
                     val editor = sharePref!!.edit()
                     editor.putString("starting_lat", endinglat)
                     editor.putString("starting_lng", endinglng)
+                    editor.putString("assertiondate", SimpleDateFormat("yyyy-MM-dd").format(Date()))
                     editor.apply()
-                    val intent = Intent(this, SalesViewpager::class.java )
+                    val intent = Intent(this, SalesViewpager::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }else if(status == 4){
+                    val intent = Intent(this, SalesViewpager::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
@@ -491,7 +521,6 @@ class UsersMap : BaseActivity() {
         val dialog = builder.create()
         dialog.show()
     }
-
 
     private fun msgError(msg: String) {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
@@ -504,4 +533,6 @@ class UsersMap : BaseActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+
+
 }

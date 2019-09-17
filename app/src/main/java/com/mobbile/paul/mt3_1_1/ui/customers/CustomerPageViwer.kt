@@ -1,7 +1,9 @@
 package com.mobbile.paul.mt3_1_1.ui.customers
 
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -11,7 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.RepCustomers
+import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_customer_page_viwer.*
 import javax.inject.Inject
@@ -38,6 +42,12 @@ class CustomerPageViwer : BaseActivity() {
         backbtn.setOnClickListener {
             onBackPressed()
         }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+            vmodel.getAllCustomers(pref!!.getInt("employee_id_user", 0)).observe(this, observers)
     }
 
     val observers = Observer<List<RepCustomers>> {
@@ -55,5 +65,6 @@ class CustomerPageViwer : BaseActivity() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         _r_view_pager.layoutManager = layoutManager
     }
+
 
 }

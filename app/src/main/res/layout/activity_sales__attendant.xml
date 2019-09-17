@@ -108,7 +108,7 @@ tools:context=".ui.sales.sales.sales_attendant.SalesAttendant">
     </androidx.recyclerview.widget.RecyclerView>
 
 <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navigation"
+        android:id="@+id/navigations"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         app:layout_constraintBottom_toBottomOf="parent"

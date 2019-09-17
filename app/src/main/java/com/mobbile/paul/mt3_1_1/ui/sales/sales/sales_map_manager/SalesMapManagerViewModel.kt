@@ -1,12 +1,11 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.*
+import com.mobbile.paul.mt3_1_1.viewmodel.CloseOutlets
 import javax.inject.Inject
 
 
@@ -14,9 +13,11 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
 
     var rs  = salesEntryResponses()
 
-    var nResult = MutableLiveData<salesEntryResponses>()
+    var response = CloseOutlets()
 
-    fun MutableProcess(): MutableLiveData<salesEntryResponses>{
+    var nResult = MutableLiveData<CloseOutlets>()
+
+    fun MutableProcess(): MutableLiveData<CloseOutlets>{
         return nResult
     }
 
@@ -47,7 +48,6 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
                 rs.curlat = curlat
                 rs.curlng = curlng
                 qResult.postValue(rs)
-                Log.d(TAG, "End point confirmation api ${it.body()}")
             },{
                 qResult.postValue(null)
             })
@@ -56,8 +56,46 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
         return qResult
     }
 
-    //Google api distance did not use this api to calculate geofencing
-    private fun calculateDistance(units: String, origins: String, destinations: String, key: String, data: EmployeesApi) {
+    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String) {
+
+        repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
+            .subscribe({
+                if(it.isSuccessful && it.body() != null && it.code() == 200 && it.body()!!.status == 200) {
+                    if(it.body()!!.avail==1){
+                        updateCustTrans(urno.toInt(), "Close $times", it.body()!!.status)
+                    }else{
+                        response.status = it.body()!!.status
+                        response.msg = "Outlet Close Successful. Thanks!"
+                        nResult.postValue(response)
+                    }
+                }else{
+                    response.status = 1000
+                    response.msg = "Api Error. Thanks!"
+                    nResult.postValue(response)
+                }
+            },{
+                response.status = 1000
+                response.msg= it.message!!
+                nResult.postValue(response)
+            })
+            .isDisposed
+    }
+
+    fun updateCustTrans(urno: Int, rostertime: String, status: Int) {
+        repository.updateCustTrans(urno, rostertime)
+            .subscribe({
+                response.status = status
+                response.msg= "Outlet Close Successful. Thanks!"
+                nResult.postValue(response)
+            },{
+                response.status = 1000
+                response.msg= it.message!!
+                nResult.postValue(response)
+            }).isDisposed
+    }
+
+    //Google api distance. I  did not use this api to calculate geofencing
+    /*private fun calculateDistance(units: String, origins: String, destinations: String, key: String, data: EmployeesApi) {
 
         repository.fetchGoogleDistance(units, origins, destinations, key)
             .subscribe({
@@ -80,35 +118,7 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
                 rs.status = 400
                 nResult.postValue(rs)
             }).isDisposed
-    }
-
-    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String) : LiveData<postRecieveClose> {
-
-        var qResult = MutableLiveData<postRecieveClose>()
-
-        repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
-            .subscribe({
-                Log.d(TAG, it.body()!!.status.toString())
-                if(it.body()!!.status==200){
-                    updateCustTrans(urno.toInt(), "Close $times")
-                    qResult.postValue(it.body()!!)
-                }else{
-                    qResult.postValue(null)
-                }
-            },{
-                qResult.postValue(null)
-            })
-            .isDisposed
-
-        return qResult
-    }
-
-    fun updateCustTrans(urno: Int, rostertime: String) {
-        repository.updateCustTrans(urno, rostertime)
-            .subscribe({
-            },{
-            }).isDisposed
-    }
+    }*/
 
     companion object{
         var TAG = "SalesMapManagerViewModel"

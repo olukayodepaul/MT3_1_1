@@ -2,7 +2,6 @@ package com.example.kotlin_project.providers
 
 import androidx.room.*
 import com.mobbile.paul.mt3_1_1.models.*
-import io.reactivex.Single
 
 
 @Dao
@@ -22,6 +21,16 @@ interface AppDao {
         salesh: List<SalesEntrieHolderRoom>
     )
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun resaveCustomers(
+        customers: List<Bank_n_CustomersRoom>
+    )
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun resaveProducts(
+        products: List<ProductsRoom>
+    )
+
     //this already handle update or insert into the database
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveEntryHistory(
@@ -30,6 +39,9 @@ interface AppDao {
 
     @Query("DELETE FROM ModulesRoom")
     fun deleteModulesRoom()
+
+    @Query("DELETE FROM saleshistory")
+    fun salesHistoryRomm()
 
     @Query("DELETE FROM customers")
     fun deleteBank_n_CustomersRoom()
@@ -49,7 +61,7 @@ interface AppDao {
     @Query("SELECT * FROM ModulesRoom")
     fun fetchModules(): List<ModulesRoom>
 
-    @Query("SELECT * FROM customers")
+    @Query("SELECT * FROM customers ORDER BY sort")
     fun fetchCustomers(): List<Bank_n_CustomersRoom>
 
     @Query("SELECT * FROM products where separator=:sep ")
@@ -91,11 +103,14 @@ interface AppDao {
     @Query("SELECT * FROM producttyperoom")
     fun fetchSpinners() : List<ProductTypeRoom>
 
-    @Query("update customers set outletname = :outletname, lat = :lat, lng = :lng where sort = 2 and urno = :urno")
+    @Query("update customers set outletname = :outletname, lat = :lat, lng = :lng where  urno = :urno and sort = 2")
     fun updareLocalCustomer(outletname: String, lat: String, lng: String, urno: String )
 
     @Query("update  customers set rostertime =:rostertime where sort=2 and urno=:urno")
     fun updateCustTrans(urno: Int, rostertime: String)
+
+    @Query("SELECT count(id)  FROM products where separator in (2,3)")
+    fun countProducts(): Int
 
 }
 

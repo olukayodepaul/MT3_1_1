@@ -62,7 +62,6 @@ class CustomersAdapter(private var mItems: List<RepCustomers>, private var conte
                 var intent = Intent(context, EditCustomerActivity::class.java)
                 intent.putExtra("extra_item", passer)
                 context.startActivity(intent)
-
             }
         }
     }

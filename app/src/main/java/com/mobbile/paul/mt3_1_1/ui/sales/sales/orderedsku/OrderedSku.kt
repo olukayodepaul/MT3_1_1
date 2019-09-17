@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -60,6 +61,10 @@ class OrderedSku : BaseActivity() {
 
     var arivaltime: String? = ""
 
+    var alat  : String? = ""
+
+    var alng : String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ordered_sku)
@@ -86,6 +91,10 @@ class OrderedSku : BaseActivity() {
 
         clng = intent.getDoubleExtra("clng", 0.0)
 
+        alat = intent!!.getStringExtra("arrivallat")
+
+        alng = intent!!.getStringExtra("arrivalng")
+
         distance = intent.getStringExtra("distance")
 
         arivaltime = intent.getStringExtra("arivaltime")
@@ -101,6 +110,8 @@ class OrderedSku : BaseActivity() {
         back_btn.setOnClickListener {
             onBackPressed()
         }
+
+        Log.d(TAG, "$alng LOVE THIS APPLICATION")
     }
 
     fun IntAdapter() {
@@ -178,10 +189,10 @@ class OrderedSku : BaseActivity() {
                 if(status==1) {
                     latlng!!.edit().clear().apply()
                     val editor = latlng!!.edit()
-                    editor.putString("starting_lat", clat.toString())
-                    editor.putString("starting_lng", clng.toString())
+                    editor.putString("starting_lat", alat)
+                    editor.putString("starting_lng", alng)
+                    editor.putString("assertiondate", SimpleDateFormat("yyyy-MM-dd").format(Date()))
                     editor.apply()
-
                     val intent = Intent(this, SalesViewpager::class.java )
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)

@@ -643,7 +643,7 @@ data class postRecieveClose (
     @SerializedName("status")
     @Expose
     var status: Int = 0,
-    @SerializedName("msg")
+    @SerializedName("outletname")
     @Expose
     var outletname: String = "",
     @SerializedName("urno")
@@ -654,7 +654,10 @@ data class postRecieveClose (
     var times: String = "",
     @SerializedName("outletstatus")
     @Expose
-    var outletstatus: String = ""
+    var outletstatus: String = "",
+    @SerializedName("avail")
+    @Expose
+    var avail: Int = 0
 )
 
 

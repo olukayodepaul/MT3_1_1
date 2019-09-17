@@ -54,6 +54,10 @@ class SalesEntries : BaseActivity() {
 
     var clng : Double = 0.0
 
+    var alat  : String? = ""
+
+    var alng : String? = ""
+
     var distance : String? = ""
 
     var arivaltime : String? = ""
@@ -84,6 +88,10 @@ class SalesEntries : BaseActivity() {
 
         clng = intent.getDoubleExtra("clng",0.0)
 
+        alat = intent!!.getStringExtra("arrivallat")
+
+        alng = intent!!.getStringExtra("arrivalng")
+
         distance = intent.getStringExtra("distance")
 
         arivaltime = intent.getStringExtra("arivaltime")
@@ -98,7 +106,7 @@ class SalesEntries : BaseActivity() {
 
         initViews()
 
-        Log.d(TAG, "$defaulttoken this the default token")
+        Log.d(TAG, "${alat} this the default token")
 
         back_btn.setOnClickListener {
             onBackPressed()
@@ -145,6 +153,8 @@ class SalesEntries : BaseActivity() {
             intent.putExtra("visit_sequence",visit_sequence)
             intent.putExtra("clat", clat)
             intent.putExtra("clng", clng)
+            intent.putExtra("arrivallat", alat)
+            intent.putExtra("arrivalng", alng)
             intent.putExtra("distance", distance)
             intent.putExtra("arivaltime", arivaltime)
             startActivity(intent)

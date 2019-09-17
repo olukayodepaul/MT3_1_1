@@ -67,9 +67,8 @@ interface Api {
         @Query("token") token: Int
     ): Single<Response<OutletSalesHistory>>
 
-    //service not yet implemented
     @Headers("Connection:close")
-    @POST("/mobiletrader/salescom")
+    @POST("/mobiletrader/commissions")
     fun conputSalesCom(
         @Query("user_id") user_id: Int,
         @Query("dates") dates: String
@@ -116,5 +115,20 @@ interface Api {
         @Query("distance") distance: String,
         @Query("visitsequence") visitsequence: String
     ): Single<Response<postRecieveClose>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/reselectcustomers")
+    fun fecthTodayCustomers(
+        @Query("user_id") user_id: Int,
+        @Query("dates") dates: String
+    ): Single<Response<EmployeesApi>>
+
+    @Headers("Connection:close")
+    @POST("/mobiletrader/reselectproduct")
+    fun fecthTodayProducts(
+        @Query("custno") custno: String,
+        @Query("autoid") autoid: Int
+    ): Single<Response<EmployeesApi>>
+
 
 }

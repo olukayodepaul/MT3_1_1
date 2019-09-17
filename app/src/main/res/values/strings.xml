@@ -29,18 +29,22 @@
     <string name="c_order">Complete Order</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="sync_header">Data Sync</string>
+    <string name="sync_basket">Basket Sync</string>
+    <string name="about_the_app">About</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="sync_title">Customers Data Synchronisation</string>
+    <string name="sync_basket_tile">Basket Data Synchronisation</string>
+    <string name="app_build_version">MT3 Build Version</string>
+    <string name="about_sumary">3.1.1 Version</string>
+
+
+
 
     <string name="uploadImages">Set your image</string>
     <string name="msg_loading">Loading...</string>

@@ -1,5 +1,6 @@
 package com.mobbile.paul.mt3_1_1.ui.sales
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +8,7 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.ui.sales.commission.SalesCommissionFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_fragment.SalesFragment
 import com.mobbile.paul.mt3_1_1.ui.sales.sales_history.SalesHistoryFragment
+import com.mobbile.paul.mt3_1_1.ui.settings.SettingsActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_sales_viewpager.*
 
@@ -52,9 +54,16 @@ class SalesViewpager : DaggerAppCompatActivity(){
             onBackPressed()
         }
 
+        settings_btn.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
         val fragment = SalesFragment()
         replaceFragment(fragment)
-        navigation.setOnNavigationItemSelectedListener(bt)
+        navigations.setOnNavigationItemSelectedListener(bt)
     }
 
     companion object{

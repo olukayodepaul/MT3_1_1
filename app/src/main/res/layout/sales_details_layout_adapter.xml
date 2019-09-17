@@ -6,8 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0.5dp"
-        android:background="@color/rippleEffectColor"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        >
 
     <TextView
             android:id="@+id/sku_tv"
@@ -19,7 +20,9 @@
             android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="@dimen/sales_title"/>
 
     <TextView
             android:id="@+id/time_tv"
@@ -27,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
-            android:text="12:00:00"
+            android:text=""
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="30dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="3dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -52,7 +57,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Amt:" />
+                    android:text="Amt:"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="12sp"
+                    />
 
             <TextView
                     android:id="@+id/ord"
@@ -60,7 +68,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Ord:"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_bold"/>
 
             <TextView
                     android:id="@+id/pri"
@@ -68,7 +78,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Pri:"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_bold"/>
 
             <TextView
                     android:id="@+id/invt"
@@ -76,7 +88,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Invt"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:fontFamily="@font/roboto_bold"/>
 
             <TextView
                     android:id="@+id/com"
@@ -84,7 +97,9 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Com"
-                    android:textAlignment="textEnd"/>
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/roboto_bold"/>
 
 
         </LinearLayout>
@@ -108,7 +123,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="2"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center" />
 
             <TextView
                     android:id="@+id/pri_tv"
@@ -116,7 +131,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="3"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center" />
 
             <TextView
                     android:id="@+id/invt_tv"
@@ -124,8 +139,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="4"
-                    android:textAlignment="center"
-                    />
+                    android:textAlignment="center" />
 
             <TextView
                     android:id="@+id/com_tv"
@@ -133,7 +147,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="5"
-                    android:textAlignment="textEnd"/>
+                    android:textAlignment="textEnd" />
 
 
         </LinearLayout>

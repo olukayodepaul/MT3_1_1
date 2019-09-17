@@ -2,6 +2,7 @@ package com.example.kotlin_project.providers
 
 import com.mobbile.paul.mt3_1_1.models.*
 import com.mobbile.paul.mt3_1_1.providers.MapApi
+import com.mobbile.paul.mt3_1_1.viewmodel.ReloadCustomers
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,6 +43,16 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         Observable.fromCallable { appDao.saveEmployees(employee, customers, products, producttype) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+
+    fun resaveCustomers(customers: List<Bank_n_CustomersRoom>) = Observable.fromCallable {
+        appDao.resaveCustomers(customers) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun resaveProducts(products: List<ProductsRoom>) = Observable.fromCallable {
+        appDao.resaveProducts(products) }
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
     fun fetchModules(): Single<List<ModulesRoom>> =
         Single.fromCallable {
@@ -98,6 +109,13 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         appDao.deleteModulesRoom()
     }.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+
+    fun salesHistoryRomm() = Observable.fromCallable {
+        appDao.salesHistoryRomm()
+    }.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+
+
 
     fun deleteCustomersRoom() = Observable.fromCallable {
         appDao.deleteBank_n_CustomersRoom()
@@ -269,6 +287,25 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String): Single<Response<postRecieveClose>> =
         api.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun fecthTodayCustomers(user_id: Int, dates: String): Single<Response<EmployeesApi>> =
+        api.fecthTodayCustomers(user_id, dates)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun fecthTodayProducts(custno: String, auto: Int): Single<Response<EmployeesApi>> =
+        api.fecthTodayProducts(custno, auto)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun countProducts(): Observable<Int> =
+        Observable.fromCallable {
+            appDao.countProducts()
+        }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 

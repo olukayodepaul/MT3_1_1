@@ -137,7 +137,7 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 app:srcCompat="@drawable/ic_navigation"
-                android:id="@+id/imageView8"
+                android:id="@+id/navigations"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="15dp" app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="10dp" app:layout_constraintBottom_toBottomOf="parent"
@@ -147,7 +147,7 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/navigation"
+        android:id="@+id/navigatio"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:layout_below="@+id/map"

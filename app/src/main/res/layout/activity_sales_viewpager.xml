@@ -53,7 +53,7 @@
                         android:layout_marginTop="4dp"/>
 
                 <ImageView
-                        android:id="@+id/imageView9"
+                        android:id="@+id/settings_btn"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="17dp"
@@ -81,7 +81,7 @@
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/navigation"
+            android:id="@+id/navigations"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintHorizontal_bias="0.0"

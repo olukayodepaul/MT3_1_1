@@ -65,10 +65,14 @@ class SalesFragment : DaggerFragment() {
                 View.INVISIBLE
     }
 
+    override fun onStart() {
+        super.onStart()
+        vmodel.fetch().observe(this, observers)
+    }
+
     companion object{
         var TAG = "onCheck"
     }
-
 }
 
 

@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.models.ModulesRoom
 import com.mobbile.paul.mt3_1_1.R
+import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_modules.*
 import javax.inject.Inject
@@ -39,6 +41,10 @@ class ModulesActivity : BaseActivity() {
         vmodel.getAllUsersModules().observe(this, ModulesObservers)
         showProgressBar(true)
         checkLocationPermission()
+        logout.setOnClickListener {
+            logout(1, "Are you sure you want to logout?", "Log out")
+        }
+
     }
 
     val ModulesObservers = Observer<List<ModulesRoom>> {
@@ -72,7 +78,7 @@ class ModulesActivity : BaseActivity() {
 
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
             PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
     }
 
@@ -151,6 +157,25 @@ class ModulesActivity : BaseActivity() {
             initViews()
             Log.d(TAG,"LOCATION ENABLE 11")
         }
+    }
+
+    private fun logout(status: Int, msg: String, title: String) {
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)
+            builder.setMessage(msg)
+                .setTitle(title)
+                .setCancelable(false)
+                .setIcon(R.drawable.icons8_google_alerts_100)
+                .setPositiveButton("YES"){_,_->
+                    if(status==1){
+                        val intent = Intent(this,AuthActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                .setNegativeButton("NO") { _, _ ->
+                }
+            val dialog  = builder.create()
+            dialog.show()
     }
 
     companion object{

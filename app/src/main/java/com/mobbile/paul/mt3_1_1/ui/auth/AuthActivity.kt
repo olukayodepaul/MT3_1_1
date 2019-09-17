@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.telephony.TelephonyManager
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -22,8 +21,7 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SaveEntries
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
-import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getDate
-import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
+import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import org.threeten.bp.ZonedDateTime
@@ -53,14 +51,16 @@ class AuthActivity : BaseActivity() {
         AndroidThreeTen.init(this)
         vmodel = ViewModelProviders.of(this, modelFactory)[AuthViewModel::class.java]
         prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
-
         btn_login.setOnClickListener {
-            dataProcess()
+
+            if(!isInternetAvailable(this)) {
+                Toast.makeText(applicationContext, "No Internet Connection, Thanks!", Toast.LENGTH_SHORT).show()
+            }else {
+                dataProcess()
+            }
         }
         vmodel.authMutable().observe(this, ErrorObserver)
         vmodel.authObservable().observe(this, intentObserver)
-
-        Log.d(TAG, "$getDate $getTime")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -73,8 +73,8 @@ class AuthActivity : BaseActivity() {
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
-            //vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
-            vmodel.callAuthApi("a89L656", "5226", "351736103817460", dates, name_users.equals(dates))
+            vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
+            //vmodel.callAuthApi("a89L656", "5226", "351736103817460", dates, name_users.equals(dates))
         } else {
             makeRequest()
         }

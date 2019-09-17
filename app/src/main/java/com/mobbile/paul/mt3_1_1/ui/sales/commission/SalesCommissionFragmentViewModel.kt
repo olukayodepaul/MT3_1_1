@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.commission
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,11 +17,13 @@ class SalesCommissionFragmentViewModel @Inject constructor(val repository: Repos
         repository.conputSalesCom(user_id, dates)
             .subscribe({
                 if(it.body()!!.status==200){
-                    mResult.postValue(it!!.body()!!.comlist)
+                    Log.d(TAG, it!!.body()!!.comlist.toString())
+                    mResult.postValue(it.body()!!.comlist)
                 }else{
                     mResult.postValue(null)
                 }
             },{
+                Log.d(TAG, it.message.toString())
                 mResult.postValue(null)
             }).isDisposed
         return mResult
