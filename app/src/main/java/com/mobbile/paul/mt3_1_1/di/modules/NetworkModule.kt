@@ -32,7 +32,7 @@ class NetworkModule {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BASIC
             okHttpClientBuilder
-                .addInterceptor(ConnectivityInterceptorImpl(application))
+                //.addInterceptor(ConnectivityInterceptorImpl(application))
                 .addInterceptor(logging)
         }
 
@@ -43,6 +43,4 @@ class NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
        }
-
-
 }

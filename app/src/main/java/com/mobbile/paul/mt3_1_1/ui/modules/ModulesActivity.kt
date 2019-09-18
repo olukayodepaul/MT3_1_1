@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mobbile.paul.mt3_1_1.models.ModulesRoom
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
-import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_modules.*
 import javax.inject.Inject
@@ -44,7 +43,6 @@ class ModulesActivity : BaseActivity() {
         logout.setOnClickListener {
             logout(1, "Are you sure you want to logout?", "Log out")
         }
-
     }
 
     val ModulesObservers = Observer<List<ModulesRoom>> {
@@ -64,10 +62,8 @@ class ModulesActivity : BaseActivity() {
     }
 
     fun checkLocationPermission() {
-
         val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-
         if (accessPermissionStatus == PackageManager.PERMISSION_GRANTED
             && coarsePermissionStatus == PackageManager.PERMISSION_GRANTED) {
             GPSRationaleEnable()

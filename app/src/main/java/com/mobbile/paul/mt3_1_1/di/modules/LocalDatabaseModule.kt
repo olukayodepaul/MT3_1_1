@@ -26,5 +26,4 @@ class LocalDatabaseModule {
     fun provideRecipeDao(db: AppDatabase): AppDao {
         return db.appdao
     }
-
 }
