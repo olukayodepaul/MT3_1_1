@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,12 +39,19 @@ class OrderAdapter(private var mItems: List<SalesEntrieHolderRoom>):
         LayoutContainer {
         fun bind(item: SalesEntrieHolderRoom) {
             val df = DecimalFormat("#.#")
+
+
             df.roundingMode = RoundingMode.FLOOR
             containerView.mt_sku_id_tv.text = item.product_name.toLowerCase().capitalize()
             containerView.mt_inventory_id_tv.text = item.inventory.toString()
             containerView.mt_pricing_id_tv.text = item.pricing.toString()
             containerView.mt_order_id_tv.text = item.orders.toString()
             containerView.mt_amount_id_tv.text = String.format("%,.1f",(df.format(item.order_price).toDouble()))
+
+            if(item.seperator.equals("3")){
+                containerView.mt_sku_id_tv.setTextColor(Color.parseColor("#01579B"))
+            }
+
         }
     }
 }

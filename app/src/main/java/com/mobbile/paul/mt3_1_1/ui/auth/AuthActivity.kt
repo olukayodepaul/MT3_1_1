@@ -73,8 +73,8 @@ class AuthActivity : BaseActivity() {
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
-            //vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
-            vmodel.callAuthApi("5Az2fYg", "3709", "351736103273508", dates, name_users.equals(dates))
+            vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
+            //vmodel.callAuthApi("5Az2fYg", "3709", "351736103273508", dates, name_users.equals(dates))
         } else {
             makeRequest()
         }

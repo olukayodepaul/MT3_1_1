@@ -1,8 +1,10 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 
 
+import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +53,11 @@ class SalesEntriesAdapter(
 
             containerView.tv_skus.text = item.product_name.toLowerCase().capitalize()
             containerView.tv_soq.text = item.soq
+
+            if(item.seperator==3){
+                containerView.tv_skus.setTextColor(Color.parseColor("#01579B"))
+            }
+
             if (item.soq.isEmpty()) {
                 containerView.tv_soq.text = "0"
             }

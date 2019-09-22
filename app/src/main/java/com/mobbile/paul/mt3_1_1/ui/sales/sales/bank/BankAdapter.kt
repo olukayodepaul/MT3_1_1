@@ -42,9 +42,9 @@ class BankAdapter(private var mItems: List<ProductsRoom>) :
             val df = DecimalFormat("#.#")
             df.roundingMode = RoundingMode.FLOOR
             containerView.tv_sku_q.text = item.productname.toLowerCase().capitalize()
-            containerView.order_tv_q.text = item.totalqtysold.toString()
+            containerView.order_tv_q.text =   String.format("%,.1f",(df.format(item.totalqtysold).toDouble()))
             containerView.amt_tv_q.text =  String.format("%,.1f",(df.format((item.rollprice.toDouble()*item.totalqtysold)-item.totalcommission)).toDouble())
-            containerView.tv_aty_q.text = item.totalcommission.toString()
+            containerView.tv_aty_q.text = String.format("%,.1f",(df.format(item.totalcommission).toDouble()))
         }
     }
 }

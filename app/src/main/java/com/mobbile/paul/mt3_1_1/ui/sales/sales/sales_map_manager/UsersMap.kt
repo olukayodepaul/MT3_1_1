@@ -479,7 +479,7 @@ class UsersMap : BaseActivity() {
                         )
                     }
                 } else {
-                    msgError("Please Change your GPS setting to Higher Accuracy, if not Thanks!")
+                    msgError("Please Change your GPS setting to Higher Accuracy, if not. Thanks!")
                 }
             }
         }
@@ -532,6 +532,4 @@ class UsersMap : BaseActivity() {
         val dialog = builder.create()
         dialog.show()
     }
-
-
 }
