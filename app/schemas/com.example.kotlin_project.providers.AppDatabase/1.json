@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f4a1327bf5d1921e81c6d98b8e155a8e",
+    "identityHash": "9d208e85a7150f6125d1000db531dd23",
     "entities": [
       {
         "tableName": "ModulesRoom",
@@ -284,7 +284,7 @@
       },
       {
         "tableName": "salesentries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` TEXT NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `product_id` TEXT NOT NULL, `soq` TEXT NOT NULL, `product_name` TEXT NOT NULL, `qty` TEXT NOT NULL, `price` TEXT NOT NULL, `seperator` TEXT NOT NULL, `blimit` REAL NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -326,6 +326,12 @@
             "fieldPath": "seperator",
             "columnName": "seperator",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "blimit",
+            "columnName": "blimit",
+            "affinity": "REAL",
             "notNull": true
           }
         ],
@@ -502,7 +508,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f4a1327bf5d1921e81c6d98b8e155a8e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"9d208e85a7150f6125d1000db531dd23\")"
     ]
   }
 }

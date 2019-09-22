@@ -51,28 +51,18 @@ data class ModulesApi(
     var name: String = "",
     @SerializedName("imageurl")
     @Expose
-    var imageurl: String = "",
-    @SerializedName("lat")
-    @Expose
-    var lat: Double = 0.0,
-    @SerializedName("lng")
-    @Expose
-    var lng: Double = 0.0,
-    @SerializedName("sort")
-    @Expose
-    var sort: Int = 0,
-    @SerializedName("outlet_waiver")
-    @Expose
-    var outlet_waiver: Int = 0
+    var imageurl: String = ""
 )
 
 data class Bank_n_CustomersApi(
     @SerializedName("auto")
     @Expose
     var auto: Int = 0,
+
     @SerializedName("id")
     @Expose
     var id: Int = 0,
+
     @SerializedName("notice")
     @Expose
     var notice: String = "",
@@ -112,8 +102,6 @@ data class Bank_n_CustomersApi(
     @SerializedName("defaulttoken")
     @Expose
     var defaulttoken: String = ""
-
-
 )
 
 data class ProductsApi(
@@ -407,7 +395,10 @@ data class SalesEntriesApi(
     var price: String = "",
     @SerializedName("seperator")
     @Expose
-    var seperator: String = ""
+    var seperator: String = "",
+    @SerializedName("blimit")
+    @Expose
+    var blimit: Double = 0.0
 )
 
 data class SalesEntrieHolderApi(
@@ -658,6 +649,18 @@ data class postRecieveClose (
     @SerializedName("avail")
     @Expose
     var avail: Int = 0
+)
+
+
+data class JoinSalesEntriesAndProducts(
+    var id: Int = 0,
+    var totalqtysold: Double = 0.0,
+    var product_id: String = "",
+    var soq: String = "",
+    var product_name: String = "",
+    var qty: Double = 0.0,
+    var price: Double = 0.0,
+    var seperator: Int = 0
 )
 
 

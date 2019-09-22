@@ -16,7 +16,7 @@ import retrofit2.http.Multipart
 interface Api {
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/login")
+    @POST("/mobiletrader/logins")
     fun getUser(
         @Query("username") username: String,
         @Query("password") password: String,

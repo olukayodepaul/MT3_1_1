@@ -39,29 +39,27 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
         dayOfNow = mdate
         repository.getUsers(username, password, imei)
             .subscribe({
-                if (it != null) {
+
+               if (it.isSuccessful && it.body() != null && it.code() == 200 && it.body()!!.status == 200) {
 
                     data = it.body()!!
 
-                    when (it.body()!!.status) {
-                        200 -> {
-                            if (!byPassReEntry) {
-                                deleteModulesRoom()
-                            } else {
-                                sharedEditor.id = it.body()!!.id
-                                sharedEditor.name = it.body()!!.name
-                                sharedEditor.customerno = it.body()!!.customer_code
-                                sharedEditor.dates = dayOfNow
-                                sharedEditor.mode = it.body()!!.mode
-                                ObResult.postValue(sharedEditor)
-                            }
-                        }
-                        else -> {
-                            mResult.postValue(it.body()!!.msg)
-                        }
-                    }
-                }
+                   if (!byPassReEntry) {
+                       deleteModulesRoom()
+                   } else {
+                       sharedEditor.id = it.body()!!.id
+                       sharedEditor.name = it.body()!!.name
+                       sharedEditor.customerno = it.body()!!.customer_code
+                       sharedEditor.dates = dayOfNow
+                       sharedEditor.mode = it.body()!!.mode
+                       ObResult.postValue(sharedEditor)
+                   }
+
+                }else{
+                   mResult.postValue(it.body()!!.msg)
+               }
             }, {
+                Log.d(TAG, it.stackTrace.toString())
                 mResult.postValue(it.message)
             }).isDisposed
     }
@@ -133,7 +131,6 @@ class AuthViewModel @Inject constructor(val repository: Repository) : ViewModel(
             data.customers.map { it.toCustomersEntity() },
             data.product.map { it.toProductEntity() },
             data.spinners.map { it.toProductTypeRoomEntity() }
-
         ).subscribe(
             {
                 sharedEditor.id = data.id //this is the employee id

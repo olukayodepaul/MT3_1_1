@@ -192,6 +192,7 @@ class EditCustomerActivity : BaseActivity() {
             callGpsIntent()
         }else{
             mFusedLocationClient!!.lastLocation.addOnCompleteListener(this) {
+
                 if (it.isSuccessful && it.result != null) {
 
                     val lastLocation: Location = it.result!!

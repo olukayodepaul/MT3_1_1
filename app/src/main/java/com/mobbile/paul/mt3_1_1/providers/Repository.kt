@@ -143,10 +143,10 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
     ).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: String,
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String,  product_id: String,
                          salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)  =
         Observable.fromCallable {
-            appDao.updateDailySales(orders, inventory, pricing, entry_time, id, product_id,
+            appDao.updateDailySales(orders, inventory, pricing, entry_time,  product_id,
                 salesprice, contOrder, contPrincing, contInventory )
     }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -309,6 +309,11 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
+    fun getAllSalesEntries(): Observable<List<JoinSalesEntriesAndProducts>> =
+        Observable.fromCallable {
+            appDao.getAllSalesEntries()
+        } .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 
 }

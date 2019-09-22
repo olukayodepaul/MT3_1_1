@@ -70,8 +70,8 @@ interface AppDao {
     @Query("SELECT * FROM salesentries order by seperator ASC")
     fun fetchDailySales(): List<SalesEntriesRoom>
 
-    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice, contorder=:contOrder, contprincing=:contPrincing, continventory=:contInventory, mtamt = mtcom * :orders where id=:id and product_id=:product_id")
-    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String, id: Int, product_id: String, salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)
+    @Query("UPDATE salesentriesholders SET orders=:orders, inventory=:inventory, pricing=:pricing, entry_time=:entry_time, order_price=:salesprice, contorder=:contOrder, contprincing=:contPrincing, continventory=:contInventory, mtamt = mtcom * :orders where  product_id=:product_id")
+    fun updateDailySales(orders: Double, inventory: Double, pricing: Int, entry_time: String,  product_id: String, salesprice: Double, contOrder: String, contPrincing: String, contInventory: String)
 
     @Query("SELECT * FROM salesentriesholders order by seperator asc")
     fun fetchAllEntryPerDay(): List<SalesEntrieHolderRoom>
@@ -111,6 +111,9 @@ interface AppDao {
 
     @Query("SELECT count(id)  FROM products where separator in (2,3)")
     fun countProducts(): Int
+
+    @Query("select  b.id as id, a.totalqtysold as totalqtysold, b.product_id as product_id, b.soq as soq, b.product_name as product_name, b.qty as qty, b.price as price, b.seperator  as seperator from products a, salesentries b where a.productcode = b.product_id order by b.seperator asc")
+    fun getAllSalesEntries(): List<JoinSalesEntriesAndProducts>
 
 }
 

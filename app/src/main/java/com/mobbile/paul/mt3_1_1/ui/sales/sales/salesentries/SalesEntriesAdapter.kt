@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.R
+import com.mobbile.paul.mt3_1_1.models.JoinSalesEntriesAndProducts
 import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
 import kotlinx.android.extensions.LayoutContainer
@@ -18,7 +19,7 @@ import java.util.*
 
 
 class SalesEntriesAdapter(
-    private var mItems: List<SalesEntriesRoom>,
+    private var mItems: List<JoinSalesEntriesAndProducts>,
     private var repository: Repository
 ) :
     RecyclerView.Adapter<SalesEntriesAdapter.ViewHolder>() {
@@ -46,7 +47,7 @@ class SalesEntriesAdapter(
     inner class ViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
-        fun bind(item: SalesEntriesRoom) {
+        fun bind(item: JoinSalesEntriesAndProducts) {
 
             containerView.tv_skus.text = item.product_name.toLowerCase().capitalize()
             containerView.tv_soq.text = item.soq
@@ -99,7 +100,6 @@ class SalesEntriesAdapter(
                             trasformInventory,
                             trasformPricing,
                             getTime,
-                            item.id,
                             item.product_id,
                             trasformOrder * item.price.toDouble(),
                             controltrasformOrder,
@@ -160,7 +160,6 @@ class SalesEntriesAdapter(
                                 trasformInventory,
                                 trasformPricing,
                                 SimpleDateFormat("HH:mm:ss").format(Date()),
-                                item.id,
                                 item.product_id,
                                 trasformOrder * item.price.toDouble(),
                                 controltrasformOrder,
@@ -216,10 +215,9 @@ class SalesEntriesAdapter(
                                 trasformInventory =
                                     containerView.mt_inventory.text.toString().toDouble()
                                 controltrasformInventory = "0"
-
                             }
 
-                            if (item.qty.toDouble() < trasformOrder) {
+                            if ((item.qty-item.totalqtysold) < trasformOrder) {
                                 containerView.mt_order.setText("")
                             } else {
                                 enterDailySales(
@@ -227,7 +225,6 @@ class SalesEntriesAdapter(
                                     trasformInventory,
                                     trasformPricing,
                                     SimpleDateFormat("HH:mm:ss").format(Date()),
-                                    item.id,
                                     item.product_id,
                                     trasformOrder * item.price.toDouble(),
                                     controltrasformOrder,
@@ -243,12 +240,12 @@ class SalesEntriesAdapter(
 
     fun enterDailySales(
         orders: Double, inventory: Double, pricing: Int,
-        entry_time: String, id: Int, product_id: String,
+        entry_time: String,  product_id: String,
         salesprice: Double, contOrder: String, contPrincing: String, contInventory: String
     ) {
         repository.updateDailySales (
             orders, inventory,
-            pricing, entry_time, id, product_id, salesprice, contOrder, contPrincing, contInventory
+            pricing, entry_time,  product_id, salesprice, contOrder, contPrincing, contInventory
         ).subscribe()
     }
 }

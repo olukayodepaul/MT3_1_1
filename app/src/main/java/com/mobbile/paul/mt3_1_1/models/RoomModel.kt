@@ -71,7 +71,8 @@ data class SalesEntriesRoom (
     var product_name: String = "",
     var qty: String = "",
     var price: String = "",
-    var seperator: String = ""
+    var seperator: String = "",
+    var blimit: Double = 0.0
 )
 
 @Entity(tableName = "salesentriesholders")

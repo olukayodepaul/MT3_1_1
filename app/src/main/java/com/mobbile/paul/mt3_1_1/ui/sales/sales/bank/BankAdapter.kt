@@ -9,6 +9,8 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bank_adapter.view.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 class BankAdapter(private var mItems: List<ProductsRoom>) :
@@ -37,9 +39,11 @@ class BankAdapter(private var mItems: List<ProductsRoom>) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: ProductsRoom) {
+            val df = DecimalFormat("#.#")
+            df.roundingMode = RoundingMode.FLOOR
             containerView.tv_sku_q.text = item.productname.toLowerCase().capitalize()
             containerView.order_tv_q.text = item.totalqtysold.toString()
-            containerView.amt_tv_q.text = (item.totalamountsold-item.totalcommission).toString()
+            containerView.amt_tv_q.text =  String.format("%,.1f",(df.format((item.rollprice.toDouble()*item.totalqtysold)-item.totalcommission)).toDouble())
             containerView.tv_aty_q.text = item.totalcommission.toString()
         }
     }

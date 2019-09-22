@@ -25,7 +25,7 @@ import com.google.android.gms.maps.model.*
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
-import android.util.Log
+import android.view.View
 import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
@@ -96,6 +96,7 @@ class UsersMap : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users_map)
         vmodel = ViewModelProviders.of(this, modelFactory)[SalesMapManagerViewModel::class.java]
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         durt = findViewById(R.id.duration)
         dis = findViewById(R.id.kilometer)
         showProgressBar(true)
@@ -273,21 +274,23 @@ class UsersMap : BaseActivity() {
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> {
-        data = it
-        setMakerPosition(
-            startinglat!!.toDouble(),
-            startinglng!!.toDouble(),
-            endinglat!!.toDouble(),
-            endinglng!!.toDouble()
-        )
-        calculateRouteDistance()
+            data = it
+            setMakerPosition(
+                startinglat!!.toDouble(),
+                startinglng!!.toDouble(),
+                endinglat!!.toDouble(),
+                endinglng!!.toDouble()
+            )
+            calculateRouteDistance()
+            resumebtn.visibility = View.VISIBLE
+            clockoutbtn.visibility =View.VISIBLE
     }
 
     fun calculateRouteDistance() {
-        var distanceCovered: String = data.routes[0].legs[0].distance.text
-        var duration: String = data.routes[0].legs[0].duration.text
-        durt.text = duration
-        dis.text = distanceCovered
+            var distanceCovered: String = data.routes[0].legs[0].distance.text
+            var duration: String = data.routes[0].legs[0].duration.text
+            durt.text = duration
+           dis.text = distanceCovered
     }
 
     fun locationRouteOnMap() {
@@ -345,8 +348,6 @@ class UsersMap : BaseActivity() {
 
 
     private fun requestLocation() {
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -432,8 +433,6 @@ class UsersMap : BaseActivity() {
 
     @SuppressLint("SimpleDateFormat")
     fun outletClose() {
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)

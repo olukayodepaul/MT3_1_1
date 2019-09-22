@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -121,11 +122,18 @@ class OrderedSku : BaseActivity() {
 
         btn_complete.setOnClickListener {
 
-            if (!token.equals(token_form.text.toString())) {
-                tokenVerify(2, "Error",  "Invalid Customer Verification code")
-            } else {
-                showProgressBar(true)
-                vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
+            when {
+                token.equals(token_form.text.toString().trim()) -> {
+                    showProgressBar(true)
+                    btn_complete.visibility = View.INVISIBLE
+                    vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
+                }
+                defaulttoken.equals(token_form.text.toString().trim()) -> {
+                    showProgressBar(true)
+                    btn_complete.visibility = View.INVISIBLE
+                    vmodel.pullAllSalesEntry().observe(this, obervePullinSalesData)
+                }
+                else -> tokenVerify(2, "Error",  "Invalid Customer Verification code")
             }
         }
     }
@@ -142,13 +150,14 @@ class OrderedSku : BaseActivity() {
         }
     }
 
-    val obServeOfPost = Observer<String>{
+    val obServeOfPost = Observer<String> {
         val rsp  = it.split("~")
         when(rsp[0]){
             "200"->{
                 tokenVerify(1, "Success",  rsp[1])
             }
             else->{
+                btn_complete.visibility = View.VISIBLE
                 tokenVerify(2, "Error",  rsp[1])
             }
         }
@@ -171,13 +180,14 @@ class OrderedSku : BaseActivity() {
 
     private val obserTotal = Observer<SumSales> {
         if (it != null) {
-            s_s_amount.text = String.format("%,.1f",it.stotalsum)
-            s_s_order.text = it.sorder.toString()
-            s_s_pricing.text = it.spricing.toString()
-            s_s_invetory.text = it.sinventory.toString()
+            val df = DecimalFormat("#.#")
+            df.roundingMode = RoundingMode.FLOOR
+            s_s_amount.text = String.format("%,.1f",(df.format(it.stotalsum).toDouble()))
+            s_s_order.text = String.format("%,.1f",(df.format(it.sorder).toDouble()))
+            s_s_pricing.text = String.format("%,.1f",(df.format(it.spricing).toDouble()))
+            s_s_invetory.text = String.format("%,.1f",(df.format(it.sinventory).toDouble()))
         }
     }
-
 
     private fun tokenVerify(status: Int, title: String, msg: String) {
         val builder = AlertDialog.Builder(this, R.style.AlertDialogDanger)

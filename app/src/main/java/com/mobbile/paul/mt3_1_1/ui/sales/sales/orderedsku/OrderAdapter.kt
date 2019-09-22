@@ -9,6 +9,8 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderRoom
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.order_adapter_layout.view.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class OrderAdapter(private var mItems: List<SalesEntrieHolderRoom>):
     RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
@@ -35,11 +37,14 @@ class OrderAdapter(private var mItems: List<SalesEntrieHolderRoom>):
     inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         fun bind(item: SalesEntrieHolderRoom) {
+            val df = DecimalFormat("#.#")
+            df.roundingMode = RoundingMode.FLOOR
             containerView.mt_sku_id_tv.text = item.product_name.toLowerCase().capitalize()
             containerView.mt_inventory_id_tv.text = item.inventory.toString()
             containerView.mt_pricing_id_tv.text = item.pricing.toString()
             containerView.mt_order_id_tv.text = item.orders.toString()
-            containerView.mt_amount_id_tv.text = String.format("%,.1f", item.order_price)
+            containerView.mt_amount_id_tv.text = String.format("%,.1f",(df.format(item.order_price).toDouble()))
         }
     }
 }
+

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.R
+import com.mobbile.paul.mt3_1_1.models.JoinSalesEntriesAndProducts
 import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
@@ -122,9 +123,9 @@ class SalesEntries : BaseActivity() {
         reloadData()
     }
 
-    val observerOfSalesEntry = Observer<List<SalesEntriesRoom>> {
+    val observerOfSalesEntry = Observer<List<JoinSalesEntriesAndProducts>> {
         if (it != null) {
-            var list: List<SalesEntriesRoom> = it
+            var list: List<JoinSalesEntriesAndProducts> = it
             mAdapter = SalesEntriesAdapter(list,  repository)
             mAdapter.notifyDataSetChanged()
             _sales_entry_recycler.setItemViewCacheSize(list.size)

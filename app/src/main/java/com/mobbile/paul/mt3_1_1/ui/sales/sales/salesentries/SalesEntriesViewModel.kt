@@ -13,7 +13,7 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
 
     var mResult = MutableLiveData<String>()
 
-    var mData = MutableLiveData<List<SalesEntriesRoom>>()
+    var mData = MutableLiveData<List<JoinSalesEntriesAndProducts>>()
 
     lateinit var data: GenSales
 
@@ -21,7 +21,7 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
         return mResult
     }
 
-    fun returnSalesData(): LiveData<List<SalesEntriesRoom>> {
+    fun returnSalesData(): LiveData<List<JoinSalesEntriesAndProducts>> {
         return mData
     }
 
@@ -75,7 +75,7 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
     }
 
     fun fetchDailySales() {
-        repository.fetchDailySales()
+        repository.getAllSalesEntries()
             .subscribe({
                 mData.postValue(it)
             }, {
@@ -93,7 +93,6 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
                 Log.d(TAG, it.message.toString())
                 mResult.postValue(null)
             }).isDisposed
-
         return mResult
     }
 

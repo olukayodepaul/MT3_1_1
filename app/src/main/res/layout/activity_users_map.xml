@@ -151,7 +151,8 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:layout_below="@+id/map"
-        android:layout_marginTop="-55dp">
+        android:layout_marginTop="-55dp"
+        android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -164,6 +165,7 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
             android:background="#e8ac1b"
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/white"
+            android:visibility="invisible"
     >
 
         <ImageView
@@ -211,7 +213,8 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
             android:fontFamily="@font/roboto_regular"
             android:textSize="17sp"
             android:gravity="center"
-            android:textColor="@color/white">
+            android:textColor="@color/white"
+            android:visibility="invisible">
         <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
