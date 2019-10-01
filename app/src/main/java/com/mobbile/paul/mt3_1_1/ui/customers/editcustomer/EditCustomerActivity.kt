@@ -10,6 +10,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -19,8 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.BuildConfig
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.Attendance
@@ -57,6 +57,10 @@ class EditCustomerActivity : BaseActivity() {
     lateinit var preferedLangAdapter: PreferedLanguageSpinnerAdapter
 
     lateinit var outletTypeAdapter: OutletTypeSpinnerAdapter
+
+    lateinit var locationRequest: LocationRequest
+
+    lateinit var locationCallback: LocationCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,41 +189,41 @@ class EditCustomerActivity : BaseActivity() {
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED){
             startLocationPermissionRequest()
         }else if(!hasGps){
             callGpsIntent()
         }else{
             mFusedLocationClient!!.lastLocation.addOnCompleteListener(this) {
 
-                if (it.isSuccessful && it.result != null) {
+                    if (it.isSuccessful && it.result != null) {
 
-                    val lastLocation: Location = it.result!!
+                        val lastLocation: Location = it.result!!
 
-                    val outletName = customer_name_edit.text.toString()
-                    val contactName = contact_name_edit.text.toString()
-                    val address = address_edit.text.toString()
-                    val phones = phone_number_edit.text.toString()
-                    val outletClass = customerClassAdapter.getValueId(custClass.selectedItem.toString())
-                    val prefLang = preferedLangAdapter.getValueId(preflang.selectedItem.toString())
-                    val outletTypeId = outletTypeAdapter.getValueId(outlettypeedit.selectedItem.toString())
+                        val outletName = customer_name_edit.text.toString()
+                        val contactName = contact_name_edit.text.toString()
+                        val address = address_edit.text.toString()
+                        val phones = phone_number_edit.text.toString()
+                        val outletClass = customerClassAdapter.getValueId(custClass.selectedItem.toString())
+                        val prefLang = preferedLangAdapter.getValueId(preflang.selectedItem.toString())
+                        val outletTypeId = outletTypeAdapter.getValueId(outlettypeedit.selectedItem.toString())
 
-                    vmodel.reSetCustomerProfile(
-                        outletName,
-                        contactName,
-                        address,
-                        phones,
-                        outletClass,
-                        prefLang,
-                        outletTypeId,
-                        customers.urno,
-                        lastLocation.latitude,
-                        lastLocation.longitude
-                    )
-                }else{
-                    Messages(2, "GPS Error", "Please Change your GPS setting to Higher Accuracy. Thanks!!")
-                }
+                        vmodel.reSetCustomerProfile(
+                            outletName,
+                            contactName,
+                            address,
+                            phones,
+                            outletClass,
+                            prefLang,
+                            outletTypeId,
+                            customers.urno,
+                            lastLocation.latitude,
+                            lastLocation.longitude
+                        )
+                    }else{
+                        startLocationUpdates()
+                    }
             }
         }
     }
@@ -239,10 +243,12 @@ class EditCustomerActivity : BaseActivity() {
         }
     }
 
-    companion object{
+    companion object {
         var REQUEST_PERMISSIONS_REQUEST_CODE = 1000
         var TAG = "EditCustomerActivity"
         var RC_ENABLE_LOCATION = 1000
+        private const val INTERVAL: Long = 2000
+        private const val FASTEST_INTERVAL: Long = 1000
     }
 
     private fun Messages(s: Int, title: String, msg: String?) {
@@ -264,5 +270,59 @@ class EditCustomerActivity : BaseActivity() {
         dialog.show()
     }
 
+    fun startLocationUpdates() {
+
+        locationRequest = LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = INTERVAL
+        locationRequest.fastestInterval = FASTEST_INTERVAL
+
+        val builder = LocationSettingsRequest.Builder()
+        builder.addLocationRequest(locationRequest)
+        val locationSettingsRequest = builder.build()
+        val settingsClient = LocationServices.getSettingsClient(this)
+        settingsClient.checkLocationSettings(locationSettingsRequest)
+
+        mFusedLocationClient!!.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper())
+
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            onLocationChanged(locationResult.lastLocation)
+        }
+    }
+
+    fun onLocationChanged(location: Location) {
+
+
+        val outletName = customer_name_edit.text.toString()
+        val contactName = contact_name_edit.text.toString()
+        val address = address_edit.text.toString()
+        val phones = phone_number_edit.text.toString()
+        val outletClass = customerClassAdapter.getValueId(custClass.selectedItem.toString())
+        val prefLang = preferedLangAdapter.getValueId(preflang.selectedItem.toString())
+        val outletTypeId = outletTypeAdapter.getValueId(outlettypeedit.selectedItem.toString())
+
+        vmodel.reSetCustomerProfile(
+            outletName,
+            contactName,
+            address,
+            phones,
+            outletClass,
+            prefLang,
+            outletTypeId,
+            customers.urno,
+            location.latitude,
+            location.longitude
+        )
+        stoplocationUpdates()
+    }
+
+    private fun stoplocationUpdates() {
+        mFusedLocationClient!!.removeLocationUpdates(mLocationCallback)
+    }
+
+    //ID: 20727355.
 
 }
