@@ -8,9 +8,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -73,6 +75,8 @@ class UsersMap : BaseActivity() {
 
     var defaulttoken: String? = ""
 
+    lateinit var locationRequest: LocationRequest
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     lateinit var mLocationManager: LocationManager
@@ -123,8 +127,12 @@ class UsersMap : BaseActivity() {
 
         defaulttoken = intent.getStringExtra("defaulttoken")
 
-        if(sharePref!!.getString("assertiondate", "")!=SimpleDateFormat("yyyy-MM-dd").format(Date())) {
-            Errorchecker(4, "Attendant Error","Please Clock out to proceed. Thanks!")
+        if (sharePref!!.getString(
+                "assertiondate",
+                ""
+            ) != SimpleDateFormat("yyyy-MM-dd").format(Date())
+        ) {
+            Errorchecker(4, "Attendant Error", "Please Clock out to proceed. Thanks!")
         }
 
         backbtn.setOnClickListener {
@@ -174,7 +182,7 @@ class UsersMap : BaseActivity() {
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this, arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
             ), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
         )
     }
@@ -274,23 +282,23 @@ class UsersMap : BaseActivity() {
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> {
-            data = it
-            setMakerPosition(
-                startinglat!!.toDouble(),
-                startinglng!!.toDouble(),
-                endinglat!!.toDouble(),
-                endinglng!!.toDouble()
-            )
-            calculateRouteDistance()
-            resumebtn.visibility = View.VISIBLE
-            clockoutbtn.visibility =View.VISIBLE
+        data = it
+        setMakerPosition(
+            startinglat!!.toDouble(),
+            startinglng!!.toDouble(),
+            endinglat!!.toDouble(),
+            endinglng!!.toDouble()
+        )
+        calculateRouteDistance()
+        resumebtn.visibility = View.VISIBLE
+        clockoutbtn.visibility = View.VISIBLE
     }
 
     fun calculateRouteDistance() {
-            var distanceCovered: String = data.routes[0].legs[0].distance.text
-            var duration: String = data.routes[0].legs[0].duration.text
-            durt.text = duration
-           dis.text = distanceCovered
+        var distanceCovered: String = data.routes[0].legs[0].distance.text
+        var duration: String = data.routes[0].legs[0].duration.text
+        durt.text = duration
+        dis.text = distanceCovered
     }
 
     fun locationRouteOnMap() {
@@ -333,6 +341,8 @@ class UsersMap : BaseActivity() {
         var TAG = "UsersMap"
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1235
         var ENABLE_GPS = 1000
+        private const val INTERVAL: Long = 2000
+        private const val FASTEST_INTERVAL: Long = 1000
     }
 
     fun startMapIntent(ctx: Context, ads: String, mode: Char1, avoid: Char1): Any {
@@ -347,6 +357,7 @@ class UsersMap : BaseActivity() {
     }
 
 
+    //proceed to sales
     private fun requestLocation() {
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -400,9 +411,8 @@ class UsersMap : BaseActivity() {
                         startActivity(intent)
                     }
                 } else {
-                    msgError("Please Change your GPS setting to Higher Accuracy. Thanks!")
+                    startLocationUpdates(201)
                 }
-
             }
         }
     }
@@ -479,7 +489,7 @@ class UsersMap : BaseActivity() {
                         )
                     }
                 } else {
-                    msgError("Please Change your GPS setting to Higher Accuracy, if not. Thanks!")
+                    startLocationUpdates(200)
                 }
             }
         }
@@ -511,7 +521,7 @@ class UsersMap : BaseActivity() {
                     val intent = Intent(this, SalesViewpager::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
-                }else if(status == 4){
+                } else if (status == 4) {
                     val intent = Intent(this, SalesViewpager::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
@@ -531,5 +541,116 @@ class UsersMap : BaseActivity() {
             }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    fun startLocationUpdates(status: Int) {
+
+        locationRequest = LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = INTERVAL
+        locationRequest.fastestInterval = FASTEST_INTERVAL
+
+        val builder = LocationSettingsRequest.Builder()
+        builder.addLocationRequest(locationRequest)
+        val locationSettingsRequest = builder.build()
+        val settingsClient = LocationServices.getSettingsClient(this)
+        settingsClient.checkLocationSettings(locationSettingsRequest)
+
+        when (status) {
+            200 -> {
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    closeLocationCallback,
+                    Looper.myLooper()
+                )
+            }
+            201 -> {
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    proceedToSalesLocationCallback,
+                    Looper.myLooper()
+                )
+            }
+        }
+    }
+
+    private val closeLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            onLocationChangedForClose(locationResult.lastLocation)
+        }
+    }
+
+    private val proceedToSalesLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            onLocationChangedForProceedToSales(locationResult.lastLocation)
+        }
+    }
+
+    fun onLocationChangedForProceedToSales(location: Location) {
+
+        val checkCustomerOutlet: Boolean = insideRadius(
+            location.latitude,
+            location.longitude,
+            endinglat!!.toDouble(),
+            endinglng!!.toDouble()
+        )
+        if (!checkCustomerOutlet) {
+            msgError("You are not at the corresponding outlet. Thanks!")
+        } else {
+            /*vmodel.confirmTask(
+                pref!!.getInt("employee_id_user", 0),
+                dateStamp,
+                mLastLocation.latitude,
+                mLastLocation.longitude
+            ).observe(this, observeClockOut)*/
+            val intent = Intent(this, SalesEntries::class.java)
+            intent.putExtra("urno", urno)
+            intent.putExtra("token", token)
+            intent.putExtra("outletname", outletname)
+            intent.putExtra("defaulttoken", defaulttoken)
+            intent.putExtra("visit_sequence", visit_sequence)
+            intent.putExtra("clat", location.latitude)
+            intent.putExtra("clng", location.latitude)
+            intent.putExtra("arrivallat", endinglat)
+            intent.putExtra("arrivalng", endinglng)
+            intent.putExtra("distance", dis.text.toString())
+            intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
+            startActivity(intent)
+        }
+        stoplocationUpdatesForProceedToSales()
+    }
+
+    fun onLocationChangedForClose(location: Location) {
+
+        val checkCustomerOutlet: Boolean = insideRadius(
+            location.latitude,
+            location.longitude,
+            endinglat!!.toDouble(),
+            endinglng!!.toDouble()
+        )
+        if (!checkCustomerOutlet) {
+            showProgressBar(false)
+            msgError("You are not at the corresponding outlet. Thanks!")
+        } else {
+            vmodel.setOutletClose(
+                pref!!.getInt("employee_id_user", 0),
+                urno.toString(),
+                SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                SimpleDateFormat("HH:mm:ss").format(Date()),
+                location.latitude.toString(),
+                location.longitude.toString(),
+                dis.text.toString(),
+                visit_sequence!!
+            )
+        }
+        stoplocationUpdatesForClose()
+    }
+
+    private fun stoplocationUpdatesForClose() {
+        fusedLocationClient.removeLocationUpdates(closeLocationCallback)
+    }
+
+    private fun stoplocationUpdatesForProceedToSales() {
+        fusedLocationClient.removeLocationUpdates(proceedToSalesLocationCallback)
     }
 }
