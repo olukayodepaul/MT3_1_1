@@ -24,7 +24,7 @@
     <string name="pclose">Outlet Close</string>
     <string name="cltn">Customer Location</string>
     <string name="title_activity_maps">Map</string>
-    <string name="keys">""</string>
+    <string name="keys">"AIzaSyDsXEw4xpBJm_CFvNb8y_mq1hT9bq_qRY8"</string>
     <string name="title_activity_settings">Settings</string>
     <string name="c_order">Complete Order</string>
 
@@ -42,8 +42,6 @@
     <string name="sync_basket_tile">Basket Data Synchronisation</string>
     <string name="app_build_version">MT3 Build Version</string>
     <string name="about_sumary">3.1.1 Version</string>
-
-
 
 
     <string name="uploadImages">Set your image</string>
