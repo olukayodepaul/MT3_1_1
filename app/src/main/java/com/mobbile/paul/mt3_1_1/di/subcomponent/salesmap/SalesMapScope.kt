@@ -1,4 +1,4 @@
-package com.example.kotlin_project.di.main
+package com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap
 
 import javax.inject.Scope
 

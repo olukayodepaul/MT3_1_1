@@ -8,9 +8,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -26,6 +28,8 @@ import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
 import android.view.View
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
@@ -89,6 +93,8 @@ class UsersMap : BaseActivity() {
 
     var dateStamp: String = ""
 
+    lateinit var locationRequest: LocationRequest
+
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,7 +144,7 @@ class UsersMap : BaseActivity() {
         }
 
         clockoutbtn.setOnClickListener {
-            requestLocation()
+            outletOpen()
         }
 
         resumebtn.setOnClickListener {
@@ -333,6 +339,8 @@ class UsersMap : BaseActivity() {
         var TAG = "UsersMap"
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1235
         var ENABLE_GPS = 1000
+        private const val INTERVAL: Long = 1 * 1000
+        private const val FASTEST_INTERVAL: Long = 1 * 1000
     }
 
     fun startMapIntent(ctx: Context, ads: String, mode: Char1, avoid: Char1): Any {
@@ -347,10 +355,12 @@ class UsersMap : BaseActivity() {
     }
 
 
-    private fun requestLocation() {
+    private fun outletOpen() {
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        val available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
 
         val accessPermissionStatus =
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -363,73 +373,13 @@ class UsersMap : BaseActivity() {
             requestLocationPermission()
         } else if (!hasGps) {
             callGpsIntent()
-        } else {
-            fusedLocationClient.lastLocation.addOnCompleteListener {
-
-                if (it.isSuccessful && it.result != null) {
-
-                    val mLastLocation = it.result
-
-                    val checkCustomerOutlet: Boolean = insideRadius(
-                        mLastLocation!!.latitude,
-                        mLastLocation!!.longitude,
-                        endinglat!!.toDouble(),
-                        endinglng!!.toDouble()
-                    )
-                    if (!checkCustomerOutlet) {
-                        msgError("You are not at the corresponding outlet. Thanks!")
-                    } else {
-                        /*vmodel.confirmTask(
-                            pref!!.getInt("employee_id_user", 0),
-                            dateStamp,
-                            mLastLocation.latitude,
-                            mLastLocation.longitude
-                        ).observe(this, observeClockOut)*/
-                        val intent = Intent(this, SalesEntries::class.java)
-                        intent.putExtra("urno", urno)
-                        intent.putExtra("token", token)
-                        intent.putExtra("outletname", outletname)
-                        intent.putExtra("defaulttoken", defaulttoken)
-                        intent.putExtra("visit_sequence", visit_sequence)
-                        intent.putExtra("clat", mLastLocation.latitude)
-                        intent.putExtra("clng", mLastLocation.latitude)
-                        intent.putExtra("arrivallat", endinglat)
-                        intent.putExtra("arrivalng", endinglng)
-                        intent.putExtra("distance", dis.text.toString())
-                        intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
-                        startActivity(intent)
-                    }
-                } else {
-                    msgError("Please Change your GPS setting to Higher Accuracy. Thanks!")
-                }
-
-            }
+        } else if(available == ConnectionResult.API_UNAVAILABLE){
+            msgError("Please Install and setup Google Play service")
+        }else {
+            startLocationUpdates(1)
         }
     }
 
-    /*@SuppressLint("SimpleDateFormat")
-    private var observeClockOut = Observer<salesEntryResponses> {
-        if (it != null) {
-            when (it.status) {
-                200 -> {
-                    val intent = Intent(this, SalesEntries::class.java)
-                    intent.putExtra("urno", urno)
-                    intent.putExtra("token", token)
-                    intent.putExtra("outletname", outletname)
-                    intent.putExtra("defaulttoken", defaulttoken)
-                    intent.putExtra("visit_sequence", visit_sequence)
-                    intent.putExtra("clat", it.curlat)
-                    intent.putExtra("clng", it.curlng)
-                    intent.putExtra("distance", dis.text.toString())
-                    intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
-                    startActivity(intent)
-                }
-                400 -> {
-                    msgError(it.msg)
-                }
-            }
-        }
-    }*/
 
     @SuppressLint("SimpleDateFormat")
     fun outletClose() {
@@ -437,10 +387,10 @@ class UsersMap : BaseActivity() {
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         hasGps = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
-        val accessPermissionStatus =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
+
+        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
             && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
@@ -449,39 +399,11 @@ class UsersMap : BaseActivity() {
 
         } else if (!hasGps) {
             callGpsIntent()
-        } else {
+        } else if(available == ConnectionResult.API_UNAVAILABLE){
+            msgError("Please Install and setup Google Play service")
+        }else {
             showProgressBar(true)
-            fusedLocationClient.lastLocation.addOnCompleteListener {
-
-                if (it.isSuccessful && it.result != null) {
-
-                    val mLastLocation = it.result
-
-                    val checkCustomerOutlet: Boolean = insideRadius(
-                        mLastLocation!!.latitude,
-                        mLastLocation.longitude,
-                        endinglat!!.toDouble(),
-                        endinglng!!.toDouble()
-                    )
-                    if (!checkCustomerOutlet) {
-                        showProgressBar(false)
-                        msgError("You are not at the corresponding outlet. Thanks!")
-                    } else {
-                        vmodel.setOutletClose(
-                            pref!!.getInt("employee_id_user", 0),
-                            urno.toString(),
-                            SimpleDateFormat("yyyy-MM-dd").format(Date()),
-                            SimpleDateFormat("HH:mm:ss").format(Date()),
-                            mLastLocation.latitude.toString(),
-                            mLastLocation.longitude.toString(),
-                            dis.text.toString(),
-                            visit_sequence!!
-                        )
-                    }
-                } else {
-                    msgError("Please Change your GPS setting to Higher Accuracy, if not. Thanks!")
-                }
-            }
+            startLocationUpdates(2)
         }
     }
 
@@ -531,5 +453,125 @@ class UsersMap : BaseActivity() {
             }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    fun startLocationUpdates(swictcher:Int) {
+
+        locationRequest = LocationRequest()
+
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = INTERVAL
+        locationRequest.fastestInterval = FASTEST_INTERVAL
+
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+
+        val settingsClient = LocationServices.getSettingsClient(this)
+        settingsClient.checkLocationSettings(builder.build())
+
+        when(swictcher) {
+            1->{
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    callbbackOpen,
+                    Looper.myLooper()
+                )
+            }
+            2->{
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    callbackClose,
+                    Looper.myLooper()
+                )
+            }
+        }
+    }
+
+    private val callbbackOpen = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            onLocationChangedOpen(locationResult.lastLocation)
+        }
+    }
+
+    private val callbackClose = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            onLocationChangedClose(locationResult.lastLocation)
+        }
+    }
+
+    fun onLocationChangedClose(location: Location) {
+        showProgressBar(false)
+        if(location==null) {
+            startLocationUpdates(2)
+        }else {
+
+            stoplocationClose()
+
+            val checkCustomerOutlet: Boolean = insideRadius(
+                location.latitude,
+                location.longitude,
+                endinglat!!.toDouble(),
+                endinglng!!.toDouble()
+            )
+
+            if (!checkCustomerOutlet) {
+                msgError("You are not at the corresponding outlet. Thanks!")
+            } else {
+
+                vmodel.setOutletClose(
+                    pref!!.getInt("employee_id_user", 0),
+                    urno.toString(),
+                    SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                    SimpleDateFormat("HH:mm:ss").format(Date()),
+                    location.latitude.toString(),
+                    location.longitude.toString(),
+                    dis.text.toString(),
+                    visit_sequence!!
+                )
+            }
+        }
+    }
+
+    fun onLocationChangedOpen(location: Location) {
+        showProgressBar(false)
+        if(location==null) {
+            startLocationUpdates(1)
+        }else {
+
+            stoplocationOpen()
+
+            val checkCustomerOutlet: Boolean = insideRadius(
+                location.latitude,
+                location.longitude,
+                endinglat!!.toDouble(),
+                endinglng!!.toDouble()
+            )
+
+            if (!checkCustomerOutlet) {
+                msgError("You are not at the corresponding outlet. Thanks!")
+            } else {
+
+                val intent = Intent(this, SalesEntries::class.java)
+                intent.putExtra("urno", urno)
+                intent.putExtra("token", token)
+                intent.putExtra("outletname", outletname)
+                intent.putExtra("defaulttoken", defaulttoken)
+                intent.putExtra("visit_sequence", visit_sequence)
+                intent.putExtra("clat", location.latitude.toString())
+                intent.putExtra("clng", location.latitude.toString())
+                intent.putExtra("arrivallat", endinglat)
+                intent.putExtra("arrivalng", endinglng)
+                intent.putExtra("distance", dis.text.toString())
+                intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun stoplocationOpen() {
+        fusedLocationClient.removeLocationUpdates(callbbackOpen)
+    }
+
+    private fun stoplocationClose() {
+        fusedLocationClient.removeLocationUpdates(callbackClose)
     }
 }

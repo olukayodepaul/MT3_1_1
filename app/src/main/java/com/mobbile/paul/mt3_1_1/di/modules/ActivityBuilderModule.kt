@@ -16,6 +16,7 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.order.OrderModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesdetails.SalesDetailsModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesentries.SalesEntriesModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapScope
 import com.mobbile.paul.mt3_1_1.di.subcomponent.settings.SettingsModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.takepics.TakeOutletPicsModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity

@@ -13,7 +13,7 @@ class MapGoogleApi {
 
     @Singleton
     @Provides
-    internal fun provideMainApi(@Named("application_api") retrofit: Retrofit): MapApi {
+    internal fun provideGooglepi(@Named("map_api") retrofit: Retrofit): MapApi {
         return retrofit.create(MapApi::class.java)
     }
 

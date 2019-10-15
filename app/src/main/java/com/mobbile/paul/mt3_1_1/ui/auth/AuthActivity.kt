@@ -74,7 +74,7 @@ class AuthActivity : BaseActivity() {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
            // vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
-            vmodel.callAuthApi("5Az2fYg", "3709", "351736103273508", dates, name_users.equals(dates))
+            vmodel.callAuthApi("aFcF237", "8292", "351736104243526", dates, name_users.equals(dates))
         } else {
             makeRequest()
         }
