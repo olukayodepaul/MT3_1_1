@@ -1,8 +1,6 @@
-package com.example.kotlin_project.providers
+package com.mobbile.paul.mt3_1_1.providers
 
 import com.mobbile.paul.mt3_1_1.models.*
-import com.mobbile.paul.mt3_1_1.providers.MapApi
-import com.mobbile.paul.mt3_1_1.viewmodel.ReloadCustomers
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

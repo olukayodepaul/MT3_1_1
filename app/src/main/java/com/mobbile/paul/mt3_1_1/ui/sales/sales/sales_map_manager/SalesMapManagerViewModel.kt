@@ -3,8 +3,8 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.*
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import com.mobbile.paul.mt3_1_1.viewmodel.CloseOutlets
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.example.kotlin_project.di.modules
+package com.mobbile.paul.mt3_1_1.di.modules
 
 import java.lang.annotation.Documented
 import java.lang.annotation.Retention

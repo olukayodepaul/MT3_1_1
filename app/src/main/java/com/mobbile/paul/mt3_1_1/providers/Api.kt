@@ -1,4 +1,4 @@
-package com.example.kotlin_project.providers
+package com.mobbile.paul.mt3_1_1.providers
 
 
 import com.mobbile.paul.mt3_1_1.models.*
@@ -16,7 +16,7 @@ import retrofit2.http.Multipart
 interface Api {
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/logins")
+    @POST("/logins")
     fun getUser(
         @Query("username") username: String,
         @Query("password") password: String,
@@ -24,7 +24,7 @@ interface Api {
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/salesentry")
+    @POST("/salesentry")
     fun fetchSales(
         @Query("urno") urno: String,
         @Query("customerno") customerno: String,
@@ -32,21 +32,21 @@ interface Api {
     ): Single<Response<GenSales>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/postsales")
+    @POST("/postsales")
     fun postSales(
         @Body saleposttoserver: postToServer
     ): Single<Response<postRecieveFromServer>>
 
     @Headers("Connection:close")
     @Multipart
-    @POST("/mobiletrader/mapcustomers")
+    @POST("/mapcustomers")
     fun upload(
         @Query("urno") urno: Int,
         @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>
     ): Single<Response<Attendance>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/employeetask")
+    @POST("/employeetask")
     fun getTask(
         @Query("userid") userid: Int,
         @Query("taskid") taskid: Int,
@@ -55,32 +55,32 @@ interface Api {
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/confirmtask")
+    @POST("/confirmtask")
     fun confirmTask(
         @Query("userid") userid: Int,
         @Query("dates") dates: String
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/outletsales")
+    @POST("/outletsales")
     fun outletSales(
         @Query("token") token: Int
     ): Single<Response<OutletSalesHistory>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/commissions")
+    @POST("/commissions")
     fun conputSalesCom(
         @Query("user_id") user_id: Int,
         @Query("dates") dates: String
     ): Single<Response<salesCommisssion>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/allmycustomer")
+    @POST("/allmycustomer")
     fun getAllCustomers(
         @Query("user_id") user_id: Int
     ): Single<Response<AllCustomers>>
 
-    @POST("/mobiletrader/customerprofile")
+    @POST("/customerprofile")
     fun reSetCustomerProfile (
     @Query("outletname") outletname: String,
     @Query("contactname") contactname: String,
@@ -95,7 +95,7 @@ interface Api {
     ): Single<Response<Attendance>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/othertask")
+    @POST("/othertask")
     fun OtherTask(
         @Query("userid") userid: Int,
         @Query("taskid") taskid: Int,
@@ -104,7 +104,7 @@ interface Api {
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/outletsalesclose")
+    @POST("/outletsalesclose")
     fun setOutletClose(
         @Query("userid") userid: Int,
         @Query("urno") urno: String,
@@ -117,14 +117,14 @@ interface Api {
     ): Single<Response<postRecieveClose>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/reselectcustomers")
+    @POST("/reselectcustomers")
     fun fecthTodayCustomers(
         @Query("user_id") user_id: Int,
         @Query("dates") dates: String
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/mobiletrader/reselectproduct")
+    @POST("/reselectproduct")
     fun fecthTodayProducts(
         @Query("custno") custno: String,
         @Query("autoid") autoid: Int

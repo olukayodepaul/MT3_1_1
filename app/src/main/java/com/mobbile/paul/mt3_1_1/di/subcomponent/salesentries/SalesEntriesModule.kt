@@ -1,7 +1,7 @@
-package com.example.kotlin_project.di.main
+package com.mobbile.paul.mt3_1_1.di.subcomponent.salesentries
 
 import androidx.lifecycle.ViewModel
-import com.example.kotlin_project.di.modules.ViewModelKey
+import com.mobbile.paul.mt3_1_1.di.modules.ViewModelKey
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntriesViewModel
 import dagger.Binds
 import dagger.Module
@@ -14,3 +14,4 @@ abstract  class SalesEntriesModule {
     @ViewModelKey(SalesEntriesViewModel::class)
     abstract fun bindAuthViewModel(viewModel: SalesEntriesViewModel): ViewModel
 }
+

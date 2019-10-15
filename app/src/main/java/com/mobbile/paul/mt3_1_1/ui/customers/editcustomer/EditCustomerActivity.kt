@@ -2,17 +2,13 @@ package com.mobbile.paul.mt3_1_1.ui.customers.editcustomer
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -21,9 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.mobbile.paul.mt3_1_1.BuildConfig
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.R
-import com.mobbile.paul.mt3_1_1.models.Attendance
 import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
 import com.mobbile.paul.mt3_1_1.models.RepCustomers
 import com.mobbile.paul.mt3_1_1.ui.customers.CustomerViewModel
@@ -31,7 +26,6 @@ import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobbile.paul.mt3_1_1.viewmodel.EditCustomer
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_edit_customer.*
 import java.util.*
 import javax.inject.Inject
@@ -137,20 +131,17 @@ class EditCustomerActivity : BaseActivity() {
                     }
                 }
             }
-            val mOutletClass =
-                ArrayAdapter(this, android.R.layout.simple_spinner_item, outletClassList)
+            val mOutletClass = ArrayAdapter(this, android.R.layout.simple_spinner_item, outletClassList)
             mOutletClass.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             custClass!!.adapter = mOutletClass
             custClass!!.setSelection(customerClassAdapter.getIndexById(customers.outletclassid.toInt()))
 
-            val mPreferedLang =
-                ArrayAdapter(this, android.R.layout.simple_spinner_item, preLangsList)
+            val mPreferedLang = ArrayAdapter(this, android.R.layout.simple_spinner_item, preLangsList)
             mPreferedLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             preflang!!.adapter = mPreferedLang
             preflang!!.setSelection(preferedLangAdapter.getIndexById(customers.outletlanguageid.toInt()))
 
-            val mOutletType =
-                ArrayAdapter(this, android.R.layout.simple_spinner_item, outletTypeList)
+            val mOutletType = ArrayAdapter(this, android.R.layout.simple_spinner_item, outletTypeList)
             mOutletType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             outlettypeedit!!.adapter = mOutletType
             outlettypeedit!!.setSelection(outletTypeAdapter.getIndexById(customers.outlettypeid.toInt()))

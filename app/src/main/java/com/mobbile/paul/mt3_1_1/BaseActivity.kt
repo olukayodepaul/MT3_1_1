@@ -1,4 +1,4 @@
-package com.mobiletraderv.paul.daggertraining
+package com.mobbile.paul.mt3_1_1
 
 import android.util.Log
 import android.view.View

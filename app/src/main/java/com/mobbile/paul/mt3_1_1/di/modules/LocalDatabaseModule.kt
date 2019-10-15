@@ -1,9 +1,9 @@
-package com.example.kotlin_project.di.modules
+package com.mobbile.paul.mt3_1_1.di.modules
 
 import android.app.Application
 import androidx.room.Room
-import com.example.kotlin_project.providers.AppDao
-import com.example.kotlin_project.providers.AppDatabase
+import com.mobbile.paul.mt3_1_1.providers.AppDao
+import com.mobbile.paul.mt3_1_1.providers.AppDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderApi
 import com.mobbile.paul.mt3_1_1.models.SalesEntrieHolderRoom
@@ -21,7 +22,6 @@ import com.mobbile.paul.mt3_1_1.models.SumSales
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_ordered_sku.*
 import java.math.RoundingMode
 import java.text.DecimalFormat

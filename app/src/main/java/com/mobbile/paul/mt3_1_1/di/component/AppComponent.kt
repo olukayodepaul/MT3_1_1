@@ -1,8 +1,9 @@
-package com.mobiletraderv.paul.daggertraining.di
+package com.mobbile.paul.mt3_1_1.di.component
 
 import android.app.Application
-import com.example.kotlin_project.di.modules.*
-import com.mobiletraderv.paul.daggertraining.BaseApplication
+import com.mobbile.paul.mt3_1_1.BaseApplication
+import com.mobbile.paul.mt3_1_1.di.modules.*
+import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.MapNetworkModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -17,7 +18,7 @@ import javax.inject.Singleton
     NetworkModule::class,
     LocalDatabaseModule::class,
     AppApi::class,
-    MapApi::class,
+    MapGoogleApi::class,
     MapNetworkModule::class
 ])
 interface AppComponent : AndroidInjector<BaseApplication> {

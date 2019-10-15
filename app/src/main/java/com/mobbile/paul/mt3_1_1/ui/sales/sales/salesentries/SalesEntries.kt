@@ -12,13 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.providers.Repository
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.JoinSalesEntriesAndProducts
-import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderedSku
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_sales_entries.*
 import javax.inject.Inject
 

@@ -6,9 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.Bank_n_CustomersRoom
-import com.example.kotlin_project.providers.Repository
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import javax.inject.Inject
 
 class SalesFragmentViewModel @Inject constructor(val repository: Repository): ViewModel()  {

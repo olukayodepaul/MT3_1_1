@@ -1,7 +1,7 @@
-package com.example.kotlin_project.di.main
+package com.mobbile.paul.mt3_1_1.di.subcomponent.order
 
 import androidx.lifecycle.ViewModel
-import com.example.kotlin_project.di.modules.ViewModelKey
+import com.mobbile.paul.mt3_1_1.di.modules.ViewModelKey
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku.OrderViewModel
 import dagger.Binds
 import dagger.Module

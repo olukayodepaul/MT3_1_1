@@ -23,10 +23,10 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.BuildConfig
 import com.mobbile.paul.mt3_1_1.models.Attendance
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_take_outlet_picture.*
 import java.io.File
 import java.io.IOException

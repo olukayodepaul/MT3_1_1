@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.models.*
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import com.mobbile.paul.mt3_1_1.viewmodel.ReloadCustomers
 import javax.inject.Inject
 

@@ -1,14 +1,23 @@
-package com.example.kotlin_project.di.modules
+package com.mobbile.paul.mt3_1_1.di.modules
+
 
 import com.example.kotlin_project.di.main.*
 import com.mobbile.paul.mt3_1_1.di.subcomponent.attendant.AttendantModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.auth.AuthModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.bank_n_depot.BankModel
+import com.mobbile.paul.mt3_1_1.di.subcomponent.bank_n_depot.DepotsModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.customers.CustomersModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.FragmentBuilder
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.SalesComissionModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
+import com.mobbile.paul.mt3_1_1.di.subcomponent.modules.ModulesModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.order.OrderModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.salesdetails.SalesDetailsModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.salesentries.SalesEntriesModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.settings.SettingsModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.takepics.TakeOutletPicsModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
 import com.mobbile.paul.mt3_1_1.ui.customers.CustomerPageViwer
 import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.EditCustomerActivity

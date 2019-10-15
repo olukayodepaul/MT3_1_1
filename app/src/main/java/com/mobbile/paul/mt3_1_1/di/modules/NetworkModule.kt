@@ -1,9 +1,8 @@
-package com.example.kotlin_project.di.modules
+package com.mobbile.paul.mt3_1_1.di.modules
 
 
 import android.app.Application
 import com.mobbile.paul.mt3_1_1.BuildConfig
-import com.mobbile.paul.mt3_1_1.util.ConnectivityInterceptorImpl
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -37,7 +36,7 @@ class NetworkModule {
         }
 
         return Retrofit.Builder()
-            .baseUrl("http://82.163.72.135:8092")
+            .baseUrl("http://www.mobiletraderapi.com")
             .client(okHttpClientBuilder.build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

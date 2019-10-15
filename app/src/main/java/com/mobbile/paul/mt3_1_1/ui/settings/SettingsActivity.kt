@@ -12,12 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobbile.paul.mt3_1_1.viewmodel.ReloadCustomers
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.settings_activity.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import androidx.lifecycle.Observer
+import com.mobbile.paul.mt3_1_1.BaseActivity
 
 class SettingsActivity : BaseActivity() {
 

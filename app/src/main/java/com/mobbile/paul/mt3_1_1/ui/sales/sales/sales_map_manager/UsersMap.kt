@@ -27,6 +27,7 @@ import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
 import android.view.View
 import com.google.android.gms.location.*
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries.SalesEntries
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.LATLNG
@@ -34,7 +35,6 @@ import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.insideRadius
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import com.mobbile.paul.mt3_1_1.viewmodel.CloseOutlets
-import com.mobiletraderv.paul.daggertraining.BaseActivity
 import kotlinx.android.synthetic.main.activity_users_map.*
 import java.text.SimpleDateFormat
 import java.util.*

@@ -13,15 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.EmployeesApi
 import com.mobbile.paul.mt3_1_1.models.ProductsRoom
 import com.mobbile.paul.mt3_1_1.models.totalSumProductEntry
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
-import com.mobbile.paul.mt3_1_1.util.Utils
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
-import com.mobiletraderv.paul.daggertraining.BaseActivity
-import kotlinx.android.synthetic.main.activity_bank.*
 import kotlinx.android.synthetic.main.activity_depots.*
 import kotlinx.android.synthetic.main.activity_depots._r_view_pager
 import kotlinx.android.synthetic.main.activity_depots.amt_tv_t

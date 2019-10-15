@@ -1,13 +1,11 @@
-package com.example.kotlin_project.di.modules
+package com.mobbile.paul.mt3_1_1.di.modules
 
 
 
 import androidx.lifecycle.ViewModelProvider
-import com.example.kotlin_project.viewmodel.ViewModeProviderFactory
+import com.mobbile.paul.mt3_1_1.viewmodel.ViewModeProviderFactory
 import dagger.Binds
 import dagger.Module
-
-
 
 @Module
 abstract class ViewModelFactoryModule {

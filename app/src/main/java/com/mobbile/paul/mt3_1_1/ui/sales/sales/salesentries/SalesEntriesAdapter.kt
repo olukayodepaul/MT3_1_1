@@ -4,15 +4,13 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.salesentries
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.kotlin_project.providers.Repository
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.JoinSalesEntriesAndProducts
-import com.mobbile.paul.mt3_1_1.models.SalesEntriesRoom
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.getTime
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.sales_entry_adapter.view.*

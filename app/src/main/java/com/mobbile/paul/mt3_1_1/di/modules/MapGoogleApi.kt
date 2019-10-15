@@ -1,7 +1,7 @@
 package com.mobbile.paul.mt3_1_1.di.modules
 
 
-import com.mobbile.paul.mt3_1_1.providers.Api
+import com.mobbile.paul.mt3_1_1.providers.MapApi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -9,12 +9,12 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class AppApi {
+class MapGoogleApi {
 
     @Singleton
     @Provides
-    internal fun provideMainApi(@Named("application_api") retrofit: Retrofit): Api {
-        return retrofit.create(Api::class.java)
+    internal fun provideMainApi(@Named("application_api") retrofit: Retrofit): MapApi {
+        return retrofit.create(MapApi::class.java)
     }
 
 }

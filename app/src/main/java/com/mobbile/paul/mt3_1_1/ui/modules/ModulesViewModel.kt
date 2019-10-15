@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.ModulesRoom
-import com.example.kotlin_project.providers.Repository
+import com.mobbile.paul.mt3_1_1.providers.Repository
 import javax.inject.Inject
 
 class ModulesViewModel @Inject constructor(val repository: Repository) : ViewModel() {
