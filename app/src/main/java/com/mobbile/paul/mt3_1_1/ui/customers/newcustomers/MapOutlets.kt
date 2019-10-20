@@ -1,5 +1,4 @@
-package com.mobbile.paul.mt3_1_1.ui.customers.editcustomer
-
+package com.mobbile.paul.mt3_1_1.ui.customers.newcustomers
 
 
 import android.Manifest
@@ -19,32 +18,36 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.BaseActivity
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
-import com.mobbile.paul.mt3_1_1.models.RepCustomers
+import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.CustomerClassSpinnerAdapter
+import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.OutletTypeSpinnerAdapter
+import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.PreferedLanguageSpinnerAdapter
 import com.mobbile.paul.mt3_1_1.util.Util.showSomeDialog
+import kotlinx.android.synthetic.main.activity_map_outlets.*
+import javax.inject.Inject
+import android.provider.Settings
+import com.google.android.gms.location.*
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.PREFS_FILENAME
 import com.mobbile.paul.mt3_1_1.util.Utils.Companion.isInternetAvailable
 import kotlinx.android.synthetic.main.activity_edit_customer.*
-import java.util.*
-import javax.inject.Inject
-import android.provider.Settings
-import android.util.Log
+import kotlinx.android.synthetic.main.activity_map_outlets.address_edit
+import kotlinx.android.synthetic.main.activity_map_outlets.backbtn
+import kotlinx.android.synthetic.main.activity_map_outlets.contact_name_edit
+import kotlinx.android.synthetic.main.activity_map_outlets.custClass
+import kotlinx.android.synthetic.main.activity_map_outlets.customer_name_edit
+import kotlinx.android.synthetic.main.activity_map_outlets.outlettypeedit
+import kotlinx.android.synthetic.main.activity_map_outlets.phone_number_edit
+import kotlinx.android.synthetic.main.activity_map_outlets.preflang
+import kotlinx.android.synthetic.main.activity_map_outlets.registerBtn
 
-class EditCustomerActivity : BaseActivity() {
+class MapOutlets : BaseActivity() {
 
     @Inject
     internal lateinit var modelFactory: ViewModelProvider.Factory
 
-    lateinit var vmodel: EditCustomerViewModel
-
-    private var hasGps = false
-
-    lateinit var mLocationManager: LocationManager
-
-    private lateinit var customers: RepCustomers
+    lateinit var vmodel: MapOutletViewModel
 
     lateinit var customerClassAdapter: CustomerClassSpinnerAdapter
 
@@ -52,22 +55,22 @@ class EditCustomerActivity : BaseActivity() {
 
     lateinit var outletTypeAdapter: OutletTypeSpinnerAdapter
 
-    lateinit var locationRequest: LocationRequest
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private var hasGps = false
+
+    lateinit var mLocationManager: LocationManager
+
+    lateinit var locationRequest: LocationRequest
 
     var prefs: SharedPreferences? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_customer)
-        vmodel = ViewModelProviders.of(this, modelFactory)[EditCustomerViewModel::class.java]
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setContentView(R.layout.activity_map_outlets)
+        vmodel = ViewModelProviders.of(this, modelFactory)[MapOutletViewModel::class.java]
         prefs = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
-
-        customers = intent.extras!!.getParcelable("extra_item")!!
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         customerClassAdapter = CustomerClassSpinnerAdapter()
         preferedLangAdapter = PreferedLanguageSpinnerAdapter()
         outletTypeAdapter = OutletTypeSpinnerAdapter()
@@ -92,8 +95,8 @@ class EditCustomerActivity : BaseActivity() {
                 else -> permissionHandler()
             }
         }
-    }
 
+    }
 
     val languageObserver = Observer<List<ProductTypeRoom>> {
         if (it != null) {
@@ -125,31 +128,20 @@ class EditCustomerActivity : BaseActivity() {
                     }
                 }
             }
-
-            customer_name_edit.setText(customers.outletname)
-            contact_name_edit.setText(customers.contactname)
-            address_edit.setText(customers.outletaddress)
-            phone_number_edit.setText(customers.contactphone)
-
             val mOutletClass = ArrayAdapter(this, android.R.layout.simple_spinner_item, outletClassList)
             mOutletClass.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             custClass!!.adapter = mOutletClass
-            custClass!!.setSelection(customerClassAdapter.getIndexById(customers.outletclassid.toInt()))
 
             val mPreferedLang = ArrayAdapter(this, android.R.layout.simple_spinner_item, preLangsList)
             mPreferedLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             preflang!!.adapter = mPreferedLang
-            preflang!!.setSelection(preferedLangAdapter.getIndexById(customers.outletlanguageid.toInt()))
 
             val mOutletType = ArrayAdapter(this, android.R.layout.simple_spinner_item, outletTypeList)
             mOutletType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             outlettypeedit!!.adapter = mOutletType
-            outlettypeedit!!.setSelection(outletTypeAdapter.getIndexById(customers.outlettypeid.toInt()))
             showProgressBar(false)
-
         }
     }
-
 
     @SuppressLint("SimpleDateFormat")
     private fun permissionHandler() {
@@ -213,6 +205,7 @@ class EditCustomerActivity : BaseActivity() {
             showProgressBar(false)
             stoplocationUpdates()
             startLocationUpdates()
+
         }else{
 
             showProgressBar(false)
@@ -227,9 +220,7 @@ class EditCustomerActivity : BaseActivity() {
 
             stoplocationUpdates()
 
-            Log.d(TAG, "$employeeId")
-
-            val intent = Intent(this, AttachPhoto::class.java)
+            val intent = Intent(this, AttachPhotos::class.java)
             intent.putExtra("outletName", outletName)
             intent.putExtra("contactName", contactName)
             intent.putExtra("address", address)
@@ -238,7 +229,6 @@ class EditCustomerActivity : BaseActivity() {
             intent.putExtra("prefLang", prefLang)
             intent.putExtra("outletTypeId", outletTypeId)
             intent.putExtra("repid", employeeId)
-            intent.putExtra("urno", customers.urno)
             intent.putExtra("lat", location.latitude.toString())
             intent.putExtra("lng", location.longitude.toString())
             startActivity(intent)
@@ -252,7 +242,7 @@ class EditCustomerActivity : BaseActivity() {
 
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
-            this@EditCustomerActivity,
+            this@MapOutlets,
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -294,11 +284,9 @@ class EditCustomerActivity : BaseActivity() {
 
     companion object {
         var REQUEST_PERMISSIONS_REQUEST_CODE = 1000
-        var TAG = "EditCustomerActivity"
+        var TAG = "MapOutlets"
         var RC_ENABLE_LOCATION = 1000
         private const val INTERVAL: Long = 1 * 1000
         private const val FASTEST_INTERVAL: Long = 1 * 1000
     }
-
-
 }

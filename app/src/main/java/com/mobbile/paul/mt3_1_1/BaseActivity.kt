@@ -5,9 +5,8 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.mobbile.paul.mt3_1_1.R
 import dagger.android.support.DaggerAppCompatActivity
-import dagger.android.support.DaggerFragment
+
 
 open class BaseActivity : DaggerAppCompatActivity() {
 

@@ -67,8 +67,8 @@ tools:context=".ui.sales.sales.sales_map_manager.UsersMap">
                         android:layout_below="@+id/rtitle"
                         android:text="@string/cltn"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/fontSSize"
-                        android:fontFamily="@font/montserrat_bold"/>
+                        android:textSize="16sp"
+                        android:fontFamily="@font/roboto_light"/>
 
             </RelativeLayout>
 

@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.*
 import com.mobbile.paul.mt3_1_1.R
 import com.mobbile.paul.mt3_1_1.models.GoogleGetApi
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -144,10 +145,12 @@ class UsersMap : BaseActivity() {
         }
 
         clockoutbtn.setOnClickListener {
+            showProgressBar(true)
             outletOpen()
         }
 
         resumebtn.setOnClickListener {
+            showProgressBar(true)
             outletClose()
         }
 
@@ -336,7 +339,7 @@ class UsersMap : BaseActivity() {
     }
 
     companion object {
-        var TAG = "UsersMap"
+        var TAG = "TYTYTYTYTTYYTTY"
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1235
         var ENABLE_GPS = 1000
         private const val INTERVAL: Long = 1 * 1000
@@ -500,10 +503,13 @@ class UsersMap : BaseActivity() {
 
     fun onLocationChangedClose(location: Location) {
         showProgressBar(false)
-        if(location==null) {
+        if(location.latitude.isNaN() && location.longitude.isNaN()) {
+            showProgressBar(false)
+            stoplocationClose()
             startLocationUpdates(2)
         }else {
 
+            showProgressBar(false)
             stoplocationClose()
 
             val checkCustomerOutlet: Boolean = insideRadius(
@@ -533,10 +539,12 @@ class UsersMap : BaseActivity() {
 
     fun onLocationChangedOpen(location: Location) {
         showProgressBar(false)
-        if(location==null) {
+        if(location.latitude.isNaN() && location.longitude.isNaN()) {
+            showProgressBar(false)
+            stoplocationOpen()
             startLocationUpdates(1)
         }else {
-
+            showProgressBar(false)
             stoplocationOpen()
 
             val checkCustomerOutlet: Boolean = insideRadius(
@@ -547,6 +555,7 @@ class UsersMap : BaseActivity() {
             )
 
             if (!checkCustomerOutlet) {
+                Log.d(TAG, urno.toString())
                 msgError("You are not at the corresponding outlet. Thanks!")
             } else {
 

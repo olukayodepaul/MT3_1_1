@@ -314,6 +314,34 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
 
 
+    fun updateCards(employee_id: Int, urno: String, outletclassid:Int, outletlanguageid: Int, outlettypeid:Int,
+                    outletname:String, outletaddress:String, contactname: String, contactphone:String, latitude:String,
+                    longitude:String,  entry_date_time:String, entry_date:String, outlet_pic: Map<String, RequestBody>): Single<Response<getCards>> =
+        api.updateCards(employee_id, urno, outletclassid, outletlanguageid, outlettypeid,
+            outletname, outletaddress, contactname, contactphone, latitude,
+            longitude, outlet_pic, entry_date_time, entry_date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun createNewCards(employee_id: Int, outletclassid:Int, outletlanguageid: Int, outlettypeid:Int,
+                       outletname:String, outletaddress:String, contactname: String, contactphone:String, latitude:String,
+                       longitude:String,  entry_date_time:String, entry_date:String, outlet_pic: Map<String, RequestBody>): Single<Response<getCards>> =
+        api.createNewCards(employee_id,  outletclassid, outletlanguageid, outlettypeid,
+            outletname, outletaddress, contactname, contactphone, latitude,
+            longitude, outlet_pic, entry_date_time, entry_date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+
+    fun getGoe(urno:Int): Single<Response<getGeoData>> =
+        api.getGoe(urno)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+
 }
 
 

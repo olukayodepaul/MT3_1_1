@@ -7,10 +7,13 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.auth.AuthModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.bank_n_depot.BankModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.bank_n_depot.DepotsModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.customers.CustomersModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.editoutlets.EdictOutletModule
+import com.mobbile.paul.mt3_1_1.di.subcomponent.editoutlets.EditOutletsScope
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.FragmentBuilder
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.SalesComissionModel
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Sales_Module
 import com.mobbile.paul.mt3_1_1.di.subcomponent.fragmentbuilders.Saleshistory_Module
+import com.mobbile.paul.mt3_1_1.di.subcomponent.mapoutlets.MapOutletModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.modules.ModulesModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.order.OrderModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesdetails.SalesDetailsModule
@@ -18,11 +21,12 @@ import com.mobbile.paul.mt3_1_1.di.subcomponent.salesentries.SalesEntriesModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapModule
 import com.mobbile.paul.mt3_1_1.di.subcomponent.salesmap.SalesMapScope
 import com.mobbile.paul.mt3_1_1.di.subcomponent.settings.SettingsModule
-import com.mobbile.paul.mt3_1_1.di.subcomponent.takepics.TakeOutletPicsModule
 import com.mobbile.paul.mt3_1_1.ui.auth.AuthActivity
 import com.mobbile.paul.mt3_1_1.ui.customers.CustomerPageViwer
+import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.AttachPhoto
 import com.mobbile.paul.mt3_1_1.ui.customers.editcustomer.EditCustomerActivity
-import com.mobbile.paul.mt3_1_1.ui.customers.pictures.TakeOutletPicture
+import com.mobbile.paul.mt3_1_1.ui.customers.newcustomers.AttachPhotos
+import com.mobbile.paul.mt3_1_1.ui.customers.newcustomers.MapOutlets
 import com.mobbile.paul.mt3_1_1.ui.modules.ModulesActivity
 import com.mobbile.paul.mt3_1_1.ui.sales.SalesViewpager
 import com.mobbile.paul.mt3_1_1.ui.sales.sales.bank.BankActivity
@@ -91,13 +95,6 @@ abstract class ActivityBuilderModule {
     ])
     abstract fun contributeOrderActivity(): OrderedSku
 
-    @TakeOutletPicsScope
-    @ContributesAndroidInjector(modules = [
-        TakeOutletPicsModule::class
-    ])
-    abstract fun contributeTakeOutletPicsActivity(): TakeOutletPicture
-
-
     @BankScope
     @ContributesAndroidInjector(modules = [
         BankModel::class
@@ -128,10 +125,10 @@ abstract class ActivityBuilderModule {
     )
     abstract fun contributeCustomersModuleAndroidInjector(): CustomerPageViwer
 
-    @CustomersScope
+    @EditOutletsScope
     @ContributesAndroidInjector(
         modules = [
-            CustomersModule::class
+            EdictOutletModule::class
         ]
     )
     abstract fun contributeEditCustomerActivityAndroidInjector(): EditCustomerActivity
@@ -143,5 +140,29 @@ abstract class ActivityBuilderModule {
         ]
     )
     abstract fun contributeSettingsModuleCustAndroidInjector(): SettingsActivity
+
+    @MapOutletScope
+    @ContributesAndroidInjector(
+        modules = [
+            MapOutletModule::class
+        ]
+    )
+    abstract fun contributeMapOutletsAndroidInjector(): MapOutlets
+
+    @MapOutletScope
+    @ContributesAndroidInjector(
+        modules = [
+            MapOutletModule::class
+        ]
+    )
+    abstract fun contributeAttachPhotosAndroidInjector(): AttachPhotos
+
+    @EditOutletsScope
+    @ContributesAndroidInjector(
+        modules = [
+            EdictOutletModule::class
+        ]
+    )
+    abstract fun contributeAttachPhotoAndroidInjector(): AttachPhoto
 
 }

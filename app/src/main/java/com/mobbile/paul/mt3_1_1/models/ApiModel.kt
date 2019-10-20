@@ -58,11 +58,9 @@ data class Bank_n_CustomersApi(
     @SerializedName("auto")
     @Expose
     var auto: Int = 0,
-
     @SerializedName("id")
     @Expose
     var id: Int = 0,
-
     @SerializedName("notice")
     @Expose
     var notice: String = "",
@@ -651,7 +649,6 @@ data class postRecieveClose (
     var avail: Int = 0
 )
 
-
 data class JoinSalesEntriesAndProducts(
     var id: Int = 0,
     var totalqtysold: Double = 0.0,
@@ -663,6 +660,41 @@ data class JoinSalesEntriesAndProducts(
     var seperator: Int = 0
 )
 
+data class goeSpecial (
+    @SerializedName("status")
+    @Expose
+    var status: String = "",
+    @SerializedName("lat")
+    @Expose
+    var lat: String = "",
+    @SerializedName("lng")
+    @Expose
+    var lng: String = ""
+)
+
+data class getCards (
+    @SerializedName("status")
+    @Expose
+    val status: String
+)
+
+data class getGeoData (
+    @SerializedName("status")
+    @Expose
+    val status: String,
+    @SerializedName("lat")
+    @Expose
+    val lat: String,
+    @SerializedName("lng")
+    @Expose
+    val lng: String,
+    @SerializedName("outletname")
+    @Expose
+    val outletname: String,
+    @SerializedName("urno")
+    @Expose
+    val urno: Int
+)
 
 
 

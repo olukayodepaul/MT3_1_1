@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.mobbile.paul.mt3_1_1">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,14 +18,28 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.customers.editcustomer.EditCustomerActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.sales.sales_history.salesdetails.SalesDetailsActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.sales.sales.depots.DepotsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.sales.sales.bank.BankActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.customers.newcustomers.MapOutlets" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.customers.newcustomers.AttachPhotos" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.customers.editcustomer.AttachPhoto" android:screenOrientation="portrait"></activity>
+        <activity
+                android:name=".ui.customers.editcustomer.EditCustomerActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.sales.sales_history.salesdetails.SalesDetailsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.sales.sales.depots.DepotsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.sales.sales.bank.BankActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".ui.settings.SettingsActivity"
-                android:label="@string/title_activity_settings" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.sales.sales.orderedsku.OrderedSku" android:screenOrientation="portrait"/>
+                android:label="@string/title_activity_settings"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.sales.sales.orderedsku.OrderedSku"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".ui.sales.sales.salesentries.SalesEntries"
                 android:screenOrientation="portrait" />
@@ -39,20 +54,36 @@
         <activity
                 android:name=".ui.sales.sales.sales_map_manager.UsersMap"
                 android:screenOrientation="portrait" />
-        <activity android:name=".ui.sales.sales.sales_attendant.SalesAttendant" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.messages.MessagePageViewer" android:screenOrientation="portrait" />
-        <activity android:name=".ui.customers.CustomerPageViwer" android:screenOrientation="portrait" />
-        <activity android:name=".ui.supervisor.SupervisorPagerViwer" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.sales.SalesViewpager" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.auth.AuthActivity" android:screenOrientation="portrait">
+        <activity
+                android:name=".ui.sales.sales.sales_attendant.SalesAttendant"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.messages.MessagePageViewer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.customers.CustomerPageViwer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.supervisor.SupervisorPagerViwer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.sales.SalesViewpager"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.auth.AuthActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.modules.ModulesActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.customers.pictures.TakeOutletPicture" android:screenOrientation="portrait"/>
+        <activity
+                android:name=".ui.modules.ModulesActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".ui.customers.pictures.TakeOutletPicture"
+                android:screenOrientation="portrait" />
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"

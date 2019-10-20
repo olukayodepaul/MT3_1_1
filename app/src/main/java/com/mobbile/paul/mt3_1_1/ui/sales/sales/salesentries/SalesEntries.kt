@@ -76,6 +76,8 @@ class SalesEntries : BaseActivity() {
 
         urno = intent.getStringExtra("urno")
 
+        Log.d(TAG, customerno.toString())
+
         outletname = intent.getStringExtra("outletname")
 
         defaulttoken = intent.getStringExtra("defaulttoken")

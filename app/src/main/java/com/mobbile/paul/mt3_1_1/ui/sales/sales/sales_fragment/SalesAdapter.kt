@@ -1,5 +1,6 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -43,6 +44,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
     inner class ViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView),
         LayoutContainer {
+        @SuppressLint("SetTextI18n", "DefaultLocale")
         fun bind(item: Bank_n_CustomersRoom) {
 
             var letter: String? = item.outletname.substring(0, 1)
@@ -54,8 +56,9 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
 
             containerView.imageView.setImageDrawable(drawable)
             containerView.tv_name.text = item.outletname.toLowerCase().capitalize()
-            containerView.tv_titles.text = item.notice
+            containerView.tv_titles.text = "${item.notice} :: ${item.visit_sequence}"
             containerView.timesetups.text = item.rostertime
+
 
             containerView.setOnClickListener {
                 var intent: Intent? = null

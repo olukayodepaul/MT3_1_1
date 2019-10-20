@@ -73,8 +73,8 @@ class AuthActivity : BaseActivity() {
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
-           // vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
-            vmodel.callAuthApi("aFcF237", "8292", "351736104243526", dates, name_users.equals(dates))
+            vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
+            //vmodel.callAuthApi("aFcF237", "8292", "351736104243526", dates, name_users.equals(dates))
         } else {
             makeRequest()
         }
@@ -110,7 +110,7 @@ class AuthActivity : BaseActivity() {
         editor.putString("name_users", it.name)
         editor.putInt("employee_id_user", it.id)
         editor.putString("entry_date", it.dates)
-        editor.putString("customerno", it.customerno) //this is the users customer number for dynamics
+        editor.putString("customerno", it.customerno)
         editor.putString("mode", it.mode)
         editor.apply()
         callIntent()
