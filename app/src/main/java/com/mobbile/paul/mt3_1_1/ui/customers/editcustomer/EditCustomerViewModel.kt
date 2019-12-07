@@ -1,14 +1,10 @@
 package com.mobbile.paul.mt3_1_1.ui.customers.editcustomer
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.ProductTypeRoom
 import com.mobbile.paul.mt3_1_1.providers.Repository
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import java.io.File
 import javax.inject.Inject
 
 class EditCustomerViewModel @Inject constructor(private val repository: Repository): ViewModel(){
@@ -26,18 +22,13 @@ class EditCustomerViewModel @Inject constructor(private val repository: Reposito
 
     fun updateCards(employee_id: Int, urno: String, outletclassid: Int, outletlanguageid: Int, outlettypeid: Int,
                     outletname: String, outletaddress: String, contactname: String, contactphone: String, latitude: String,
-                    longitude: String, outlet_pic: String, entry_date_time: String, entry_date: String
+                    longitude: String,  entry_date_time: String, entry_date: String
     ) : LiveData<String> {
 
         var mResult = MutableLiveData<String>()
 
-        val map = HashMap<String, RequestBody>()
-        val file = File(outlet_pic)
-        val requestBody = RequestBody.create(MediaType.parse("*/*"), file)
-        map["map\"; filename=\"" + file.name + "\""] = requestBody
-
         repository.updateCards(employee_id, urno, outletclassid, outletlanguageid, outlettypeid, outletname, outletaddress, contactname,
-            contactphone, latitude, longitude, entry_date_time, entry_date, map)
+            contactphone, latitude, longitude, entry_date_time, entry_date)
             .subscribe({
                 mResult.postValue(it.body()!!.status)
             },{

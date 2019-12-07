@@ -60,6 +60,8 @@ class OrderedSku : BaseActivity() {
 
     var distance: String? = ""
 
+    var durations: String? = ""
+
     var arivaltime: String? = ""
 
     var alat  : String? = ""
@@ -98,6 +100,8 @@ class OrderedSku : BaseActivity() {
 
         distance = intent.getStringExtra("distance")
 
+        durations = intent.getStringExtra("durations")
+
         arivaltime = intent.getStringExtra("arivaltime")
 
         vmodel.fetch().observe(this, observerOfSalesEntry)
@@ -111,8 +115,6 @@ class OrderedSku : BaseActivity() {
         back_btn.setOnClickListener {
             onBackPressed()
         }
-
-        Log.d(TAG, "$alng LOVE THIS APPLICATION")
     }
 
     fun IntAdapter() {
@@ -145,7 +147,7 @@ class OrderedSku : BaseActivity() {
                 employee_id, urno, token!!, distance!!, arivaltime!!,
                 SimpleDateFormat("HH:mm:ss").format(Date()),
                 SimpleDateFormat("yyyy-MM-dd").format(Date()),
-                clat.toString(), clng.toString(), it, visit_sequence!!
+                clat, clng, it, visit_sequence!!,outletname!!,durations!!
             )
         }
     }
@@ -213,6 +215,6 @@ class OrderedSku : BaseActivity() {
     }
 
     companion object {
-        var TAG = "OrderedSku"
+        var TAG = "UUUUUDDDDD"
     }
 }

@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_map_manager
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobbile.paul.mt3_1_1.models.*
@@ -56,16 +57,17 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
         return qResult
     }
 
-    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String) {
+    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String, outletname:String, durations:String) {
 
-        repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
+        repository.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence, outletname, durations)
             .subscribe({
                 if(it.isSuccessful && it.body() != null && it.code() == 200 && it.body()!!.status == 200) {
+                    Log.d(TAG, it.body().toString())
                     if(it.body()!!.avail==1){
                         updateCustTrans(urno.toInt(), "Close $times", it.body()!!.status)
                     }else{
-                        response.status = it.body()!!.status
-                        response.msg = "Outlet Close Successful. Thanks!"
+                        response.status = 400
+                        response.msg= "Outlet Close Successful. Thanks!"
                         nResult.postValue(response)
                     }
                 }else{
@@ -121,7 +123,7 @@ class SalesMapManagerViewModel @Inject constructor(val repository: Repository): 
     }*/
 
     companion object{
-        var TAG = "SalesMapManagerViewModel"
+        var TAG = "SalesMapManagerViewM"
     }
 }
 

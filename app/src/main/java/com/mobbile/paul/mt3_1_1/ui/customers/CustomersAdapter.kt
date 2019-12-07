@@ -45,9 +45,9 @@ class CustomersAdapter(private var mItems: List<RepCustomers>, private var conte
         @SuppressLint("SetTextI18n")
         fun bind(item: RepCustomers) {
 
-            var letter: String? = item.outletname.substring(0, 1)
-            var generator = ColorGenerator.MATERIAL
-            var drawable = TextDrawable.builder()
+            val letter: String? = item.outletname.substring(0, 1)
+            val generator = ColorGenerator.MATERIAL
+            val drawable = TextDrawable.builder()
                 .buildRound(letter, generator.getRandomColor())
             containerView.imageView.setImageDrawable(drawable)
 
@@ -55,8 +55,6 @@ class CustomersAdapter(private var mItems: List<RepCustomers>, private var conte
             containerView.tv_titles.text = "${item.urno}, ${item.customerno}"
             progressBar_2.visibility = View.GONE
             //tv_sequence.text = item.
-
-
 
             containerView.icons_images.setOnClickListener {
                 val passer = RepCustomers(

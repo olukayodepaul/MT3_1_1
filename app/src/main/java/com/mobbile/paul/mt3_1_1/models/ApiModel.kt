@@ -268,7 +268,13 @@ data class postToServer(
     var visitsequence: String = "",
     @SerializedName("saleslist")
     @Expose
-    var saleslist: List<SalesEntrieHolderApi>? = null
+    var saleslist: List<SalesEntrieHolderApi>? = null,
+    @SerializedName("outletname")
+    @Expose
+    var outletname: String = "",
+    @SerializedName("tripduration")
+    @Expose
+    var tripduration: String = ""
 )
 
 //convert room to api

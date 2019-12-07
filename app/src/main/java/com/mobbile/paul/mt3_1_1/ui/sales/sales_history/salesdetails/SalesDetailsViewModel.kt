@@ -9,8 +9,6 @@ import javax.inject.Inject
 
 class SalesDetailsViewModel @Inject constructor(val repository: Repository): ViewModel(){
 
-
-
     fun outletSales(token: Int) : LiveData<List<OutletSalesHistoryDetails>> {
         var mResult = MutableLiveData<List<OutletSalesHistoryDetails>>()
         repository.outletSales(token)
@@ -21,8 +19,6 @@ class SalesDetailsViewModel @Inject constructor(val repository: Repository): Vie
             }).isDisposed
         return mResult
     }
-
-
 
     companion object {
         var TAG = "SalesDetailsViewModel"

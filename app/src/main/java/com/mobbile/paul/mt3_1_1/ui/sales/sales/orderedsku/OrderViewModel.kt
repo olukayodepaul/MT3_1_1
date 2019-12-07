@@ -1,6 +1,7 @@
 package com.mobbile.paul.mt3_1_1.ui.sales.sales.orderedsku
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,8 +50,9 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
 
     fun postSalesToServer(employee_id: Int, urno: String,token: String,
                           distance: String, arrivaltime: String,
-                          departuretime: String, dates: String, arrivallat: String, arrivallng: String,
-                          saleslist: List<SalesEntrieHolderApi>, visit_sequence : String) {
+                          departuretime: String, dates: String, arrivallat: Double, arrivallng: Double,
+                          saleslist: List<SalesEntrieHolderApi>, visit_sequence : String,
+                          outletname:String, durations:String) {
 
         val list = postToServer()
         list.employee_id = employee_id
@@ -60,10 +62,12 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
         list.arrivaltime = arrivaltime
         list.departuretime = departuretime
         list.dates = dates
-        list.arrivallat = arrivallat
-        list.arrivallng = arrivallng
+        list.arrivallat = arrivallat.toString()
+        list.arrivallng = arrivallng.toString()
         list.visitsequence = visit_sequence
         list.saleslist = saleslist
+        list.outletname = outletname
+        list.tripduration = durations
 
         repository.fetchPostSales(list)
             .subscribe({
@@ -75,6 +79,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
                 mutableRespose.postValue("400~$it.message")
             }).isDisposed
     }
+
 
     fun saveEntryHistory() {
         var mappers =  repSalesHistoryApi()
@@ -102,7 +107,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository): Vi
             }).isDisposed
     }
 
-    fun UpdateDailySales(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String){
+    fun UpdateDailySales(totalq :  Double, totalamt : Double, totalcomm : Double, balanceamt : Double, productcode : String) {
         repository.updateProducts(totalq,totalamt,totalcomm,balanceamt,productcode )
             .subscribe({
             },{

@@ -3,6 +3,7 @@ package com.mobbile.paul.mt3_1_1.ui.sales.sales.sales_fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,7 @@ class SalesAdapter(private var mItems: List<Bank_n_CustomersRoom>, private var c
                         intent.putExtra("visit_sequence", item.sequence_id)
                         intent.putExtra("outletname", item.outletname)
                         intent.putExtra("defaulttoken", item.defaulttoken)
+                        //Log.d(TAG, "${item.lat} ${item.lng}")
                     }
                     3 -> {
                         intent = Intent(contexts, BankActivity::class.java)

@@ -58,6 +58,7 @@ class AuthActivity : BaseActivity() {
             }else {
                 dataProcess()
             }
+
         }
         vmodel.authMutable().observe(this, ErrorObserver)
         vmodel.authObservable().observe(this, intentObserver)
@@ -73,8 +74,8 @@ class AuthActivity : BaseActivity() {
         if (permit == PackageManager.PERMISSION_GRANTED) {
             showProgressBar(true)
             val name_users = prefs!!.getString("entry_date", "")
-            vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
-            //vmodel.callAuthApi("aFcF237", "8292", "351736104243526", dates, name_users.equals(dates))
+            //vmodel.callAuthApi(username, password, tel.getImei(0), dates, name_users.equals(dates))
+            vmodel.callAuthApi("7BxQv56", "5027", "355236095127149", dates, name_users.equals(dates))
         } else {
             makeRequest()
         }

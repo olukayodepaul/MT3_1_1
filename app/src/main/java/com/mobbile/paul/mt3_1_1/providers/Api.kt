@@ -4,7 +4,6 @@ package com.mobbile.paul.mt3_1_1.providers
 import com.mobbile.paul.mt3_1_1.models.*
 import io.reactivex.Single
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -16,26 +15,12 @@ import retrofit2.http.Multipart
 interface Api {
 
     @Headers("Connection:close")
-    @POST("/logins")
+    @POST("/aut")
     fun getUser(
         @Query("username") username: String,
         @Query("password") password: String,
         @Query("imei") imei: String
     ): Single<Response<EmployeesApi>>
-
-    @Headers("Connection:close")
-    @POST("/salesentry")
-    fun fetchSales(
-        @Query("urno") urno: String,
-        @Query("customerno") customerno: String,
-        @Query("employee_id") employee_id: Int
-    ): Single<Response<GenSales>>
-
-    @Headers("Connection:close")
-    @POST("/postsales")
-    fun postSales(
-        @Body saleposttoserver: postToServer
-    ): Single<Response<postRecieveFromServer>>
 
     @Headers("Connection:close")
     @Multipart
@@ -62,12 +47,6 @@ interface Api {
     ): Single<Response<EmployeesApi>>
 
     @Headers("Connection:close")
-    @POST("/outletsales")
-    fun outletSales(
-        @Query("token") token: Int
-    ): Single<Response<OutletSalesHistory>>
-
-    @Headers("Connection:close")
     @POST("/commissions")
     fun conputSalesCom(
         @Query("user_id") user_id: Int,
@@ -82,16 +61,16 @@ interface Api {
 
     @POST("/customerprofile")
     fun reSetCustomerProfile (
-    @Query("outletname") outletname: String,
-    @Query("contactname") contactname: String,
-    @Query("address") address: String,
-    @Query("phone") phone: String,
-    @Query("outlet_class_id") outlet_class_id: Int,
-    @Query("outlet_language_id")  outlet_language_id: Int,
-    @Query("outlet_type_id") outlet_type_id : Int,
-    @Query("custno") custno : Int,
-    @Query("lat") lat: Double,
-    @Query("lng") lng: Double
+        @Query("outletname") outletname: String,
+        @Query("contactname") contactname: String,
+        @Query("address") address: String,
+        @Query("phone") phone: String,
+        @Query("outlet_class_id") outlet_class_id: Int,
+        @Query("outlet_language_id")  outlet_language_id: Int,
+        @Query("outlet_type_id") outlet_type_id : Int,
+        @Query("custno") custno : Int,
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double
     ): Single<Response<Attendance>>
 
     @Headers("Connection:close")
@@ -102,19 +81,6 @@ interface Api {
         @Query("dates") dates: String,
         @Query("times") times: String
     ): Single<Response<EmployeesApi>>
-
-    @Headers("Connection:close")
-    @POST("/outletsalesclose")
-    fun setOutletClose(
-        @Query("userid") userid: Int,
-        @Query("urno") urno: String,
-        @Query("dates") dates: String,
-        @Query("times") times: String,
-        @Query("lat") lat: String,
-        @Query("lng") lng: String,
-        @Query("distance") distance: String,
-        @Query("visitsequence") visitsequence: String
-    ): Single<Response<postRecieveClose>>
 
     @Headers("Connection:close")
     @POST("/reselectcustomers")
@@ -132,8 +98,8 @@ interface Api {
 
     //update customers
     @Headers("Connection:close")
-    @Multipart
-    @POST("/tm_card")
+    //@Multipart
+    @POST("/all_rep_card")
     fun updateCards(
         @Query("employee_id") employee_id: Int,
         @Query("urno") urno: String,
@@ -146,7 +112,7 @@ interface Api {
         @Query("contactphone") contactphone: String,
         @Query("latitude") latitude: String,
         @Query("longitude") longitude: String,
-        @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>,
+        // @PartMap map: Map<String, @JvmSuppressWildcards RequestBody>,
         @Query("entry_date_time") entry_date_time: String,
         @Query("entry_date") entry_date: String
     ): Single<Response<getCards>>
@@ -176,8 +142,4 @@ interface Api {
     fun getGoe(
         @Query("urno") urno: Int
     ): Single<Response<getGeoData>>
-
-
-
-
 }

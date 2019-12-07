@@ -3,13 +3,10 @@ package com.mobbile.paul.mt3_1_1.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.NetworkInfo
 import android.os.Build
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sqrt
+import kotlin.math.*
 
 class Utils {
 
@@ -17,33 +14,47 @@ class Utils {
 
         const val PREFS_FILENAME = "com.mt.v3.1.2.prefs"
         const val LATLNG = "com.mt.v3.1.2.lat_lng"
-        var getDate: String = getDate()
         var getTime: String = getTime()
 
         fun getTime(): String {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-            //val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
             return current.format(formatter)
         }
 
-        fun getDate(): String {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            return current.format(formatter)
-        }
-
-        fun insideRadius(currentLat: Double, currentLng: Double,
-                         customerLat: Double, customerLng: Double
-                         ): Boolean {
-            val ky = 400000 / 360
-            val kx = cos(Math.PI * customerLat / 180.0) * ky
+        fun insideRadius(
+            currentLat: Double, currentLng: Double,
+            customerLat: Double, customerLng: Double
+        ): Boolean {
+            val ky = 40000 / 360
+            val kx = cos(PI * customerLat / 180.0) * ky
             val dx = abs(customerLng - currentLng) * kx
             val dy = abs(customerLat - currentLat) * ky
             return sqrt(dx * dx + dy * dy) <= 5
         }
 
-        //check network checker
+        fun distanceCovered(
+            originLat: Double, originLng: Double,
+            destLat: Double, destLng: Double
+        ): Double {
+
+            val moriginLng: Double = Math.toRadians(originLng)
+            val mdestLng: Double = Math.toRadians(destLng)
+            val moriginLat: Double = Math.toRadians(originLat)
+            val mdestLat: Double = Math.toRadians(destLat)
+
+            // Haversine formula
+            val dlon: Double = mdestLng - moriginLng
+            val dlat: Double = mdestLat - moriginLat
+
+            val a: Double = sin(dlat / 2).pow(2.0) + cos(moriginLat) * cos(mdestLat) * sin(dlon / 2).pow(2)
+
+            val c: Double = 2 * asin(sqrt(a))
+            val r = 6371 //radius of the earth in km
+            return (c * r)
+
+        }
+
         @Suppress("DEPRECATION")
         fun isInternetAvailable(context: Context): Boolean {
             var result = false

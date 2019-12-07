@@ -63,8 +63,11 @@ class SalesEntriesViewModel @Inject constructor(private val repository: Reposito
 
     private fun insertSales(sdata: GenSales) {
         repository.createDailySales(
+
             sdata.sentry.map { it.toSalesEntriesEntity() },
             sdata.sentryh.map { it.toSalesEntrieHolderEntity() }
+
+
         ).subscribe({
             fetchDailySales()
         }, {

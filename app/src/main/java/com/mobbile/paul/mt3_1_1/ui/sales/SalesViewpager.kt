@@ -59,8 +59,6 @@ class SalesViewpager : DaggerAppCompatActivity(){
             startActivity(intent)
         }
 
-
-
         val fragment = SalesFragment()
         replaceFragment(fragment)
         navigations.setOnNavigationItemSelectedListener(bt)

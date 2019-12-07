@@ -130,8 +130,12 @@ class UsersMap : BaseActivity() {
 
         defaulttoken = intent.getStringExtra("defaulttoken")
 
-        if(sharePref!!.getString("assertiondate", "")!=SimpleDateFormat("yyyy-MM-dd").format(Date())) {
-            Errorchecker(4, "Attendant Error","Please Clock out to proceed. Thanks!")
+        if (sharePref!!.getString(
+                "assertiondate",
+                ""
+            ) != SimpleDateFormat("yyyy-MM-dd").format(Date())
+        ) {
+            Errorchecker(2, "Attendant Error", "Please Clock out to proceed. Thanks!")
         }
 
         backbtn.setOnClickListener {
@@ -140,7 +144,7 @@ class UsersMap : BaseActivity() {
 
         navigations.setOnClickListener {
             val mode = pref!!.getString("mode", "").toString().single()
-            val ads = "$startinglat,$startinglng"
+            val ads = "$endinglat,$endinglng"
             startMapIntent(this, ads, mode, 't')
         }
 
@@ -151,6 +155,7 @@ class UsersMap : BaseActivity() {
 
         resumebtn.setOnClickListener {
             showProgressBar(true)
+            resumebtn.visibility = View.GONE
             outletClose()
         }
 
@@ -163,6 +168,7 @@ class UsersMap : BaseActivity() {
         }
 
         vmodel.MutableProcess().observe(this, ObserveClseOutlets)
+
     }
 
     fun checkLocationPermission() {
@@ -272,34 +278,42 @@ class UsersMap : BaseActivity() {
         key: String
     ) {
 
-        mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+       /* mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(OnMapReadyCallback {
             showProgressBar(false)
             googleMap = it
             vmodel.GoogleMapApi(origin, destination, sensor, mode, key)
                 .observe(this, observeMapApiResponse)
-        })
+        })*/
+
+        vmodel.GoogleMapApi(origin, destination, sensor, mode, key)
+            .observe(this, observeMapApiResponse)
+
     }
 
 
     val observeMapApiResponse = Observer<GoogleGetApi> {
-            data = it
-            setMakerPosition(
-                startinglat!!.toDouble(),
-                startinglng!!.toDouble(),
-                endinglat!!.toDouble(),
-                endinglng!!.toDouble()
-            )
-            calculateRouteDistance()
-            resumebtn.visibility = View.VISIBLE
-            clockoutbtn.visibility =View.VISIBLE
+        data = it
+        setMakerPosition(
+             startinglat!!.toDouble(),
+             startinglng!!.toDouble(),
+             endinglat!!.toDouble(),
+             endinglng!!.toDouble()
+         )
+
+        calculateRouteDistance()
+        resumebtn.visibility = View.VISIBLE
+        clockoutbtn.visibility = View.VISIBLE
+        navigations.visibility = View.VISIBLE
+        showProgressBar(false)
     }
 
     fun calculateRouteDistance() {
-            var distanceCovered: String = data.routes[0].legs[0].distance.text
-            var duration: String = data.routes[0].legs[0].duration.text
-            durt.text = duration
-           dis.text = distanceCovered
+        var distanceCovered: String = data.routes[0].legs[0].distance.text
+        var duration: String = data.routes[0].legs[0].duration.text
+
+        durt.text = duration
+        dis.text = distanceCovered
     }
 
     fun locationRouteOnMap() {
@@ -313,7 +327,7 @@ class UsersMap : BaseActivity() {
         getStartLat: Double, getStartLng: Double,
         getEndLat: Double, getEndtLng: Double
     ) {
-        val startLatLng = LatLng(getStartLat, getStartLng)
+        /*val startLatLng = LatLng(getStartLat, getStartLng)
         val endLatLng = LatLng(getEndLat, getEndtLng)
         googleMap.addMarker(MarkerOptions().position(startLatLng))
             .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
@@ -323,11 +337,11 @@ class UsersMap : BaseActivity() {
                 startLatLng,
                 15f
             )
-        )
+        )*/
     }
 
     private fun setPolygonLineOptions(result: ArrayList<LatLng>) {
-        googleMap.addPolyline(
+       /* googleMap.addPolyline(
             PolylineOptions()
                 .addAll(result)
                 .width(5f)
@@ -335,7 +349,7 @@ class UsersMap : BaseActivity() {
                 .jointType(JointType.ROUND)
                 .endCap(RoundCap())
                 .startCap(RoundCap())
-        )
+        )*/
     }
 
     companion object {
@@ -357,7 +371,6 @@ class UsersMap : BaseActivity() {
             false
     }
 
-
     private fun outletOpen() {
 
         mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -376,9 +389,9 @@ class UsersMap : BaseActivity() {
             requestLocationPermission()
         } else if (!hasGps) {
             callGpsIntent()
-        } else if(available == ConnectionResult.API_UNAVAILABLE){
+        } else if (available == ConnectionResult.API_UNAVAILABLE) {
             msgError("Please Install and setup Google Play service")
-        }else {
+        } else {
             startLocationUpdates(1)
         }
     }
@@ -392,8 +405,10 @@ class UsersMap : BaseActivity() {
 
         val available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)
 
-        val accessPermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val coarsePermissionStatus = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val accessPermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarsePermissionStatus =
+            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (accessPermissionStatus == PackageManager.PERMISSION_DENIED
             && coarsePermissionStatus == PackageManager.PERMISSION_DENIED
@@ -402,9 +417,9 @@ class UsersMap : BaseActivity() {
 
         } else if (!hasGps) {
             callGpsIntent()
-        } else if(available == ConnectionResult.API_UNAVAILABLE){
+        } else if (available == ConnectionResult.API_UNAVAILABLE) {
             msgError("Please Install and setup Google Play service")
-        }else {
+        } else {
             showProgressBar(true)
             startLocationUpdates(2)
         }
@@ -436,7 +451,7 @@ class UsersMap : BaseActivity() {
                     val intent = Intent(this, SalesViewpager::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
-                }else if(status == 4){
+                } else if (status == 2) {
                     val intent = Intent(this, SalesViewpager::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
@@ -458,7 +473,7 @@ class UsersMap : BaseActivity() {
         dialog.show()
     }
 
-    fun startLocationUpdates(swictcher:Int) {
+    fun startLocationUpdates(swictcher: Int) {
 
         locationRequest = LocationRequest()
 
@@ -471,15 +486,15 @@ class UsersMap : BaseActivity() {
         val settingsClient = LocationServices.getSettingsClient(this)
         settingsClient.checkLocationSettings(builder.build())
 
-        when(swictcher) {
-            1->{
+        when (swictcher) {
+            1 -> {
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     callbbackOpen,
                     Looper.myLooper()
                 )
             }
-            2->{
+            2 -> {
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     callbackClose,
@@ -501,13 +516,14 @@ class UsersMap : BaseActivity() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun onLocationChangedClose(location: Location) {
         showProgressBar(false)
-        if(location.latitude.isNaN() && location.longitude.isNaN()) {
+        if (location.latitude.isNaN() && location.longitude.isNaN()) {
             showProgressBar(false)
             stoplocationClose()
             startLocationUpdates(2)
-        }else {
+        } else {
 
             showProgressBar(false)
             stoplocationClose()
@@ -521,29 +537,37 @@ class UsersMap : BaseActivity() {
 
             if (!checkCustomerOutlet) {
                 msgError("You are not at the corresponding outlet. Thanks!")
+                resumebtn.visibility = View.VISIBLE
             } else {
 
-                vmodel.setOutletClose(
-                    pref!!.getInt("employee_id_user", 0),
-                    urno.toString(),
-                    SimpleDateFormat("yyyy-MM-dd").format(Date()),
-                    SimpleDateFormat("HH:mm:ss").format(Date()),
-                    location.latitude.toString(),
-                    location.longitude.toString(),
-                    dis.text.toString(),
-                    visit_sequence!!
-                )
+                if(dis.text.toString() != "0 km") {
+                    vmodel.setOutletClose(
+                        pref!!.getInt("employee_id_user", 0),
+                        urno.toString(),
+                        SimpleDateFormat("yyyy-MM-dd").format(Date()),
+                        SimpleDateFormat("HH:mm:ss").format(Date()),
+                        location.latitude.toString(),
+                        location.longitude.toString(),
+                        dis.text.toString(),
+                        visit_sequence!!,
+                        outletname!!,
+                        durt.text.toString()
+                    )
+                }
             }
         }
     }
 
     fun onLocationChangedOpen(location: Location) {
         showProgressBar(false)
-        if(location.latitude.isNaN() && location.longitude.isNaN()) {
+        if ( location.latitude.isNaN() && location.longitude.isNaN()) {
+
             showProgressBar(false)
             stoplocationOpen()
             startLocationUpdates(1)
-        }else {
+
+        } else {
+
             showProgressBar(false)
             stoplocationOpen()
 
@@ -555,23 +579,27 @@ class UsersMap : BaseActivity() {
             )
 
             if (!checkCustomerOutlet) {
-                Log.d(TAG, urno.toString())
                 msgError("You are not at the corresponding outlet. Thanks!")
             } else {
 
-                val intent = Intent(this, SalesEntries::class.java)
-                intent.putExtra("urno", urno)
-                intent.putExtra("token", token)
-                intent.putExtra("outletname", outletname)
-                intent.putExtra("defaulttoken", defaulttoken)
-                intent.putExtra("visit_sequence", visit_sequence)
-                intent.putExtra("clat", location.latitude.toString())
-                intent.putExtra("clng", location.latitude.toString())
-                intent.putExtra("arrivallat", endinglat)
-                intent.putExtra("arrivalng", endinglng)
-                intent.putExtra("distance", dis.text.toString())
-                intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
-                startActivity(intent)
+                if(dis.text.toString() != "0 km") {
+
+                    val intent = Intent(this, SalesEntries::class.java)
+                    intent.putExtra("urno", urno)
+                    intent.putExtra("token", token)
+                    intent.putExtra("outletname", outletname)
+                    intent.putExtra("defaulttoken", defaulttoken)
+                    intent.putExtra("visit_sequence", visit_sequence)
+                    intent.putExtra("clat", location.latitude)
+                    intent.putExtra("clng", location.longitude)
+                    intent.putExtra("arrivallat", endinglat)
+                    intent.putExtra("arrivalng", endinglng)
+                    intent.putExtra("distance", dis.text.toString())
+                    intent.putExtra("durations", durt.text.toString())
+                    intent.putExtra("arivaltime", SimpleDateFormat("HH:mm:ss").format(Date()))
+                    startActivity(intent)
+
+                }
             }
         }
     }

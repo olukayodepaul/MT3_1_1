@@ -12,22 +12,10 @@ import javax.inject.Singleton
 
 @Singleton
 class Repository @Inject
-constructor(private val appDao: AppDao, private val api: Api, private var mapi: MapApi) {
+constructor(private val appDao: AppDao, private val api: Api, private var mapi: MapApi, private var nodejsApi: NodejsApi) {
 
     fun getUsers(username: String, password: String, imei: String): Single<Response<EmployeesApi>> =
         api.getUser(username, password, imei)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
-
-    fun fetchPostSales(posttoserver: postToServer): Single<Response<postRecieveFromServer>> =
-        api.postSales(posttoserver)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
-
-    fun getbasket(urno: String, customer: String, employee_id: Int): Single<Response<GenSales>> =
-        api.fetchSales(urno, customer,employee_id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
@@ -226,12 +214,6 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun outletSales(token: Int): Single<Response<OutletSalesHistory>> =
-        api.outletSales(token)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
-
     fun fetchSoldItems(): Single<List<ProductsRoom>> =
         Single.fromCallable {
             appDao.fetchSoldItems()
@@ -282,11 +264,6 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
-    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String): Single<Response<postRecieveClose>> =
-        api.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {it}
 
     fun fecthTodayCustomers(user_id: Int, dates: String): Single<Response<EmployeesApi>> =
         api.fecthTodayCustomers(user_id, dates)
@@ -316,10 +293,10 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
 
     fun updateCards(employee_id: Int, urno: String, outletclassid:Int, outletlanguageid: Int, outlettypeid:Int,
                     outletname:String, outletaddress:String, contactname: String, contactphone:String, latitude:String,
-                    longitude:String,  entry_date_time:String, entry_date:String, outlet_pic: Map<String, RequestBody>): Single<Response<getCards>> =
+                    longitude:String,  entry_date_time:String, entry_date:String /*,outlet_pic: Map<String, RequestBody>*/): Single<Response<getCards>> =
         api.updateCards(employee_id, urno, outletclassid, outletlanguageid, outlettypeid,
             outletname, outletaddress, contactname, contactphone, latitude,
-            longitude, outlet_pic, entry_date_time, entry_date)
+            longitude, /*outlet_pic,*/ entry_date_time, entry_date)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
@@ -334,13 +311,36 @@ constructor(private val appDao: AppDao, private val api: Api, private var mapi: 
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
-
     fun getGoe(urno:Int): Single<Response<getGeoData>> =
         api.getGoe(urno)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map {it}
 
+    //pointing the api to nodejs api
+    fun fetchPostSales(posttoserver: postToServer): Single<Response<postRecieveFromServer>> =
+        nodejsApi.postSales(posttoserver)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun setOutletClose(userid: Int, urno: String, dates: String, times: String, lat: String, lng: String, distance: String, visitsequence: String, outletname: String, durations: String): Single<Response<postRecieveClose>> =
+        nodejsApi.setOutletClose(userid, urno, dates, times, lat, lng, distance, visitsequence,outletname,durations)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun getbasket(urno: String, customer: String, employee_id: Int): Single<Response<GenSales>> =
+        nodejsApi.fetchSales(urno, customer,employee_id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
+
+    fun outletSales(token: Int): Single<Response<OutletSalesHistory>> =
+        nodejsApi.outletSales(token)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {it}
 
 }
 

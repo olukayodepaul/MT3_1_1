@@ -58,7 +58,6 @@ class EditCustomerActivity : BaseActivity() {
 
     var prefs: SharedPreferences? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_customer)
@@ -96,6 +95,7 @@ class EditCustomerActivity : BaseActivity() {
 
 
     val languageObserver = Observer<List<ProductTypeRoom>> {
+
         if (it != null) {
             val outletClassList = ArrayList<String>()
             val preLangsList = ArrayList<String>()
@@ -299,6 +299,4 @@ class EditCustomerActivity : BaseActivity() {
         private const val INTERVAL: Long = 1 * 1000
         private const val FASTEST_INTERVAL: Long = 1 * 1000
     }
-
-
 }

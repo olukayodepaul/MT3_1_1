@@ -16,11 +16,11 @@ import javax.inject.Singleton
 
 @Module
 @Suppress("unused")
-class NetworkModule {
+class NodejsNetworkModule {
 
     @Provides
     @Singleton
-    @Named("application_api")
+    @Named("nodejs_network")
     internal fun provideRetrofitInstance(application: Application): Retrofit {
 
         val okHttpClientBuilder = OkHttpClient.Builder()
@@ -37,7 +37,7 @@ class NetworkModule {
         }
 
         return Retrofit.Builder()
-            .baseUrl("http://mt3api.com")
+            .baseUrl("http://mtnodejsapi.com")
             .client(okHttpClientBuilder.build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

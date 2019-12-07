@@ -15,11 +15,13 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     ActivityBuilderModule::class,
     ViewModelFactoryModule::class,
-    NetworkModule::class,
-    LocalDatabaseModule::class,
     AppApi::class,
+    NetworkModule::class,
     MapGoogleApi::class,
-    MapNetworkModule::class
+    MapNetworkModule::class,
+    LocalDatabaseModule::class,
+    NodejsModules::class,
+    NodejsNetworkModule::class
 ])
 interface AppComponent : AndroidInjector<BaseApplication> {
 

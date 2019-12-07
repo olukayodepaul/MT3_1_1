@@ -93,7 +93,7 @@ class AttachPhoto : BaseActivity(), View.OnClickListener {
         prefLang = intent.getIntExtra("prefLang",0)
         outletTypeId = intent.getIntExtra("outletTypeId",0)
         tmid = intent.getIntExtra("repid",0)
-        urno = intent.getIntExtra("urno",0)!!
+        urno = intent.getIntExtra("urno",0)
         lat = intent.getStringExtra("lat")!!
         lng = intent.getStringExtra("lng")!!
 
@@ -137,7 +137,7 @@ class AttachPhoto : BaseActivity(), View.OnClickListener {
                         save_pics.visibility = View.INVISIBLE
                         vmodel.updateCards(
                             tmid!!, urno!!.toString(), outletClass!!, prefLang!!, outletTypeId!!, custName!!, address!!, contactName!!, phones!!, lat!!, lng!!,
-                            postPath!!, SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(Date()), SimpleDateFormat("yyyy-MM-dd").format(Date())
+                             SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(Date()), SimpleDateFormat("yyyy-MM-dd").format(Date())
                         ).observe(this, ObserveImage)
                     }
                 }

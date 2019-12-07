@@ -60,6 +60,8 @@ class SalesEntries : BaseActivity() {
 
     var distance : String? = ""
 
+    var durations: String? = ""
+
     var arivaltime : String? = ""
 
 
@@ -75,8 +77,6 @@ class SalesEntries : BaseActivity() {
         employee_id = prefs!!.getInt("employee_id_user", 0)
 
         urno = intent.getStringExtra("urno")
-
-        Log.d(TAG, customerno.toString())
 
         outletname = intent.getStringExtra("outletname")
 
@@ -96,6 +96,8 @@ class SalesEntries : BaseActivity() {
 
         distance = intent.getStringExtra("distance")
 
+        durations = intent.getStringExtra("durations")
+
         arivaltime = intent.getStringExtra("arivaltime")
 
         vmodel.fetchSales(urno, customerno.toString(), employee_id)
@@ -107,8 +109,6 @@ class SalesEntries : BaseActivity() {
         tv_outlet_name.text = outletname
 
         initViews()
-
-        Log.d(TAG, "${alat} this the default token")
 
         back_btn.setOnClickListener {
             onBackPressed()
@@ -139,6 +139,7 @@ class SalesEntries : BaseActivity() {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         _sales_entry_recycler.layoutManager = layoutManager
         _sales_entry_recycler!!.setHasFixedSize(true)
+
         save_sales_entry.setOnClickListener {
             vmodel.validateEntryStatus().observe(this, countOserver)
         }
@@ -158,6 +159,7 @@ class SalesEntries : BaseActivity() {
             intent.putExtra("arrivallat", alat)
             intent.putExtra("arrivalng", alng)
             intent.putExtra("distance", distance)
+            intent.putExtra("durations", durations)
             intent.putExtra("arivaltime", arivaltime)
             startActivity(intent)
         }else{
@@ -193,7 +195,7 @@ class SalesEntries : BaseActivity() {
     }
 
     companion object {
-        val TAG = "SalesEntries"
+        val TAG = "TYTYTYTYTTYYTTY"
     }
 }
 
